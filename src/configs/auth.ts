@@ -40,6 +40,6 @@ export const authConfig: AuthOptions = {
   pages: {
     signIn: "/auth/login",
     error: "/auth/login",
-    newUser: "auth/register",
+    newUser: "/auth/register",
   },
 };
