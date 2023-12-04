@@ -1,5 +1,5 @@
-import Register from "@/screens/register/Register";
+import Auth from "@/screens/auth/Auth";
 
 export default function RegisterPage() {
-  return <Register />;
+  return <Auth />;
 }
