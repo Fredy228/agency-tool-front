@@ -2,9 +2,17 @@ import type { AuthOptions, User } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 
-import { googleAuth, loginUser, registerUser } from "@/axios/auth";
+import {
+  googleAuth,
+  loginUser,
+  refreshToken,
+  registerUser,
+} from "@/axios/auth";
 import { AdapterUser } from "next-auth/adapters";
 import { TGoogleProfile } from "@/types/auth-types";
+import { decodeJwtToken } from "@/services/jwtToken";
+import { UserInterface } from "@/interfaces/user";
+import axios from "axios";
 
 export const authConfig: AuthOptions = {
   providers: [
@@ -40,7 +48,8 @@ export const authConfig: AuthOptions = {
             name: user.firstName,
             email: user.email,
             image: user.image,
-            token: user.token,
+            accessToken: user.accessToken,
+            refreshToken: user.refreshToken,
           } as User;
         }
 
@@ -56,7 +65,8 @@ export const authConfig: AuthOptions = {
             name: user.firstName,
             email: user.email,
             image: user.image,
-            token: user.token,
+            accessToken: user.accessToken,
+            refreshToken: user.refreshToken,
           } as User;
         }
 
@@ -81,19 +91,49 @@ export const authConfig: AuthOptions = {
           lastName: profileUser.family_name,
         };
         const findUser = await googleAuth(payload);
-        token.user = { ...user, token: findUser.token };
+        token.user = {
+          ...user,
+          accessToken: findUser.accessToken,
+          refreshToken: findUser.refreshToken,
+        };
       }
-      // console.log("jwt-token", token);
-      // console.log("jwt-user", user);
-      // console.log("jwt-account", account);
-      // console.log("jwt-profile", profile);
       return token;
     },
     async session({ session, token, user }) {
       session.user = token.user as AdapterUser;
-      console.log("session", session);
-      // await new Promise((resolve) => setTimeout(resolve, 2000));
-      console.log("session-2");
+      const tokenAuth = token.user as UserInterface;
+      console.log("session-1", session);
+
+      if (!tokenAuth.refreshToken || !tokenAuth.accessToken) {
+        session.user = undefined;
+        return session;
+      }
+
+      const decodedToken = decodeJwtToken(tokenAuth.accessToken);
+      console.log("decode", decodedToken);
+
+      const currTime = new Date().getTime();
+      const currExp = decodedToken?.exp
+        ? decodedToken.exp * 1000
+        : (session.user = undefined);
+
+      console.log(
+        "Left minutes",
+        currExp && Math.floor((currExp - currTime) / 60),
+      );
+
+      if (currExp && currTime > currExp - 1000) {
+        try {
+          const tokens = await refreshToken(tokenAuth.refreshToken);
+          session.user = { ...session.user, ...tokens };
+        } catch (error) {
+          if (axios.isAxiosError(error) && error.response?.status === 401) {
+            session.user = undefined;
+            return session;
+          }
+        }
+      }
+
       return session;
     },
   },

@@ -5,3 +5,7 @@ export const generateJwtToken = (payload: Object): string => {
 
   return jwt.sign(payload, secret, { expiresIn: "3d" });
 };
+
+export const decodeJwtToken = (token: string): jwt.JwtPayload | null => {
+  return jwt.decode(token, { json: true });
+};
