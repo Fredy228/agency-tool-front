@@ -1,0 +1,99 @@
+@import "src/style-variables/font-variables";
+@import "src/style-variables/color-variables";
+@import "src/style-variables/anim-variables";
+
+.authForm {
+  max-width: 334px;
+  width: 100%;
+
+  &_forgot {
+    color: $color-primary;
+    font-size: $text-size-md;
+    font-weight: 500;
+    line-height: 1.6;
+    margin-bottom: 16px;
+
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+      outline: transparent;
+    }
+  }
+
+  &_buttonSign {
+    width: 100%;
+  }
+
+  &_separatorWrap {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+
+    margin: 16px 0;
+    height: 24px;
+
+    &::before {
+      content: "";
+
+      height: 1px;
+      width: 100%;
+      background-color: $color-main-text;
+
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+    }
+  }
+
+  &_separator {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+
+    display: inline-flex;
+    height: 24px;
+    width: 40px;
+    background-color: $color-light;
+
+    justify-content: center;
+    align-items: center;
+
+    font-size: $text-size-sm;
+    font-weight: 400;
+  }
+
+  &_buttonGoogle {
+    border: none;
+    background-color: transparent;
+    width: 100%;
+
+    padding: 10px 16px;
+    border-radius: 8px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+
+    font-size: $text-size-sm;
+    font-weight: 600;
+
+    transition: background-color $anim-duration $anim-func;
+
+    &:hover {
+      background-color: rgba(225, 225, 225, 0.4);
+    }
+
+    &:active,
+    &:focus {
+      background-color: rgba(225, 225, 225, 0.5);
+    }
+
+    > svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}

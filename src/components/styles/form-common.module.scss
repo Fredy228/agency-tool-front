@@ -1,0 +1,23 @@
+@import "src/style-variables/form-mixins";
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &_label {
+    @include label-common;
+  }
+
+  &_input {
+    @include input-common;
+  }
+
+  &_applyBtn {
+    @include button-main;
+  }
+
+  &_cancelBtn {
+    @include button-second;
+  }
+}

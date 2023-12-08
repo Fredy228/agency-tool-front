@@ -1,0 +1,116 @@
+@import "src/style-variables/color-variables";
+@import "src/style-variables/font-variables";
+@import "src/style-variables/anim-variables";
+
+@mixin label-common {
+  display: inline-flex;
+  flex-direction: column;
+  width: 100%;
+
+  margin-bottom: 16px;
+
+  > span {
+    font-weight: 600;
+    font-size: $text-size-sm;
+    line-height: 1.7;
+  }
+}
+
+@mixin input-common {
+  font-size: $text-size-sm;
+  line-height: 1.4;
+  font-weight: 500;
+
+  padding: 12px 16px;
+  border: 1px solid rgba(25, 25, 25, 0.5);
+  color: rgba(25, 25, 25, 0.5);
+  border-radius: 12px;
+  outline: transparent;
+
+  &:hover {
+    border-color: rgba(25, 25, 25, 0.7);
+    color: rgba(25, 25, 25, 0.7);
+  }
+
+  &:active,
+  &:focus {
+    border-color: $color-main-text;
+    color: $color-main-text;
+  }
+}
+
+@mixin button-common {
+  border-radius: 8px;
+
+  font-weight: 500;
+  line-height: 1.6;
+  font-size: $text-size-md;
+  text-align: center;
+
+  padding-left: 16px;
+  padding-right: 16px;
+
+  transition-property: border-color, background-color, color;
+  transition-duration: $anim-duration;
+  transition-timing-function: $anim-duration;
+}
+@mixin button-main {
+  @include button-common;
+  border: 1.5px solid $color-primary;
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  color: $color-light;
+  background-color: $color-primary;
+
+  &:hover {
+    background-color: #004853;
+  }
+  &:active,
+  &:focus {
+    background-color: #02363e;
+  }
+  &:disabled {
+    background-color: rgba(25, 25, 25, 0.2);
+  }
+}
+@mixin button-second {
+  @include button-common;
+  border: 1.5px solid $color-primary;
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  color: $color-primary;
+  background-color: transparent;
+
+  &:hover {
+    color: #004853;
+    border-color: #004853;
+  }
+  &:active,
+  &:focus {
+    color: #02363e;
+    border-color: #02363e;
+  }
+  &:disabled {
+    color: rgba(25, 25, 25, 0.2);
+    border-color: rgba(25, 25, 25, 0.2);
+  }
+}
+@mixin button-third {
+  @include button-common;
+  color: $color-primary;
+  background-color: transparent;
+  border: none;
+
+  &:hover {
+    color: #004853;
+  }
+  &:active,
+  &:focus {
+    color: #02363e;
+  }
+  &:disabled {
+    color: rgba(25, 25, 25, 0.2);
+  }
+}

@@ -6,6 +6,8 @@ $color-main-body: #e1e1e1;
 $color-primary: #0f5863;
 $color-second: #cab891;
 
+$color-light: #ffffff;
+
 @mixin color-bg-item {
   background: linear-gradient(
     131deg,

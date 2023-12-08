@@ -1,0 +1,16 @@
+@import "src/style-variables/font-variables";
+
+.auth {
+  &_wrapperForm {
+    padding: 32px 100px;
+  }
+
+  &_title {
+    font-size: $text-size-xl;
+    font-weight: 700;
+    line-height: 1.1;
+
+    margin-bottom: 24px;
+    text-align: center;
+  }
+}
