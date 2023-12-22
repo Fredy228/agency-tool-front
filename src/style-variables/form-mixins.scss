@@ -2,6 +2,15 @@
 @import "src/style-variables/font-variables";
 @import "src/style-variables/anim-variables";
 
+@mixin form-title {
+  font-size: $text-size-xl;
+  font-weight: 700;
+  line-height: 1.1;
+
+  margin-bottom: 24px;
+  text-align: center;
+}
+
 @mixin label-common {
   display: inline-flex;
   flex-direction: column;
@@ -26,6 +35,11 @@
   color: rgba(25, 25, 25, 0.5);
   border-radius: 12px;
   outline: transparent;
+  background-color: transparent;
+
+  transition-property: color, border-color;
+  transition-duration: $anim-duration;
+  transition-timing-function: $anim-func;
 
   &:hover {
     border-color: rgba(25, 25, 25, 0.7);
@@ -37,6 +51,10 @@
     border-color: $color-main-text;
     color: $color-main-text;
   }
+}
+
+@mixin input-for-icon {
+  padding-right: 50px;
 }
 
 @mixin button-common {
@@ -72,6 +90,7 @@
   }
   &:disabled {
     background-color: rgba(25, 25, 25, 0.2);
+    border-color: rgba(25, 25, 25, 0.2);
   }
 }
 @mixin button-second {

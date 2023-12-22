@@ -1,9 +1,8 @@
-@import "src/style-variables/font-variables";
-@import "src/style-variables/color-variables";
-@import "src/style-variables/anim-variables";
+@import "../../../../style-variables/font-variables";
+@import "../../../../style-variables/color-variables";
+@import "../../../../style-variables/anim-variables";
 
 .authForm {
-  max-width: 334px;
   width: 100%;
 
   &_forgot {
@@ -16,7 +15,18 @@
     &:hover,
     &:focus {
       text-decoration: underline;
-      outline: transparent;
+    }
+  }
+
+  &_linkRedirect {
+    color: $color-main-text;
+    font-size: $text-size-sm;
+    margin-bottom: 16px;
+    font-weight: 400;
+
+    &:hover,
+    &:focus {
+      text-decoration: underline;
     }
   }
 
@@ -55,7 +65,7 @@
     display: inline-flex;
     height: 24px;
     width: 40px;
-    background-color: $color-light;
+    background-color: $color-main-body;
 
     justify-content: center;
     align-items: center;

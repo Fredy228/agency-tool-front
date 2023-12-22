@@ -2,6 +2,9 @@ import React from "react";
 import type { Metadata } from "next";
 import "./globals.scss";
 import { Providers } from "@/components/provider/Provider";
+import { ToastContainer } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.min.css";
 
 export const metadata: Metadata = {
   title: "AgencyTool",
@@ -16,7 +19,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Providers>
-        <body>{children}</body>
+        <body>
+          {children}
+          <ToastContainer limit={4} />
+        </body>
       </Providers>
     </html>
   );

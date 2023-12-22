@@ -5,8 +5,15 @@ $color-main-body: #e1e1e1;
 
 $color-primary: #0f5863;
 $color-second: #cab891;
+$color-attention: #a9270b;
 
 $color-light: #ffffff;
+
+$color-to-review: #f40a5e;
+$color-in-progress: #219653;
+$color-approved: #214296;
+$color-rejected: #a9270b;
+$color-pending: #ff9900;
 
 @mixin color-bg-item {
   background: linear-gradient(

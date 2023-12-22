@@ -1,16 +1,14 @@
 @import "src/style-variables/font-variables";
+@import "src/style-variables/color-variables";
+@import "src/style-variables/form-mixins";
 
 .auth {
-  &_wrapperForm {
-    padding: 32px 100px;
+  &_form {
+    max-width: 334px;
+    width: 100%;
   }
 
   &_title {
-    font-size: $text-size-xl;
-    font-weight: 700;
-    line-height: 1.1;
-
-    margin-bottom: 24px;
-    text-align: center;
+    @include form-title;
   }
 }

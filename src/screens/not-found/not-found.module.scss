@@ -1,0 +1,63 @@
+@import "src/style-variables/color-variables";
+@import "src/style-variables/anim-variables";
+
+.notFound {
+  height: 100vh;
+  width: 100vw;
+
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &_inner {
+    text-align: center;
+  }
+
+  &_status {
+    color: $color-light;
+    font-size: 260px;
+    font-weight: 900;
+    line-height: 1.07;
+    margin-bottom: 24px;
+  }
+
+  &_message {
+    color: $color-main-text;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 24px;
+  }
+
+  &_text {
+    color: $color-main-text;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.4;
+    margin-bottom: 24px;
+  }
+
+  &_btn {
+    color: $color-light;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.6;
+
+    padding: 10px 50px;
+    background-color: $color-primary;
+    border-radius: 8px;
+    transition: background-color $anim-duration $anim-func;
+
+    &:hover {
+      background-color: #004853;
+    }
+
+    &:active {
+      background-color: #02363e;
+    }
+  }
+}

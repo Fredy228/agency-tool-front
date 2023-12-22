@@ -11,6 +11,36 @@
 
   &_input {
     @include input-common;
+    width: 100%;
+
+    &.invalid {
+      border-color: $color-attention;
+    }
+  }
+
+  &_inputForIcon {
+    @include input-for-icon;
+  }
+
+  &_inputWrapIcon {
+    position: relative;
+  }
+
+  &_inputIcon {
+    position: absolute;
+    right: 16px;
+    top: 0;
+    height: 100%;
+
+    display: inline-flex;
+    align-items: center;
+
+    cursor: pointer;
+
+    > svg {
+      width: 24px;
+      height: 24px;
+    }
   }
 
   &_applyBtn {

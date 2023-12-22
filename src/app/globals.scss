@@ -1,3 +1,5 @@
+@import "src/style-variables/color-variables";
+
 /* montserrat-regular - cyrillic_latin */
 @font-face {
   font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
@@ -113,6 +115,7 @@
 a {
   color: inherit;
   text-decoration: none;
+  outline: transparent;
 }
 
 h1,
@@ -136,6 +139,8 @@ ol {
 button {
   cursor: pointer;
   outline: transparent;
+  border: none;
+  background: none;
 }
 
 button:disabled {
@@ -154,8 +159,16 @@ input::placeholder {
   color: inherit;
 }
 
+img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 body {
   font-family: Montserrat, sans-serif;
+  background-color: $color-main-body;
+  color: $color-main-text;
 }
 
 //@media (prefers-color-scheme: dark) {
