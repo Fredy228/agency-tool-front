@@ -1,0 +1,10 @@
+@import "src/style-variables/form-mixins";
+
+.setupForm {
+  max-width: 375px;
+  width: 100%;
+
+  &_title {
+    @include form-title;
+  }
+}

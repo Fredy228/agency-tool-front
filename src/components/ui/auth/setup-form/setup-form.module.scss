@@ -1,0 +1,111 @@
+@import "src/style-variables/color-variables";
+@import "src/style-variables/anim-variables";
+
+.setupForm {
+  &_inputFile {
+    display: none;
+  }
+
+  &_wrapperUpload {
+    height: 106px;
+  }
+
+  &_customInputFile {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+
+    cursor: pointer;
+
+    border-radius: 6px;
+    height: 82px;
+
+    border: 1px dashed rgba(25, 25, 25, 0.5);
+    transition: border-color $anim-duration $anim-func;
+
+    > svg {
+      width: 24px;
+      height: 24px;
+      stroke: #19191980;
+      transition: stroke $anim-duration $anim-func;
+    }
+
+    > span {
+      color: $color-primary;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.6;
+    }
+
+    &:hover {
+      border-color: $color-main-text;
+
+      > svg {
+        stroke: $color-main-text;
+      }
+    }
+  }
+
+  &_inputFormats {
+    font-size: 14px;
+    line-height: 1.7;
+    color: $color-main-text;
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  &_wrapperLogo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 106px;
+
+    margin-bottom: 16px;
+    margin-top: -16px;
+  }
+
+  &_currentLogo {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  &_imgLogo {
+    flex: 1;
+    object-fit: contain;
+    width: 300px;
+    height: 100px;
+    padding-right: 20px;
+  }
+
+  &_btnDelete {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: rgba(25, 25, 25, 0.05);
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    > svg {
+      width: 24px;
+      height: 24px;
+      fill: $color-main-text;
+      stroke: $color-main-text;
+    }
+  }
+
+  &_wrapperBtn {
+    display: inline-flex;
+    gap: 16px;
+    width: 100%;
+  }
+
+  &_buttonSign {
+    flex: 1;
+  }
+}

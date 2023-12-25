@@ -75,12 +75,11 @@
   }
 
   &_buttonGoogle {
-    border: none;
-    background-color: transparent;
     width: 100%;
 
     padding: 10px 16px;
     border-radius: 8px;
+    border: 1px solid transparent;
 
     display: inline-flex;
     align-items: center;
@@ -90,15 +89,21 @@
     font-size: $text-size-sm;
     font-weight: 600;
 
-    transition: background-color $anim-duration $anim-func;
+    transition-property: background-color, border-color;
+    transition-duration: $anim-duration;
+    transition-timing-function: $anim-func;
 
-    &:hover {
-      background-color: rgba(225, 225, 225, 0.4);
+    &:hover,
+    &:focus {
+      border-radius: 10px;
+      border-color: rgba(25, 25, 25, 0.2);
+      background: rgba(225, 225, 225, 0.2);
     }
 
-    &:active,
-    &:focus {
-      background-color: rgba(225, 225, 225, 0.5);
+    &:active {
+      border-radius: 10px;
+      border: 1px solid rgba(25, 25, 25, 0.5);
+      background: rgba(225, 225, 225, 0.5);
     }
 
     > svg {

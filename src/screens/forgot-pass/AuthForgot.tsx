@@ -1,8 +1,9 @@
 import type { NextPage } from "next";
-import ForgotForm from "@/components/ui/auth/forgot-form/ForgotForm";
+import Link from "next/link";
 
 import styles from "./auth-forgot.module.scss";
-import Link from "next/link";
+
+import ForgotForm from "@/components/ui/auth/forgot-form/ForgotForm";
 
 type Props = {};
 const AuthForgot: NextPage<Props> = () => {
