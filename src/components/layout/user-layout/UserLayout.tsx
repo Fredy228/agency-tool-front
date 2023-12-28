@@ -19,6 +19,7 @@ import Avatar from "@/components/layout/user-layout/user-avatar/Avatar";
 import logoImg from "./logo.png";
 import Image from "next/image";
 import UserMenu from "@/components/layout/user-layout/user-menu/UserMenu";
+import Backdrop from "@/components/reused/backdrop/Backdrop";
 
 const UserLayout: FC<PropsWithChildren> = ({ children }) => {
   const [isShowProfileMenu, setIsShowProfileMenu] = useState<boolean>(false);
@@ -78,7 +79,15 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
               </ul>
             </div>
             <AnimatePresence>
-              {isShowProfileMenu && <UserMenu />}
+              {isShowProfileMenu && (
+                <>
+                  <UserMenu />
+                  <Backdrop
+                    setShow={setIsShowProfileMenu}
+                    backgroundColor={"transparent"}
+                  />
+                </>
+              )}
             </AnimatePresence>
           </div>
         </div>

@@ -1,3 +1,107 @@
+@import "src/style-variables/color-variables";
+@import "src/style-variables/font-variables";
+
 .welcome {
   height: calc(100vh - 90px);
+  min-height: calc(670px - 90px);
+  max-height: calc(890px - 90px);
+  padding: 20px 0;
+
+  &_inner {
+    display: flex;
+    height: 100%;
+
+    gap: 70px;
+    position: relative;
+  }
+
+  &_wrapperImg {
+    margin-left: 80px;
+    height: 100%;
+  }
+
+  &_imgBox {
+    padding: 40px 0;
+    background-color: $color-primary;
+
+    height: 100%;
+
+    border-radius: 8px;
+  }
+
+  &_img {
+    transform: translateX(-80px);
+    width: auto;
+    height: 100%;
+  }
+
+  &_wrapperHello {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  &_helloBox {
+  }
+
+  &_mottoFirst {
+    font-size: $text-size-md;
+    font-weight: 700;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+
+  &_title {
+    font-family: "Playfair Display", sans-serif;
+    font-size: 70px;
+    font-weight: 600;
+    line-height: 1.1;
+    margin-top: 20px;
+
+    > span {
+      color: $color-second;
+    }
+  }
+
+  &_mottoSecond {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.5;
+    margin: 70px auto 20px auto;
+
+    max-width: 440px;
+  }
+
+  &_letsGo {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+
+    font-size: $text-size-md;
+    font-weight: 700;
+  }
+
+  &_letsGoIcon {
+    width: 40px;
+    height: 40px;
+
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $color-second;
+
+    color: $color-light;
+
+    > svg {
+      width: 20px;
+      height: 20px;
+      rotate: 90deg;
+    }
+  }
 }

@@ -16,6 +16,7 @@
   box-shadow: 22.97px 22.97px 33.98px 0 rgba(0, 0, 0, 0.05);
   backdrop-filter: blur(25px);
   color: $color-main-text;
+  z-index: 105;
 
   &_profile {
     display: flex;
