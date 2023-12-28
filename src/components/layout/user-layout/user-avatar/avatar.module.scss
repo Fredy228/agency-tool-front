@@ -1,0 +1,24 @@
+@import "src/style-variables/color-variables";
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &_default {
+    font-size: 16xp;
+    font-weight: 500;
+    color: rgba(25, 25, 25, 0.3);
+    background-color: rgba(25, 25, 25, 0.1);
+
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(25, 25, 25, 0.3);
+    border-radius: 50%;
+  }
+}
