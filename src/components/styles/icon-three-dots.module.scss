@@ -1,0 +1,59 @@
+@import "src/style-variables/color-variables";
+@import "src/style-variables/anim-variables";
+
+@mixin wrapper-icon-dots {
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  transition: background-color $anim-duration $anim-func;
+
+  &:hover,
+  &:focus {
+    background: rgba(25, 25, 25, 0.05);
+  }
+
+  &:active {
+    background: rgba(25, 25, 25, 0.1);
+  }
+}
+
+@mixin three-dots {
+  display: block;
+  position: relative;
+
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+
+  background-color: $color-main-text;
+
+  &::after,
+  &::before {
+    content: "";
+    display: block;
+    position: absolute;
+
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+
+    background-color: $color-main-text;
+
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &::after {
+    top: 7px;
+  }
+
+  &::before {
+    bottom: 7px;
+  }
+}

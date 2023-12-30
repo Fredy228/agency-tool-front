@@ -1,0 +1,89 @@
+@import "src/style-variables/color-variables";
+@import "src/style-variables/font-variables";
+@import "src/components/styles/icon-three-dots.module";
+
+.link {
+  &_list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+
+    margin-top: 24px;
+  }
+
+  &_item {
+    @include color-bg-item;
+    border-radius: 8px;
+    padding: 15px;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &_icon {
+    display: flex;
+    align-items: center;
+
+    > svg {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  &_link {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+  }
+
+  &_wrapperName {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+  }
+
+  &_name {
+    font-size: $text-size-sm;
+    font-weight: 600;
+    line-height: 1.1;
+
+    @include overflow-text(2);
+  }
+
+  &_iconLink {
+    width: 18px;
+    padding-left: 3px;
+    display: flex;
+    align-items: center;
+
+    > svg {
+      width: 18px;
+      height: 18px;
+      color: $color-main-opacity;
+      transition: color $anim-duration $anim-func;
+    }
+  }
+
+  &_item:hover &_iconLink {
+    > svg {
+      color: $color-main-text;
+    }
+  }
+
+  &_descrip {
+    font-size: $text-size-xs;
+    font-weight: 400;
+    line-height: 1.6;
+    @include overflow-text(2);
+  }
+
+  &_button {
+    @include wrapper-icon-dots;
+  }
+
+  &_buttonIco {
+    @include three-dots;
+  }
+}

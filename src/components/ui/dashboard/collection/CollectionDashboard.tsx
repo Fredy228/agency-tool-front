@@ -3,6 +3,7 @@ import { FC } from "react";
 import styles from "./collection-dashboard.module.scss";
 import styleContainer from "@/components/styles/container.module.scss";
 import styleSection from "@/components/styles/section-header.module.scss";
+
 import CollectionList from "@/components/ui/dashboard/collection/collection-list/CollectionLIst";
 
 type Props = {};

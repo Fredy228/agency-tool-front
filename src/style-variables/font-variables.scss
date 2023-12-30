@@ -4,3 +4,10 @@ $text-size-lg: 18px;
 $text-size-md: 16px;
 $text-size-sm: 14px;
 $text-size-xs: 12px;
+
+@mixin overflow-text($count-line) {
+  display: -webkit-box;
+  -webkit-line-clamp: $count-line;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
