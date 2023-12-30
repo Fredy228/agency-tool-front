@@ -1,0 +1,37 @@
+@import "src/style-variables/color-variables";
+@import "src/style-variables/font-variables";
+
+.collectionList {
+  display: flex;
+  flex-wrap: wrap;
+
+  margin: 0 -20px;
+
+  &_item {
+    margin: 20px 20px;
+    width: calc(100% / 3 - 40px);
+    padding-top: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    @include color-bg-item;
+  }
+
+  &_name {
+    margin: 0 16px;
+    font-size: $text-size-lg;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+  &_wrapperImg {
+    width: 100%;
+  }
+
+  &_img {
+  }
+}

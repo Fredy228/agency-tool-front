@@ -1,0 +1,31 @@
+@import "src/style-variables/font-variables";
+@import "src/style-variables/color-variables";
+@import "src/style-variables/form-mixins";
+
+.sectionHeader {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  &_wrapperTitle {
+    margin-right: auto;
+  }
+
+  &_title {
+    font-size: $text-size-xl;
+    font-family: "Playfair Display", sans-serif;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+
+  &_text {
+    font-size: $text-size-lg;
+    font-weight: 400;
+    color: $color-primary;
+    line-height: 1.5;
+  }
+
+  &_btn {
+    @include button-main;
+  }
+}

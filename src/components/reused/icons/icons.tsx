@@ -1,6 +1,7 @@
 //General icons
 export { default as IconArrowDown } from "./store/arrow-down.svg";
 export { default as IconArrowRightLong } from "./store/arrow-right-long.svg";
+export { default as IconOpenLink } from "./store/open-link.svg";
 
 // Auth icons
 export { default as IconGoogle } from "./store/google.svg";
