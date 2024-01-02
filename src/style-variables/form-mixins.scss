@@ -41,13 +41,13 @@
   transition-duration: $anim-duration;
   transition-timing-function: $anim-func;
 
-  &:hover {
+  &:hover,
+  &:focus {
     border-color: rgba(25, 25, 25, 0.7);
     color: rgba(25, 25, 25, 0.7);
   }
 
-  &:active,
-  &:focus {
+  &:active {
     border-color: $color-main-text;
     color: $color-main-text;
   }

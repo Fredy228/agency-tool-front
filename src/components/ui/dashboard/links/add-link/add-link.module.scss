@@ -1,0 +1,32 @@
+@import "src/style-variables/color-variables";
+@import "src/style-variables/font-variables";
+
+.addLink {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  padding: 30px;
+  background-color: $color-light;
+  border-radius: 8px;
+
+  max-width: 530px;
+  width: 100%;
+  z-index: 105;
+
+  &_tite {
+    font-size: $text-size-lg;
+    font-weight: 700;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  &_text {
+    font-weight: 300;
+    font-size: $text-size-md;
+    line-height: 1.6;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+}

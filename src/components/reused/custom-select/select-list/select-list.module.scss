@@ -1,0 +1,58 @@
+@import "src/style-variables/color-variables";
+@import "src/style-variables/anim-variables";
+
+.customSelect {
+  &_list {
+    display: inline-flex;
+    flex-direction: column;
+
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+
+    width: 100%;
+    height: 210px;
+    padding: 15px;
+
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.6);
+    box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+    backdrop-filter: blur(25px);
+    z-index: 115;
+
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+      background-color: transparent;
+      border-radius: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: $color-primary; /* Цвет бегунка */
+      border-radius: 6px; /* Скругление углов бегунка */
+    }
+
+    scrollbar-face-color: $color-primary; /* Цвет бегунка */
+    scrollbar-track-color: transparent; /* Цвет фона полосы прокрутки */
+    scrollbar-arrow-color: $color-primary; /* Цвет стрелок */
+  }
+
+  &_item {
+    cursor: pointer;
+
+    padding: 8px 0;
+
+    display: inline-flex;
+    align-items: center;
+
+    transition: color $anim-duration $anim-func;
+
+    &:not(:last-of-type) {
+      border-bottom: 1px solid $color-main-opacity;
+    }
+
+    &:hover {
+      color: $color-primary;
+    }
+  }
+}

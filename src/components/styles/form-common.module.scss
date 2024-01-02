@@ -13,6 +13,10 @@
     @include input-common;
     width: 100%;
 
+    &.textarea {
+      resize: none;
+    }
+
     &.invalid {
       border-color: $color-attention;
     }

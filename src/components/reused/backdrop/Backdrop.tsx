@@ -7,11 +7,15 @@ import styles from "./backdrop.module.scss";
 type Props = {
   setShow: Dispatch<SetStateAction<boolean>>;
   backgroundColor?: string;
+  backdropFilter?: string;
+  zIndex?: string;
 } & PropsWithChildren;
 const Backdrop: FC<Props> = ({
   children,
   setShow,
-  backgroundColor = "rgba(0, 0, 0, 0.3)",
+  backgroundColor = "rgba(25, 25, 25, 0.30)",
+  backdropFilter = "none",
+  zIndex = "100",
 }) => {
   const handleBackdropClick = (event: React.MouseEvent<HTMLElement>) => {
     if (event.target === event.currentTarget) {
@@ -37,7 +41,7 @@ const Backdrop: FC<Props> = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      style={{ backgroundColor: backgroundColor }}
+      style={{ backgroundColor, backdropFilter, zIndex }}
       className={styles.backdrop}
       onClick={handleBackdropClick}
     >

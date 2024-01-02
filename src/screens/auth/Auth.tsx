@@ -23,16 +23,6 @@ const Auth: NextPage<Props> = () => {
       </h1>
 
       <AuthForm isRegister={isRegister} />
-      {/*<button*/}
-      {/*  type={"button"}*/}
-      {/*  onClick={() =>*/}
-      {/*    signOut({*/}
-      {/*      callbackUrl: "/auth/login",*/}
-      {/*    })*/}
-      {/*  }*/}
-      {/*>*/}
-      {/*  Sing out*/}
-      {/*</button>*/}
     </div>
   );
 };
