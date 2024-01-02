@@ -1,6 +1,6 @@
-import type { FC } from "react";
-
+import { type FC } from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 import styles from "./user-menu.module.scss";
 
@@ -10,10 +10,8 @@ import {
   IconSettings,
   IconSignOut,
 } from "@/components/reused/icons/icons";
-import Link from "next/link";
 
-type Props = {};
-const UserMenu: FC<Props> = ({}) => {
+const UserMenu: FC = () => {
   return (
     <motion.div
       initial={{ opacity: 1, transform: "translateY(100%)" }}

@@ -40,7 +40,11 @@ const LinksDashboard: FC = () => {
         {isShowAddLink && (
           <>
             <AddLink setIsShowAddLink={setIsShowAddLink} />{" "}
-            <Backdrop backdropFilter={"blur(5px)"} setShow={setIsShowAddLink} />
+            <Backdrop
+              backdropFilter={"blur(5px)"}
+              scrollPage={true}
+              setShow={setIsShowAddLink}
+            />
           </>
         )}
       </AnimatePresence>

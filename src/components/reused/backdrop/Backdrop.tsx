@@ -3,12 +3,14 @@ import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 
 import styles from "./backdrop.module.scss";
+import noScroll from "@/services/no-scroll";
 
 type Props = {
   setShow: Dispatch<SetStateAction<boolean>>;
   backgroundColor?: string;
   backdropFilter?: string;
   zIndex?: string;
+  scrollPage?: boolean;
 } & PropsWithChildren;
 const Backdrop: FC<Props> = ({
   children,
@@ -16,6 +18,7 @@ const Backdrop: FC<Props> = ({
   backgroundColor = "rgba(25, 25, 25, 0.30)",
   backdropFilter = "none",
   zIndex = "100",
+  scrollPage = false,
 }) => {
   const handleBackdropClick = (event: React.MouseEvent<HTMLElement>) => {
     if (event.target === event.currentTarget) {
@@ -29,9 +32,11 @@ const Backdrop: FC<Props> = ({
         setShow(false);
       }
     }
+    if (scrollPage) noScroll(true);
 
     window.addEventListener("keydown", handleKeyDown);
     return () => {
+      if (scrollPage) noScroll(false);
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [setShow]);
