@@ -22,7 +22,7 @@
     font-weight: 700;
     margin-bottom: 5px;
 
-    @media screen and (max-width: 1024px) {
+    @media screen and (max-width: 1023px) {
       font-size: 28px;
     }
   }
@@ -33,7 +33,7 @@
     color: $color-primary;
     line-height: 1.5;
 
-    @media screen and (max-width: 1024px) {
+    @media screen and (max-width: 1023px) {
       font-size: $text-size-md;
     }
   }

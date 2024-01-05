@@ -6,6 +6,10 @@
     height: 100vh;
     min-height: 670px;
     padding: 35px 0;
+
+    @media screen and (max-width: 1023px) {
+      min-height: 600px;
+    }
   }
 
   &_wrapperChild {
@@ -22,6 +26,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    @media screen and (max-width: 1279px) {
+      width: 500px;
+    }
+    @media screen and (max-width: 1023px) {
+      width: 300px;
+    }
+    @media screen and (max-width: 767px) {
+      display: none;
+    }
   }
 
   &_decor {
@@ -36,10 +50,26 @@
 
     display: flex;
     align-items: center;
+
+    @media screen and (max-width: 1279px) {
+      width: calc(100% - 70px);
+    }
+    @media screen and (max-width: 1023px) {
+      width: calc(100% - 40px);
+      max-height: 380px;
+      min-height: 320px;
+    }
   }
 
   &_decorImg {
     border-radius: 8px;
     transform: translateX(-100px);
+
+    @media screen and (max-width: 1279px) {
+      transform: translateX(-70px);
+    }
+    @media screen and (max-width: 1023px) {
+      transform: translateX(-40px);
+    }
   }
 }

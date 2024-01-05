@@ -9,7 +9,7 @@ const FirstSetup: FC<Props> = () => {
   return (
     <div className={styles.setupForm}>
       <h1 className={styles.setupForm_title}>
-        You can create your <br /> own organization
+        You can create your own organization
       </h1>
       <SetupForm />
     </div>
