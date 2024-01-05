@@ -7,17 +7,51 @@
   max-height: calc(890px - 90px);
   padding: 20px 0;
 
+  @media screen and (max-width: 1024px) {
+    height: calc(100vh - 70px);
+    min-height: calc(670px - 70px);
+    max-height: calc(890px - 70px);
+  }
+
+  @media screen and (max-width: 767px) {
+    height: initial;
+    min-height: initial;
+    max-height: initial;
+
+    padding-bottom: 85px;
+  }
+
   &_inner {
     display: flex;
     height: 100%;
 
     gap: 70px;
     position: relative;
+
+    @media screen and (max-width: 1024px) {
+      gap: 30px;
+    }
+
+    @media screen and (max-width: 767px) {
+      flex-direction: column-reverse;
+      gap: 0;
+    }
   }
 
   &_wrapperImg {
     margin-left: 80px;
     height: 100%;
+
+    @media screen and (max-width: 1024px) {
+      display: flex;
+      align-items: center;
+    }
+
+    @media screen and (max-width: 767px) {
+      margin-left: 35px;
+      height: initial;
+      justify-content: center;
+    }
   }
 
   &_imgBox {
@@ -27,12 +61,31 @@
     height: 100%;
 
     border-radius: 8px;
+
+    @media screen and (max-width: 1024px) {
+      height: initial;
+      padding: 20px 0;
+    }
+
+    @media screen and (max-width: 767px) {
+    }
   }
 
   &_img {
     transform: translateX(-80px);
     width: auto;
     height: 100%;
+
+    @media screen and (max-width: 1024px) {
+      height: 350px;
+      transform: translateX(-50px);
+    }
+
+    @media screen and (max-width: 767px) {
+      height: auto;
+      width: 100%;
+      transform: translateX(-35px);
+    }
   }
 
   &_wrapperHello {
@@ -49,6 +102,10 @@
     font-weight: 700;
     line-height: 1.1;
     text-transform: uppercase;
+
+    @media screen and (max-width: 1279px) {
+      font-size: $text-size-sm;
+    }
   }
 
   &_title {
@@ -61,6 +118,13 @@
     > span {
       color: $color-second;
     }
+
+    @media screen and (max-width: 1279px) {
+      font-size: 50px;
+    }
+    @media screen and (max-width: 1024px) {
+      font-size: 40px;
+    }
   }
 
   &_mottoSecond {
@@ -70,6 +134,15 @@
     margin: 70px auto 20px auto;
 
     max-width: 440px;
+
+    @media screen and (max-width: 1279px) {
+      font-size: $text-size-md;
+      margin-top: 40px;
+    }
+
+    @media screen and (max-width: 767px) {
+      margin-top: 30px;
+    }
   }
 
   &_letsGo {
@@ -84,6 +157,10 @@
 
     font-size: $text-size-md;
     font-weight: 700;
+
+    @media screen and (max-width: 767px) {
+      bottom: -75px;
+    }
   }
 
   &_letsGoIcon {

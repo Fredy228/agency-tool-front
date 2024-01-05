@@ -1,8 +1,6 @@
 "use client";
 
-import type { FC, PropsWithChildren } from "react";
-
-import { useState } from "react";
+import { type FC, type PropsWithChildren, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence } from "framer-motion";
 
@@ -23,6 +21,7 @@ import Backdrop from "@/components/reused/backdrop/Backdrop";
 
 const UserLayout: FC<PropsWithChildren> = ({ children }) => {
   const [isShowProfileMenu, setIsShowProfileMenu] = useState<boolean>(false);
+  const [isShowNavMenu, setIsShowNavMenu] = useState<boolean>(false);
 
   return (
     <>
@@ -39,7 +38,30 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
                 priority={true}
               />
             </div>
-            <div className={styles.header_wrapperMenu}>
+
+            <div className={styles.header_wrapperBurger}>
+              <button
+                className={`${styles.header_burgerBtn} ${
+                  isShowNavMenu ? styles.active : ""
+                }`}
+                type={"button"}
+                onClick={() => setIsShowNavMenu((prevState) => !prevState)}
+              >
+                <span className={styles.header_burgerIcon}></span>
+              </button>
+            </div>
+            {isShowNavMenu && (
+              <Backdrop
+                setShow={setIsShowNavMenu}
+                backgroundColor={"transparent"}
+                scrollPage={true}
+              />
+            )}
+            <div
+              className={`${styles.header_wrapperMenu} ${
+                isShowNavMenu ? styles.active : ""
+              }`}
+            >
               <ul className={styles.header_menuList}>
                 <li className={styles.header_menuItem}>
                   <Link
@@ -62,7 +84,7 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
                     Create new
                   </Link>
                 </li>
-                <li className={`${styles.header_menuItem}`}>
+                <li className={`${styles.header_menuItem} ${styles.pc}`}>
                   <button
                     type={"button"}
                     className={`${styles.header_wrapperProfile} ${
@@ -77,6 +99,18 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
                   </button>
                 </li>
               </ul>
+            </div>
+            <div className={`${styles.header_menuItem} ${styles.mobile}`}>
+              <button
+                type={"button"}
+                className={`${styles.header_wrapperProfile} ${
+                  isShowProfileMenu && styles.isShow
+                }`}
+                onClick={() => setIsShowProfileMenu((prevState) => !prevState)}
+              >
+                <Avatar />
+                <IconArrowDown />
+              </button>
             </div>
             <AnimatePresence>
               {isShowProfileMenu && (

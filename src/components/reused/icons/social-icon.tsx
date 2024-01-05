@@ -16,7 +16,7 @@ import { default as IconNetflix } from "./social-store/netflix.svg";
 import { default as IconNotion } from "./social-store/notion.svg";
 import { default as IconPatreon } from "./social-store/patreon.svg";
 import { default as IconPinterest } from "./social-store/pinterest.svg";
-import { default as IconSketch } from "./social-store/pinterest.svg";
+import { default as IconSketch } from "./social-store/sketch.svg";
 import { default as IconSkype } from "./social-store/skype.svg";
 import { default as IconSlack } from "./social-store/slack.svg";
 import { default as IconTelegram } from "./social-store/telegram.svg";

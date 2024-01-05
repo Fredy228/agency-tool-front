@@ -9,6 +9,18 @@
   display: flex;
   align-items: center;
 
+  @media screen and (max-width: 1024px) {
+    height: 70px;
+  }
+
+  @media screen and (max-width: 767px) {
+    position: sticky;
+    top: 0;
+    left: 0;
+    background-color: $color-main-body;
+    z-index: 90;
+  }
+
   &_inner {
     display: flex;
     justify-content: flex-end;
@@ -20,6 +32,10 @@
     display: flex;
     align-items: center;
     margin-right: auto;
+
+    @media screen and (max-width: 767px) {
+      display: none;
+    }
   }
 
   &_logo {
@@ -27,9 +43,104 @@
     width: auto;
   }
 
+  &_wrapperBurger {
+    display: flex;
+    align-items: center;
+
+    margin-right: auto;
+
+    @media screen and (min-width: 768px) {
+      display: none;
+    }
+  }
+
+  &_burgerBtn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+
+    position: relative;
+  }
+
+  &_burgerIcon {
+    position: absolute;
+    display: block;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 16px;
+    height: 1px;
+    background-color: $color-main-text;
+
+    transition: transform $anim-duration $anim-func;
+
+    &:after,
+    &:before {
+      position: absolute;
+      content: "";
+      display: block;
+      width: 16px;
+      height: 1px;
+      background-color: $color-main-text;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &:after {
+      top: -6px;
+    }
+
+    &:before {
+      bottom: -6px;
+    }
+  }
+
+  &_burgerBtn.active &_burgerIcon {
+    transform: translate(-50%, -50%) rotate(45deg);
+
+    &:before {
+      opacity: 0;
+    }
+
+    &:after {
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(90deg);
+    }
+  }
+
   &_wrapperMenu {
     display: flex;
     align-items: center;
+
+    @media screen and (max-width: 767px) {
+      position: absolute;
+      top: 250px;
+      left: 0;
+
+      opacity: 0;
+      visibility: hidden;
+
+      z-index: 105;
+      transition-property: opacity, top, visibility;
+      transition-duration: 200ms;
+      transition-timing-function: linear;
+
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    &.active {
+      @media screen and (max-width: 767px) {
+        top: 60px;
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
+
+  &_wrapperMenu.active {
   }
 
   &_menuList {
@@ -39,9 +150,32 @@
 
     font-size: $text-size-md;
     font-weight: 500;
+
+    @media screen and (max-width: 767px) {
+      flex-direction: column;
+      align-items: flex-start;
+
+      padding: 18px 18px 22px 18px;
+      border-radius: 8px;
+
+      background: rgba(255, 255, 255, 0.6);
+      box-shadow: 22.97px 22.97px 33.98px 0 rgba(0, 0, 0, 0.05);
+      backdrop-filter: blur(25px);
+    }
   }
 
   &_menuItem {
+    &.pc {
+      @media screen and (max-width: 767px) {
+        display: none;
+      }
+    }
+
+    &.mobile {
+      @media screen and (min-width: 768px) {
+        display: none;
+      }
+    }
   }
 
   &_pageLink {
