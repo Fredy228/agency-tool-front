@@ -32,7 +32,7 @@ const AuthForm: NextPage<Props> = ({ isRegister }) => {
 
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/";
+  const callbackUrl = searchParams.get("callbackUrl") || "/welcome";
   const isMatchesPass = (isRegister && password === rePassword) || !isRegister;
 
   const setInvalid = (name: string) => {
@@ -151,7 +151,6 @@ const AuthForm: NextPage<Props> = ({ isRegister }) => {
             placeholder={"Enter your password"}
             value={password}
             name={"password"}
-            pattern={"(?=.*\\d)(?=.*[A-Z])[A-Za-z\\d]{8,30}"}
             onChange={(e) => setPassword(e.currentTarget.value.trim())}
             onInvalid={(e) => setInvalid(e.currentTarget.name)}
           />

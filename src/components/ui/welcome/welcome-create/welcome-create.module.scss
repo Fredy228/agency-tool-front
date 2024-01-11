@@ -1,0 +1,49 @@
+@import "src/style-variables/font-variables";
+
+.welcomeCreate {
+  &_list {
+    display: flex;
+    gap: 16px;
+    margin: 34px 0;
+  }
+
+  &_item {
+    width: 50%;
+    border-radius: 8px;
+    background: linear-gradient(
+      131deg,
+      #fff 0%,
+      rgba(217, 217, 217, 0) 100%,
+      rgba(217, 217, 217, 0.2) 100%
+    );
+
+    box-shadow: 22.97px 22.97px 33.98px 0 rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(25px);
+
+    height: 370px;
+    padding: 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  &_title {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 24px;
+  }
+
+  &_text {
+    font-size: $text-size-md;
+    font-weight: 400;
+    line-height: 1.6;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  &_btn {
+  }
+}

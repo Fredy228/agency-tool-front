@@ -19,6 +19,9 @@ export const authConfig: AuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      authorization: {
+        params: { prompt: "select_account" },
+      },
     }),
     Credentials({
       credentials: {
@@ -78,7 +81,7 @@ export const authConfig: AuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
-    async jwt({ token, user, account, profile }) {
+    async jwt({ token, user, account, profile, trigger, session }) {
       if (user) {
         token.user = user;
       }
@@ -89,49 +92,74 @@ export const authConfig: AuthOptions = {
           email: profile.email,
           firstName: profileUser.given_name,
           lastName: profileUser.family_name,
+          image: profileUser.picture,
         };
         const findUser = await googleAuth(payload);
         token.user = {
           ...user,
+          name: profileUser.given_name,
           accessToken: findUser.accessToken,
           refreshToken: findUser.refreshToken,
         };
       }
+
+      if (
+        trigger === "update" &&
+        session?.accessToken &&
+        session?.refreshToken
+      ) {
+        const updateToken = {
+          accessToken: session?.accessToken,
+          refreshToken: session?.refreshToken,
+        };
+        token.user = { ...user, ...updateToken };
+      }
+
       return token;
     },
-    async session({ session, token, user }) {
+    async session({ session, token, trigger, newSession }) {
       session.user = token.user as AdapterUser;
       const tokenAuth = token.user as UserInterface;
-      console.log("session-1", session);
 
       if (!tokenAuth.refreshToken || !tokenAuth.accessToken) {
         session.user = undefined;
         return session;
       }
 
-      const decodedToken = decodeJwtToken(tokenAuth.accessToken);
-      console.log("decode", decodedToken);
+      const decodedTokenAs = decodeJwtToken(tokenAuth.accessToken);
+      const decodedTokenRf = decodeJwtToken(tokenAuth.refreshToken);
 
       const currTime = new Date().getTime();
-      const currExp = decodedToken?.exp
-        ? decodedToken.exp * 1000
+      const currExpAs = decodedTokenAs?.exp
+        ? decodedTokenAs.exp * 1000
+        : (session.user = undefined);
+      const currExpRf = decodedTokenRf?.exp
+        ? decodedTokenRf.exp * 1000
         : (session.user = undefined);
 
       console.log(
-        "Left minutes",
-        currExp && Math.floor((currExp - currTime) / 60),
+        "Left access:",
+        currExpAs &&
+          Math.floor((currExpAs - currTime) / 60)
+            .toString()
+            .slice(0, 2) + "m",
+      );
+      console.log(
+        "Left refresh:",
+        currExpRf &&
+          Math.floor((currExpRf - currTime) / 60)
+            .toString()
+            .slice(0, 2) + "m",
       );
 
-      if (currExp && currTime > currExp - 1000) {
-        try {
-          const tokens = await refreshToken(tokenAuth.refreshToken);
-          session.user = { ...session.user, ...tokens };
-        } catch (error) {
-          if (axios.isAxiosError(error) && error.response?.status === 401) {
-            session.user = undefined;
-            return session;
-          }
-        }
+      if (currExpRf && currTime > currExpRf) {
+        session.user = undefined;
+        return session;
+      }
+
+      if (currExpAs && currTime > currExpAs - 1000) {
+        const clearToken = { accessToken: null };
+        session.user = { ...session.user, ...clearToken };
       }
 
       return session;

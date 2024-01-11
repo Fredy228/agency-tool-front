@@ -2,6 +2,7 @@ export interface UserInterface {
   id: number;
   email: string;
   firstName: string;
+  lastName: string;
   sex: number | null;
   image: string | null;
   verified: 0 | 1;
@@ -17,4 +18,13 @@ export interface UserDeviceInterface {
   createAt: Date;
   token: string;
   userId: number;
+}
+
+export interface SessionInterface {
+  id: string;
+  email: string;
+  image: string;
+  name: string;
+  accessToken: string;
+  refreshToken: string;
 }

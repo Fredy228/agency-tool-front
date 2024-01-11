@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import "./globals.scss";
 import { Providers } from "@/components/provider/Provider";
 import { ToastContainer } from "react-toastify";
-
 import "react-toastify/dist/ReactToastify.min.css";
+import { AuthProviders } from "@/components/provider/AuthPropvider";
 
 export const metadata: Metadata = {
   title: "AgencyTool",
@@ -19,10 +19,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Providers>
-        <body>
-          {children}
-          <ToastContainer limit={4} />
-        </body>
+        <AuthProviders>
+          <body>
+            {children}
+            <ToastContainer limit={4} />
+          </body>
+        </AuthProviders>
       </Providers>
     </html>
   );

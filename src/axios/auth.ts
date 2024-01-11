@@ -3,6 +3,7 @@ import axios, { setAuthHeader } from "@/axios/base";
 import { TGoogleAuth, TLoginBody, TRegisterBody } from "@/types/auth-types";
 import { UserInterface } from "@/interfaces/user";
 import { generateJwtToken } from "@/services/jwtToken";
+import { headers } from "next/headers";
 
 export const loginUser = async (
   credentials: TLoginBody,
@@ -33,9 +34,11 @@ export const googleAuth = async (
 export const refreshToken = async (
   token: string,
 ): Promise<{ accessToken: string; refreshToken: string }> => {
-  setAuthHeader(token);
+  // setAuthHeader(token);
 
-  const { data } = await axios.get("/api/auth/refresh");
+  const { data } = await axios.get("/api/auth/refresh", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 
   return data;
 };

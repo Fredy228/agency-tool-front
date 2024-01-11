@@ -7,6 +7,7 @@ export { default as IconOpenLink } from "./store/open-link.svg";
 export { default as IconGoogle } from "./store/google.svg";
 export { default as IconShowPass } from "./store/show-pass.svg";
 export { default as IconHidePass } from "./store/hide-pass.svg";
+export { default as IconDefaultAvatar } from "./store/avatar-default.svg";
 
 //File icons
 export { default as IconUpload } from "./store/upload.svg";

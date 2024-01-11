@@ -3,6 +3,7 @@
 import { type FC, type PropsWithChildren, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence } from "framer-motion";
+import { useSelector } from "react-redux";
 
 import styleContainer from "@/components/styles/container.module.scss";
 import styles from "./user-layout.module.scss";
@@ -18,10 +19,12 @@ import logoImg from "./logo.png";
 import Image from "next/image";
 import UserMenu from "@/components/layout/user-layout/user-menu/UserMenu";
 import Backdrop from "@/components/reused/backdrop/Backdrop";
+import { selectUser } from "@/redux/user/selectors";
 
 const UserLayout: FC<PropsWithChildren> = ({ children }) => {
   const [isShowProfileMenu, setIsShowProfileMenu] = useState<boolean>(false);
   const [isShowNavMenu, setIsShowNavMenu] = useState<boolean>(false);
+  const user = useSelector(selectUser);
 
   return (
     <>
@@ -63,27 +66,30 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
               }`}
             >
               <ul className={styles.header_menuList}>
-                <li className={styles.header_menuItem}>
-                  <Link
-                    className={styles.header_pageLink}
-                    href={"/dashboard-control"}
-                  >
-                    <IconDashboards /> Dashboards
-                  </Link>
-                </li>
+                {user.email && (
+                  <li className={styles.header_menuItem}>
+                    <Link className={styles.header_pageLink} href={"/welcome"}>
+                      <IconDashboards /> Dashboards
+                    </Link>
+                  </li>
+                )}
+
                 <li className={styles.header_menuItem}>
                   <Link className={styles.header_pageLink} href={"/home"}>
                     <IconWhatsNew /> What’s new?
                   </Link>
                 </li>
-                <li className={styles.header_menuItem}>
-                  <Link
-                    className={styles.header_createLink}
-                    href={"/dashboard-create"}
-                  >
-                    Create new
-                  </Link>
-                </li>
+                {user.email && (
+                  <li className={styles.header_menuItem}>
+                    <Link
+                      className={styles.header_createLink}
+                      href={"/dashboard-create"}
+                    >
+                      Create new
+                    </Link>
+                  </li>
+                )}
+
                 <li className={`${styles.header_menuItem} ${styles.pc}`}>
                   <button
                     type={"button"}
@@ -94,7 +100,7 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
                       setIsShowProfileMenu((prevState) => !prevState)
                     }
                   >
-                    <Avatar />
+                    <Avatar user={user} />
                     <IconArrowDown />
                   </button>
                 </li>
@@ -108,14 +114,14 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
                 }`}
                 onClick={() => setIsShowProfileMenu((prevState) => !prevState)}
               >
-                <Avatar />
+                <Avatar user={user} />
                 <IconArrowDown />
               </button>
             </div>
             <AnimatePresence>
               {isShowProfileMenu && (
                 <>
-                  <UserMenu />
+                  <UserMenu user={user} />
                   <Backdrop
                     setShow={setIsShowProfileMenu}
                     backgroundColor={"transparent"}

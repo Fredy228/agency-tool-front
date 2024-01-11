@@ -1,0 +1,28 @@
+@import "src/style-variables/color-variables";
+@import "src/style-variables/font-variables";
+
+.welcomeEdit {
+  &_list {
+    display: flex;
+    gap: 16px;
+  }
+
+  &_item {
+    width: 50%;
+  }
+
+  &_btn {
+    padding: 22px 10px 22px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    border-radius: 8px;
+    font-size: $text-size-md;
+    color: $color-primary;
+    font-weight: 500;
+
+    @include color-bg-item;
+  }
+}
