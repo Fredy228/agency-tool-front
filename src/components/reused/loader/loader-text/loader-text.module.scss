@@ -1,0 +1,32 @@
+@import "@/styles/varible";
+
+.loader {
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  text-align: center;
+  margin: 0 5px;
+
+  &_inner {
+    display: inline-block;
+    height: 8px;
+    width: 60px;
+    border-radius: 5px;
+    background: linear-gradient(
+      90deg,
+      #3498db,
+      #f1c40f //#e74c3c
+    );
+    background-size: 200% 100%;
+    animation: loading 2s linear infinite;
+  }
+
+  @keyframes loading {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+}

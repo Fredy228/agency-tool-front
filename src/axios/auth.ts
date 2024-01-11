@@ -34,11 +34,15 @@ export const googleAuth = async (
 export const refreshToken = async (
   token: string,
 ): Promise<{ accessToken: string; refreshToken: string }> => {
-  // setAuthHeader(token);
-
   const { data } = await axios.get("/api/auth/refresh", {
     headers: { Authorization: `Bearer ${token}` },
   });
 
   return data;
+};
+
+export const logoutUser = async (token: string): Promise<void> => {
+  await axios.get("/api/auth/logout", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 };

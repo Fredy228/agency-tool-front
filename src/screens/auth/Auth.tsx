@@ -1,20 +1,22 @@
 "use client";
 
 import type { NextPage } from "next";
-
-import AuthForm from "@/components/ui/auth/auth-form/AuthFrom";
-
-import styles from "./auth.module.scss";
-import { usePathname } from "next/navigation";
+import { usePathname, redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
 
-type Props = {};
-const Auth: NextPage<Props> = () => {
+import styles from "./auth.module.scss";
+
+import AuthForm from "@/components/ui/auth/auth-form/AuthFrom";
+import LoaderPage from "@/components/reused/loader/loader-page";
+
+const Auth: NextPage = () => {
   const pathname = usePathname();
   const session = useSession();
+
   const isRegister = pathname === "/auth/register";
 
-  console.log("session", session);
+  if (session.status === "loading") return <LoaderPage />;
+  if (session.status === "authenticated") redirect("/welcome");
 
   return (
     <div className={styles.auth_form}>

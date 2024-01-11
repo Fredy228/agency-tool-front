@@ -17,6 +17,8 @@ import {
   IconShowPass,
 } from "@/components/reused/icons/icons";
 import { getToastify, ToastifyEnum } from "@/services/toastify";
+import { userCreateSchema, userLoginSchema } from "@/joi/register-schema";
+import LoaderOrig from "@/components/reused/loader/loader-button";
 
 type Props = {
   isRegister: boolean;
@@ -35,33 +37,26 @@ const AuthForm: NextPage<Props> = ({ isRegister }) => {
   const callbackUrl = searchParams.get("callbackUrl") || "/welcome";
   const isMatchesPass = (isRegister && password === rePassword) || !isRegister;
 
-  const setInvalid = (name: string) => {
-    setInvalidInput((prevState) => [...prevState, name]);
-
-    let message = "";
-
-    switch (name) {
-      case "email":
-        message = "The email is incorrect or empty.";
-        break;
-      case "name":
-        message = "The name is incorrect or empty.";
-        break;
-      case "password":
-        message =
-          "Password may have a minimum of 8 characters, including at least one capital letter and one number";
-        break;
-      default:
-        return;
-    }
-
-    getToastify(message, ToastifyEnum.ERROR, 5000);
-  };
-
   const submitForm: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
     setIsLoading(true);
     setInvalidInput([]);
+
+    const schema = isRegister ? userCreateSchema : userLoginSchema;
+
+    const { error, warning } = schema.validate({
+      email,
+      firstName: name,
+      password,
+    });
+
+    if (error) {
+      const nameField = error.message.split("|")[0];
+      setInvalidInput((prevState) => [...prevState, nameField]);
+
+      setIsLoading(false);
+      return getToastify(error.message.split("|")[1], ToastifyEnum.ERROR, 5000);
+    }
 
     const answer = await signIn("credentials", {
       email,
@@ -117,7 +112,6 @@ const AuthForm: NextPage<Props> = ({ isRegister }) => {
           name={"email"}
           value={email}
           onChange={(e) => setEmail(e.currentTarget.value.trim())}
-          onInvalid={(e) => setInvalid(e.currentTarget.name)}
         />
       </label>
       {isRegister && (
@@ -134,7 +128,6 @@ const AuthForm: NextPage<Props> = ({ isRegister }) => {
             name={"name"}
             required={true}
             onChange={(e) => setName(e.currentTarget.value)}
-            onInvalid={(e) => setInvalid(e.currentTarget.name)}
           />
         </label>
       )}
@@ -152,7 +145,6 @@ const AuthForm: NextPage<Props> = ({ isRegister }) => {
             value={password}
             name={"password"}
             onChange={(e) => setPassword(e.currentTarget.value.trim())}
-            onInvalid={(e) => setInvalid(e.currentTarget.name)}
           />
           <button
             type={"button"}
@@ -175,7 +167,6 @@ const AuthForm: NextPage<Props> = ({ isRegister }) => {
             value={rePassword}
             name={"repeat-pass"}
             onChange={(e) => setRePassword(e.currentTarget.value.trim())}
-            onInvalid={(e) => setInvalid(e.currentTarget.name)}
           />
         </label>
       )}
@@ -200,6 +191,7 @@ const AuthForm: NextPage<Props> = ({ isRegister }) => {
         onClick={() => setInvalidInput([])}
       >
         {isRegister ? "Sign up" : "Sign in"}
+        {isLoading && <LoaderOrig color={"#fff"} />}
       </button>
       <div className={styles.authForm_separatorWrap}>
         <span className={styles.authForm_separator}>OR</span>

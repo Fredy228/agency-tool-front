@@ -4,6 +4,7 @@ import Link from "next/link";
 import { signOut } from "next-auth/react";
 
 import styles from "./user-menu.module.scss";
+
 import Avatar from "@/components/layout/user-layout/user-avatar/Avatar";
 import {
   IconBilling,
@@ -11,11 +12,17 @@ import {
   IconSignOut,
 } from "@/components/reused/icons/icons";
 import { UserInterface } from "@/interfaces/user";
+import { logoutUser } from "@/axios/auth";
 
 type Props = {
   user: UserInterface;
 };
 const UserMenu: FC<Props> = ({ user }) => {
+  const logoutAction = async () => {
+    await logoutUser(user.refreshToken);
+    signOut().catch(console.error);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 1, transform: "translateY(100%)" }}
@@ -59,7 +66,7 @@ const UserMenu: FC<Props> = ({ user }) => {
             <button
               type={"button"}
               className={styles.userMenu_link}
-              onClick={() => signOut()}
+              onClick={() => logoutAction()}
             >
               <IconSignOut /> Sign out
             </button>

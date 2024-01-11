@@ -1,12 +1,21 @@
+"use client";
+
 import type { NextPage } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 import styles from "./auth-forgot.module.scss";
-
 import ForgotForm from "@/components/ui/auth/forgot-form/ForgotForm";
+import LoaderPage from "@/components/reused/loader/loader-page";
 
 type Props = {};
 const AuthForgot: NextPage<Props> = () => {
+  const session = useSession();
+
+  if (session.status === "loading") return <LoaderPage />;
+  if (session.status === "authenticated") redirect("/welcome");
+
   return (
     <div className={styles.authForgot}>
       <h1 className={styles.authForgot_title}>Forgot password?</h1>

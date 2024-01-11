@@ -31,7 +31,7 @@ const ForgotForm: FC<Props> = () => {
       <button
         className={`${formStyles.form_applyBtn} ${styles.forgotForm_button}`}
         type={"submit"}
-        disabled={isLoading}
+        disabled={true}
         onClick={() => setIsValidEmail(true)}
       >
         Confirm
