@@ -79,16 +79,16 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
                     <IconWhatsNew /> What’s new?
                   </Link>
                 </li>
-                {user.email && (
-                  <li className={styles.header_menuItem}>
-                    <Link
-                      className={styles.header_createLink}
-                      href={"/dashboard-create"}
-                    >
-                      Create new
-                    </Link>
-                  </li>
-                )}
+                {/*{user.email && (*/}
+                {/*  <li className={styles.header_menuItem}>*/}
+                {/*    <Link*/}
+                {/*      className={styles.header_createLink}*/}
+                {/*      href={"/dashboard-admin-create"}*/}
+                {/*    >*/}
+                {/*      Create new*/}
+                {/*    </Link>*/}
+                {/*  </li>*/}
+                {/*)}*/}
 
                 <li className={`${styles.header_menuItem} ${styles.pc}`}>
                   <button

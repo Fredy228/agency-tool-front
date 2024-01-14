@@ -1,0 +1,38 @@
+@import "src/style-variables/font-variables";
+@import "src/style-variables/color-variables";
+@import "src/style-variables/anim-variables";
+
+.adminSidebar {
+  width: 270px;
+
+  &_title {
+    font-size: $text-size-md;
+    font-weight: 700;
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+
+  &_list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding-left: 12px;
+  }
+
+  &_item {
+  }
+
+  &_link {
+    //display: block;
+    line-height: 1.6;
+    font-size: $text-size-md;
+    font-weight: 500;
+    color: rgba(25, 25, 25, 0.5);
+
+    transition: color $anim-duration $anim-func;
+
+    &:hover {
+      color: $color-main-text;
+    }
+  }
+}

@@ -1,0 +1,38 @@
+@import "src/style-variables/font-variables";
+@import "src/style-variables/button-mixins";
+@import "src/style-variables/color-variables";
+
+.adminHeader {
+  margin-bottom: 30px;
+
+  &_nav {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+
+    margin-bottom: 15px;
+  }
+
+  &_navLink {
+    @include button-variant-1;
+
+    > svg {
+      width: 22px;
+      height: 22px;
+      rotate: 90deg;
+    }
+  }
+
+  &_navTitle {
+    font-size: $text-size-xl;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  &_navText {
+    font-size: $text-size-lg;
+    color: $color-primary;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+}

@@ -1,0 +1,20 @@
+.newDashboard {
+  &_inner {
+    border-radius: 8px;
+    background: linear-gradient(
+      131deg,
+      #fff 0%,
+      rgba(217, 217, 217, 0) 100%,
+      rgba(217, 217, 217, 0.2) 100%
+    );
+
+    box-shadow: 22.97px 22.97px 33.98px 0px rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(25px);
+
+    padding: 40px 20px;
+  }
+
+  &_flex {
+    display: flex;
+  }
+}

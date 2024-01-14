@@ -1,0 +1,37 @@
+@import "anim-variables";
+
+@mixin button-base-square {
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin button-variant-1 {
+  @include button-base-square;
+
+  border-radius: 50%;
+  background-color: rgba(25, 25, 25, 0.05);
+
+  transition: background-color $anim-duration $anim-func;
+
+  color: rgba(25, 25, 25, 1);
+
+  &:hover,
+  &:focus {
+    background-color: rgba(25, 25, 25, 0.15);
+  }
+}
+
+@mixin button-variant-2 {
+  @include button-base-square;
+
+  color: rgba(25, 25, 25, 0.5);
+
+  &:hover,
+  &:focus {
+    color: rgba(25, 25, 25, 1);
+  }
+}
