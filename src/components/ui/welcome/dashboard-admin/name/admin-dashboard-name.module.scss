@@ -1,0 +1,18 @@
+@import "src/style-variables/input-edit-mixin";
+@import "src/style-variables/form-mixins";
+
+.adminName {
+  &_wraperInput {
+    display: flex;
+    gap: 15px;
+  }
+
+  &_input {
+    @include input-edit;
+    flex: 1;
+  }
+
+  &_button {
+    @include button-third;
+  }
+}
