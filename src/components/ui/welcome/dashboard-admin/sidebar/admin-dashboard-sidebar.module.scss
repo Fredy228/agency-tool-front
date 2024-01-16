@@ -3,7 +3,9 @@
 @import "src/style-variables/anim-variables";
 
 .adminSidebar {
-  width: 270px;
+  //width: 270px;
+  //flex-basis: 200px;
+  min-width: 250px;
 
   &_title {
     font-size: $text-size-md;

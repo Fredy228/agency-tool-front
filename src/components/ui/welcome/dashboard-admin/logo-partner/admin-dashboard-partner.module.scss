@@ -1,0 +1,14 @@
+.adminPartner {
+  &_wrapper {
+    display: flex;
+    gap: 15px;
+  }
+
+  &_wrapLogo {
+    flex: 1;
+  }
+
+  &_wrapHint {
+    width: 310px;
+  }
+}

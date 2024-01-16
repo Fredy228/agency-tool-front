@@ -9,7 +9,7 @@
   }
 
   &_wrapperUpload {
-    height: 106px;
+    //height: 106px;
   }
 
   &_customInputFile {
@@ -63,7 +63,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: flex-end;
-    height: 106px;
+    //height: 106px;
+    width: 100%;
 
     margin-bottom: 16px;
     margin-top: -16px;

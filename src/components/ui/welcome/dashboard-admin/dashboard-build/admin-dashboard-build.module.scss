@@ -1,4 +1,5 @@
 @import "src/style-variables/color-variables";
+@import "src/style-variables/form-mixins";
 
 .adminBuild {
   flex: 1;
@@ -8,8 +9,6 @@
   box-shadow: 22.97px 22.97px 33.98px 0 rgba(0, 0, 0, 0.05);
   backdrop-filter: blur(25px);
 
-  display: flex;
-  flex-direction: column;
   padding: 20px;
 
   &_line {
@@ -18,5 +17,18 @@
     display: block;
     margin: 30px 0;
     background-color: $color-second;
+  }
+
+  &_wrapBtn {
+    display: flex;
+    gap: 15px;
+  }
+
+  &_cancelBtn {
+    @include button-second;
+  }
+
+  &_applyBtn {
+    @include button-main;
   }
 }

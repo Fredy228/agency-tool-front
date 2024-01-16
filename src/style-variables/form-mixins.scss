@@ -75,8 +75,6 @@
 @mixin button-main {
   @include button-common;
   border: 1.5px solid $color-primary;
-  //padding-top: 10px;
-  //padding-bottom: 10px;
   height: 48px;
   display: flex;
   justify-content: center;

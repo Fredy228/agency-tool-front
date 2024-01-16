@@ -1,0 +1,61 @@
+@import "src/style-variables/input-edit-mixin";
+@import "src/style-variables/form-mixins";
+
+.adminText {
+  &_wrapper {
+    display: flex;
+  }
+
+  &_list {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &_item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  &_number {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: auto;
+
+    color: $color-primary;
+    font-weight: 700;
+    font-size: $text-size-sm;
+    line-height: 1.7;
+
+    border-radius: 50%;
+    background-color: #e1e1e1;
+  }
+
+  &_textarea {
+    flex: 1;
+    @include input-edit;
+    vertical-align: middle;
+    resize: none;
+  }
+
+  &_btnEdit {
+    @include button-third;
+  }
+
+  &_wrapImg {
+    width: 300px;
+    display: flex;
+    align-items: center;
+    padding: 16px;
+  }
+
+  &_img {
+  }
+}

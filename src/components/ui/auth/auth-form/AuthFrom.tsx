@@ -107,6 +107,7 @@ const AuthForm: NextPage<Props> = ({ isRegister }) => {
             invalidInput.includes("email") && formStyles.invalid
           }`}
           type="email"
+          autoComplete={"username"}
           required={true}
           placeholder={"Enter your email"}
           name={"email"}
@@ -145,6 +146,7 @@ const AuthForm: NextPage<Props> = ({ isRegister }) => {
             value={password}
             name={"password"}
             onChange={(e) => setPassword(e.currentTarget.value.trim())}
+            autoComplete={!isRegister ? "current-password" : undefined}
           />
           <button
             type={"button"}

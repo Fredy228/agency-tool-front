@@ -2,6 +2,10 @@
 export { default as IconArrowDown } from "./store/arrow-down.svg";
 export { default as IconArrowRightLong } from "./store/arrow-right-long.svg";
 export { default as IconOpenLink } from "./store/open-link.svg";
+export { default as IconTick } from "./store/tick.svg";
+export { default as IconCross } from "./store/cross.svg";
+export { default as IconPlus } from "./store/plus.svg";
+export { default as IconHint } from "./store/hint.svg";
 
 // Auth icons
 export { default as IconGoogle } from "./store/google.svg";
