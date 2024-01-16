@@ -1,0 +1,35 @@
+@import "src/style-variables/form-mixins";
+@import "src/style-variables/button-mixins";
+
+.editBtns {
+  display: flex;
+  width: 80px;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+
+  &_cancel,
+  &_save {
+    @include button-variant-1;
+  }
+
+  &_cancel {
+    > svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+
+  &_save {
+    border-radius: 8px;
+
+    > svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  &_edit {
+    @include button-third;
+  }
+}

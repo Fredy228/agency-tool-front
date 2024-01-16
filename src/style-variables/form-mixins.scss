@@ -83,11 +83,11 @@
   color: $color-light;
   background-color: $color-primary;
 
-  &:hover {
+  &:hover,
+  &:focus {
     background-color: #004853;
   }
-  &:active,
-  &:focus {
+  &:active {
     background-color: #02363e;
   }
   &:disabled {

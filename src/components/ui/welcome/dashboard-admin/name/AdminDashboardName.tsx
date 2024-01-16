@@ -1,9 +1,23 @@
-import { type FC } from "react";
+import { Dispatch, type FC, SetStateAction } from "react";
 
 import styles from "./admin-dashboard-name.module.scss";
 import styleSection from "../dashboard-build/admin-dashboard-section.module.scss";
 
-const AdminDashboardName: FC = () => {
+import EditTextBtns from "@/components/reused/edit-text-btns/EditTextBtns";
+
+type Props = {
+  name: string;
+  setName: Dispatch<SetStateAction<string>>;
+  editText: string | null;
+  setEditText: Dispatch<SetStateAction<string | null>>;
+};
+
+const AdminDashboardName: FC<Props> = ({
+  name,
+  setName,
+  editText,
+  setEditText,
+}) => {
   return (
     <section className={styles.adminName}>
       <h3 className={styleSection.adminSection_title}>Name of Dashboard</h3>
@@ -12,11 +26,16 @@ const AdminDashboardName: FC = () => {
           className={styles.adminName_input}
           type="text"
           placeholder={"Enter name of dashboard"}
-          disabled={false}
+          disabled={editText !== "name"}
+          value={name}
+          onChange={(e) => setName(e.currentTarget.value)}
         />
-        <button className={styles.adminName_button} type={"button"}>
-          Edit
-        </button>
+        <EditTextBtns
+          isEdit={editText === "name"}
+          setEdit={setEditText}
+          name={"name"}
+          setValue={setName}
+        />
       </div>
     </section>
   );

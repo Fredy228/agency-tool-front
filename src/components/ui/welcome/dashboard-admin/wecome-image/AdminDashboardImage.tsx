@@ -1,6 +1,6 @@
 "use client";
 
-import { type FC, useState } from "react";
+import { Dispatch, type FC, SetStateAction, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Image from "next/image";
 import SwiperCore from "swiper";
@@ -23,7 +23,11 @@ import {
 
 SwiperCore.use([Navigation, FreeMode]);
 
-const AdminDashboardImage: FC = () => {
+type Props = {
+  image: string | null;
+  setImage: Dispatch<SetStateAction<string | null>>;
+};
+const AdminDashboardImage: FC<Props> = ({ image, setImage }) => {
   const [screens, setScreens] = useState(listWelcomeScreen);
 
   return (
@@ -43,7 +47,10 @@ const AdminDashboardImage: FC = () => {
           >
             {screens.map((item) => (
               <SwiperSlide key={item.id} style={{ width: "144px" }}>
-                <div className={styles.adminScreen_slide}>
+                <div
+                  className={styles.adminScreen_slide}
+                  onClick={() => setImage(item.id)}
+                >
                   <Image
                     className={styles.adminScreen_img}
                     src={`${process.env.NEXTAUTH_URL}/${item.url}`}
@@ -52,7 +59,7 @@ const AdminDashboardImage: FC = () => {
                     height={"188"}
                   />
                   <div className={styles.adminScreen_check}>
-                    <IconTick />
+                    {item.id === image && <IconTick />}
                   </div>
                   <button className={styles.adminScreen_cross} type={"button"}>
                     <IconCross />
