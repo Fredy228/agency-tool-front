@@ -3,15 +3,25 @@
 @import "src/style-variables/anim-variables";
 
 .adminSidebar {
-  //width: 270px;
-  //flex-basis: 200px;
-  min-width: 250px;
+  width: 250px;
+
+  @media screen and (max-width: 1279px) {
+    width: 200px;
+  }
+
+  @media screen and (max-width: 1023px) {
+    display: none;
+  }
 
   &_title {
     font-size: $text-size-md;
     font-weight: 700;
     line-height: 1.6;
     margin-bottom: 12px;
+
+    @media screen and (max-width: 1279px) {
+      font-size: $text-size-sm;
+    }
   }
 
   &_list {
@@ -25,7 +35,6 @@
   }
 
   &_link {
-    //display: block;
     line-height: 1.6;
     font-size: $text-size-md;
     font-weight: 500;
@@ -35,6 +44,10 @@
 
     &:hover {
       color: $color-main-text;
+    }
+
+    @media screen and (max-width: 1279px) {
+      font-size: $text-size-sm;
     }
   }
 }

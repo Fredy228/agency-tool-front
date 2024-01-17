@@ -2,7 +2,7 @@ import React, { Dispatch, type FC, SetStateAction } from "react";
 import Image from "next/image";
 
 import formStyles from "@/components/styles/form-common.module.scss";
-import styles from "@/components/ui/auth/setup-form/setup-form.module.scss";
+import styles from "./upload-image.module.scss";
 
 import { IconDelete, IconUpload } from "@/components/reused/icons/icons";
 import { getToastify, ToastifyEnum } from "@/services/toastify";
@@ -33,7 +33,7 @@ const UploadImage: FC<Props> = ({ logo, setLogo, name, isBig }) => {
       <label className={formStyles.form_label}>
         {name && <span>{name}</span>}
         <input
-          className={styles.setupForm_inputFile}
+          className={styles.uploadImage_inputFile}
           type={"file"}
           accept="image/*"
           required={true}
@@ -42,17 +42,17 @@ const UploadImage: FC<Props> = ({ logo, setLogo, name, isBig }) => {
         />
         {!logo && (
           <div
-            className={styles.setupForm_wrapperUpload}
+            className={styles.uploadImage_wrapperUpload}
             style={{ height: isBig ? "184px" : "106px" }}
           >
             <div
-              className={styles.setupForm_customInputFile}
+              className={styles.uploadImage_customInputFile}
               style={{ height: isBig ? "160px" : "82px" }}
             >
               <IconUpload />
               <span>Upload image</span>
             </div>
-            <p className={styles.setupForm_inputFormats}>
+            <p className={styles.uploadImage_inputFormats}>
               svg. &nbsp;png. &nbsp;jpg. &nbsp;webp.
             </p>
           </div>
@@ -60,12 +60,12 @@ const UploadImage: FC<Props> = ({ logo, setLogo, name, isBig }) => {
       </label>
       {logo && (
         <div
-          className={styles.setupForm_wrapperLogo}
+          className={styles.uploadImage_wrapperLogo}
           style={{ height: isBig ? "184px" : "106px" }}
         >
-          <div className={styles.setupForm_currentLogo}>
+          <div className={styles.uploadImage_currentLogo}>
             <Image
-              className={styles.setupForm_imgLogo}
+              className={styles.uploadImage_imgLogo}
               src={URL.createObjectURL(logo)}
               alt={"Current logo"}
               width={"300"}
@@ -74,7 +74,7 @@ const UploadImage: FC<Props> = ({ logo, setLogo, name, isBig }) => {
           </div>
           <button
             type={"button"}
-            className={styles.setupForm_btnDelete}
+            className={styles.uploadImage_btnDelete}
             onClick={() => setLogo(undefined)}
           >
             <IconDelete />

@@ -8,6 +8,7 @@ type Props = {
   setEdit: Dispatch<SetStateAction<string | null>>;
   name: string;
   setValue: Dispatch<SetStateAction<string>>;
+  fnFocus: Function;
   isUpdate?: boolean;
 };
 const EditTextBtns: FC<Props> = ({
@@ -15,11 +16,17 @@ const EditTextBtns: FC<Props> = ({
   name,
   setEdit,
   setValue,
+  fnFocus,
   isUpdate = false,
 }) => {
   const handleCancel = () => {
     setEdit(null);
     setValue("");
+  };
+
+  const handleEdit = async () => {
+    await setEdit(name);
+    fnFocus(name);
   };
 
   return (
@@ -51,7 +58,7 @@ const EditTextBtns: FC<Props> = ({
           className={styles.editBtns_edit}
           type={"button"}
           name={"edit"}
-          onClick={() => setEdit(name)}
+          onClick={handleEdit}
         >
           Edit
         </button>

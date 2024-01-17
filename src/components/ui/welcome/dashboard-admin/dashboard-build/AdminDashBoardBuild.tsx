@@ -47,7 +47,7 @@ const AdminDashBoardBuild: FC = () => {
           Cancel
         </button>
         <button className={styles.adminBuild_applyBtn} type={"button"}>
-          Save and continue
+          Save
         </button>
       </div>
     </div>

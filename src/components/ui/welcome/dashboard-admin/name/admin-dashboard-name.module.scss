@@ -5,11 +5,21 @@
   &_wraperInput {
     display: flex;
     gap: 15px;
+
+    @media screen and (max-width: 767px) {
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
   }
 
   &_input {
     @include input-edit;
     flex: 1;
+
+    @media screen and (max-width: 767px) {
+      width: 100%;
+    }
   }
 
   &_button {

@@ -1,4 +1,4 @@
-import { Dispatch, type FC, SetStateAction } from "react";
+import { Dispatch, type FC, SetStateAction, useRef } from "react";
 import Image from "next/image";
 
 import styles from "./admin-dashboard-text.module.scss";
@@ -19,6 +19,26 @@ type Props = {
   setEditText: Dispatch<SetStateAction<string | null>>;
 };
 const AdminDashboardText: FC<Props> = (props) => {
+  const refOne = useRef<HTMLTextAreaElement | null>(null);
+  const refTwo = useRef<HTMLTextAreaElement | null>(null);
+  const refThree = useRef<HTMLTextAreaElement | null>(null);
+
+  const fnFocus = (name: string) => {
+    switch (name) {
+      case "textOne":
+        refOne.current?.focus();
+        break;
+      case "textTwo":
+        refTwo.current?.focus();
+        break;
+      case "textThree":
+        refThree.current?.focus();
+        break;
+      default:
+        return;
+    }
+  };
+
   return (
     <section className={styles.adminText}>
       <h3 className={styleSection.adminSection_title}>
@@ -27,7 +47,9 @@ const AdminDashboardText: FC<Props> = (props) => {
       <div className={styles.adminText_wrapper}>
         <ul className={styles.adminText_list}>
           <li className={styles.adminText_item}>
-            <span className={styles.adminText_number}>01</span>
+            <div className={styles.adminText_wrapNumber}>
+              <span className={styles.adminText_number}>01</span>
+            </div>
             <textarea
               className={styles.adminText_textarea}
               placeholder={"Enter your text"}
@@ -35,16 +57,20 @@ const AdminDashboardText: FC<Props> = (props) => {
               disabled={props.editText !== "textOne"}
               value={props.textOne}
               onChange={(e) => props.setTextOne(e.currentTarget.value)}
+              ref={refOne}
             />
             <EditTextBtns
               isEdit={props.editText === "textOne"}
               setEdit={props.setEditText}
               name={"textOne"}
               setValue={props.setTextOne}
+              fnFocus={fnFocus}
             />
           </li>
           <li className={styles.adminText_item}>
-            <span className={styles.adminText_number}>02</span>
+            <div className={styles.adminText_wrapNumber}>
+              <span className={styles.adminText_number}>02</span>
+            </div>
             <textarea
               className={styles.adminText_textarea}
               placeholder={"Enter your text"}
@@ -52,16 +78,20 @@ const AdminDashboardText: FC<Props> = (props) => {
               value={props.textTwo}
               disabled={props.editText !== "textTwo"}
               onChange={(e) => props.setTextTwo(e.currentTarget.value)}
+              ref={refTwo}
             />
             <EditTextBtns
               isEdit={props.editText === "textTwo"}
               setEdit={props.setEditText}
               name={"textTwo"}
               setValue={props.setTextTwo}
+              fnFocus={fnFocus}
             />
           </li>
           <li className={styles.adminText_item}>
-            <span className={styles.adminText_number}>03</span>
+            <div className={styles.adminText_wrapNumber}>
+              <span className={styles.adminText_number}>03</span>
+            </div>
             <textarea
               className={styles.adminText_textarea}
               placeholder={"Enter your text"}
@@ -69,12 +99,14 @@ const AdminDashboardText: FC<Props> = (props) => {
               value={props.textThree}
               disabled={props.editText !== "textThree"}
               onChange={(e) => props.setTextThree(e.currentTarget.value)}
+              ref={refThree}
             />
             <EditTextBtns
               isEdit={props.editText === "textThree"}
               setEdit={props.setEditText}
               name={"textThree"}
               setValue={props.setTextThree}
+              fnFocus={fnFocus}
             />
           </li>
         </ul>

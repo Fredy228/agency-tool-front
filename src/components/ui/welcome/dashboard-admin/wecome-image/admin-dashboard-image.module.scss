@@ -41,6 +41,10 @@
     display: flex;
     justify-content: flex-end;
     position: relative;
+
+    @media screen and (max-width: 767px) {
+      justify-content: center;
+    }
   }
 
   &_wrapperSlider {
@@ -50,6 +54,11 @@
     top: 0;
     left: 0;
     width: calc(100% - 164px);
+
+    @media screen and (max-width: 767px) {
+      width: 100%;
+      padding-right: 0;
+    }
   }
 
   &_boxBg {
@@ -64,6 +73,10 @@
       rgba(242, 242, 242, 0) 100%
     );
     z-index: 20;
+
+    @media screen and (max-width: 767px) {
+      display: none;
+    }
   }
 
   &_slide {
@@ -173,9 +186,6 @@
 
     &::before {
       position: absolute;
-      //top: 50%;
-      //left: 50%;
-      //transform: translate(-50%, -50%);
       top: 0;
       left: 0;
       background: linear-gradient(
@@ -202,6 +212,12 @@
       &::before {
         rotate: -5deg;
       }
+    }
+
+    @media screen and (max-width: 767px) {
+      margin-top: 200px;
+      height: 80px;
+      width: 100%;
     }
   }
 }
