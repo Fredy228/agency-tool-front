@@ -1,6 +1,6 @@
 "use client";
 
-import { type FC, useState } from "react";
+import { Dispatch, type FC, SetStateAction, useState } from "react";
 
 import styles from "./admin-dashboard-build.module.scss";
 
@@ -9,8 +9,11 @@ import AdminDashboardImage from "@/components/ui/welcome/dashboard-admin/wecome-
 import AdminDashboardText from "@/components/ui/welcome/dashboard-admin/welcome-text/AdminDashboardText";
 import AdminDashboardPartner from "@/components/ui/welcome/dashboard-admin/logo-partner/AdminDashboardPartner";
 
-const AdminDashBoardBuild: FC = () => {
-  const [name, setName] = useState<string>("");
+type Props = {
+  name: string;
+  setName: Dispatch<SetStateAction<string>>;
+};
+const AdminDashBoardBuild: FC<Props> = ({ name, setName }) => {
   const [image, setImage] = useState<string | null>(null);
   const [textOne, setTextOne] = useState<string>("");
   const [textTwo, setTextTwo] = useState<string>("");

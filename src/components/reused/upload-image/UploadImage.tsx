@@ -12,8 +12,15 @@ type Props = {
   setLogo: Dispatch<SetStateAction<File | undefined>>;
   name?: string;
   isBig?: boolean;
+  isRequired?: boolean;
 };
-const UploadImage: FC<Props> = ({ logo, setLogo, name, isBig }) => {
+const UploadImage: FC<Props> = ({
+  logo,
+  setLogo,
+  name,
+  isBig,
+  isRequired = true,
+}) => {
   const handleSetLogo = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileCurr = event.target.files;
 
@@ -36,7 +43,7 @@ const UploadImage: FC<Props> = ({ logo, setLogo, name, isBig }) => {
           className={styles.uploadImage_inputFile}
           type={"file"}
           accept="image/*"
-          required={true}
+          required={isRequired}
           name={"logo"}
           onChange={handleSetLogo}
         />

@@ -17,7 +17,7 @@ import {
   IconShowPass,
 } from "@/components/reused/icons/icons";
 import { getToastify, ToastifyEnum } from "@/services/toastify";
-import { userCreateSchema, userLoginSchema } from "@/joi/register-schema";
+import { userCreateSchema, userLoginSchema } from "@/joi/auth-schema";
 import LoaderOrig from "@/components/reused/loader/loader-button";
 
 type Props = {
@@ -45,10 +45,12 @@ const AuthForm: NextPage<Props> = ({ isRegister }) => {
     const schema = isRegister ? userCreateSchema : userLoginSchema;
 
     const { error, warning } = schema.validate({
-      email,
-      firstName: name,
+      email: email.trim(),
+      firstName: name.trim(),
       password,
     });
+
+    console.log("err", error?.details);
 
     if (error) {
       const nameField = error.message.split("|")[0];
@@ -59,9 +61,9 @@ const AuthForm: NextPage<Props> = ({ isRegister }) => {
     }
 
     const answer = await signIn("credentials", {
-      email,
+      email: email.trim(),
       password,
-      name,
+      name: name.trim(),
       type: pathname.split("/")[2],
       redirect: false,
     });
@@ -108,7 +110,6 @@ const AuthForm: NextPage<Props> = ({ isRegister }) => {
           }`}
           type="email"
           autoComplete={"username"}
-          required={true}
           placeholder={"Enter your email"}
           name={"email"}
           value={email}
@@ -127,7 +128,6 @@ const AuthForm: NextPage<Props> = ({ isRegister }) => {
             placeholder={"Enter your name"}
             value={name}
             name={"name"}
-            required={true}
             onChange={(e) => setName(e.currentTarget.value)}
           />
         </label>
@@ -140,7 +140,6 @@ const AuthForm: NextPage<Props> = ({ isRegister }) => {
             className={`${formStyles.form_input} ${
               formStyles.form_inputForIcon
             } ${invalidInput.includes("password") && formStyles.invalid}`}
-            required={true}
             type={isShowPass ? "text" : "password"}
             placeholder={"Enter your password"}
             value={password}
@@ -162,8 +161,7 @@ const AuthForm: NextPage<Props> = ({ isRegister }) => {
           <input
             className={`${formStyles.form_input} ${
               formStyles.form_inputForIcon
-            } ${invalidInput.includes("repeat-pass") && formStyles.invalid}`}
-            required={true}
+            } ${invalidInput.includes("password") && formStyles.invalid}`}
             type={isShowPass ? "text" : "password"}
             placeholder={"Reenter your password"}
             value={rePassword}

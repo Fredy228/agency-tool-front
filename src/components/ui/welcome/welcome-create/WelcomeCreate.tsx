@@ -2,6 +2,7 @@ import { type FC } from "react";
 
 import styles from "./welcome-create.module.scss";
 import formStyles from "@/components/styles/form-common.module.scss";
+import Link from "next/link";
 
 const WelcomeCreate: FC = () => {
   return (
@@ -11,12 +12,12 @@ const WelcomeCreate: FC = () => {
         <p className={styles.welcomeCreate_text}>
           You haven&apos;t created any dashboards yet, you need to do this
         </p>
-        <button
+        <Link
+          href={"/welcome/new-dashboard"}
           className={`${styles.welcomeCreate_btn} ${formStyles.form_applyBtn}`}
-          type={"button"}
         >
           Create new dashboards
-        </button>
+        </Link>
       </li>
       <li className={styles.welcomeCreate_item}>
         <h3 className={styles.welcomeCreate_title}>Your Company</h3>

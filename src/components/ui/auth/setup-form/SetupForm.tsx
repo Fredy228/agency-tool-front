@@ -1,24 +1,52 @@
 "use client";
 
-import type { FC } from "react";
-import { useState } from "react";
+import { type FC, type FormEventHandler, useState } from "react";
+import Link from "next/link";
 
-import formStyles from "@/components/styles/form-common.module.scss";
 import styles from "./setup-form.module.scss";
-import { IconDelete, IconUpload } from "@/components/reused/icons/icons";
-import Image from "next/image";
-import UploadImage from "@/components/reused/upload-image/UploadImage";
+import formStyles from "@/components/styles/form-common.module.scss";
 
-type Props = {};
-const SetupForm: FC<Props> = () => {
+import UploadImage from "@/components/reused/upload-image/UploadImage";
+import { orgCreateSchema } from "@/joi/organization-schema";
+import { getToastify, ToastifyEnum } from "@/services/toastify";
+import { createOrganizationAPI } from "@/axios/organization";
+
+const SetupForm: FC = () => {
   const [name, setName] = useState<string>("");
-  const [invalidInput, setInvalidInput] = useState<Array<string>>([]);
   const [logo, setLogo] = useState<File | undefined>(undefined);
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [invalidInput, setInvalidInput] = useState<Array<string>>([]);
 
   console.log("logo", logo);
 
+  const submitForm: FormEventHandler<HTMLFormElement> = async (event) => {
+    event.preventDefault();
+    setIsLoading(true);
+    setInvalidInput([]);
+
+    const { error } = orgCreateSchema.validate({ name });
+
+    console.log("err", error);
+
+    if (error) {
+      const nameField = error.message.split("|")[0];
+      setInvalidInput((prevState) => [...prevState, nameField]);
+
+      setIsLoading(false);
+      return getToastify(error.message.split("|")[1], ToastifyEnum.ERROR, 5000);
+    }
+
+    const data = await createOrganizationAPI({ name, logo });
+
+    console.log("data", data);
+  };
+
   return (
-    <form className={`${formStyles.form} ${styles.setupForm}`}>
+    <form
+      className={`${formStyles.form} ${styles.setupForm}`}
+      onSubmit={submitForm}
+    >
       <label className={formStyles.form_label}>
         <span>Name of Organization</span>
 
@@ -30,11 +58,16 @@ const SetupForm: FC<Props> = () => {
           placeholder={"Enter your organization's name"}
           value={name}
           name={"name"}
-          required={true}
+          // required={true}
           onChange={(e) => setName(e.currentTarget.value)}
         />
       </label>
-      <UploadImage logo={logo} setLogo={setLogo} name={"Logo"} />
+      <UploadImage
+        logo={logo}
+        setLogo={setLogo}
+        name={"Logo"}
+        isRequired={false}
+      />
       <div className={styles.setupForm_wrapperBtn}>
         <button
           className={`${formStyles.form_applyBtn} ${styles.setupForm_buttonSign}`}
@@ -43,12 +76,12 @@ const SetupForm: FC<Props> = () => {
           Confirm
         </button>
 
-        <button
+        <Link
+          href={isLoading ? "" : "/welcome"}
           className={`${formStyles.form_cancelBtn} ${styles.setupForm_buttonSign}`}
-          type={"button"}
         >
           Skip
-        </button>
+        </Link>
       </div>
     </form>
   );

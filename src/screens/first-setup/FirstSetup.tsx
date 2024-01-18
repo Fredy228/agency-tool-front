@@ -4,8 +4,7 @@ import styles from "./first-setup.module.scss";
 
 import SetupForm from "@/components/ui/auth/setup-form/SetupForm";
 
-type Props = {};
-const FirstSetup: FC<Props> = () => {
+const FirstSetup: FC = () => {
   return (
     <div className={styles.setupForm}>
       <h1 className={styles.setupForm_title}>
