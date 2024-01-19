@@ -20,41 +20,45 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
 
   const userSession = data?.user as SessionInterface | null;
 
-  const actionAuthenticated = async () => {
-    if (!userSession) return;
-    dispacth(
-      getMe({
-        accessToken: userSession?.accessToken,
-        refreshToken: userSession?.refreshToken,
-      }),
-    );
-  };
-
-  const actionRefreshToken = async (refresh: string) => {
-    if (!userSession || userSession?.accessToken || status !== "authenticated")
-      return;
-    if (refUpdate.current) return;
-    try {
-      const tokens = await refreshToken(refresh);
-      refUpdate.current = true;
-      update(tokens)
-        .then(() => {
-          refUpdate.current = false;
-        })
-        .catch(console.error);
-    } catch (e) {
-      if (isAxiosError(e) && e.response) {
-        if (e.response.status === 401 && !refUpdate.current) {
-          signOut()
-            .then(() => (refUpdate.current = false))
-            .catch(console.error);
-        }
-        refUpdate.current = false;
-      }
-    }
-  };
-
   useEffect(() => {
+    const actionAuthenticated = async () => {
+      if (!userSession) return;
+      dispacth(
+        getMe({
+          accessToken: userSession?.accessToken,
+          refreshToken: userSession?.refreshToken,
+        }),
+      );
+    };
+
+    const actionRefreshToken = async (refresh: string) => {
+      if (
+        !userSession ||
+        userSession?.accessToken ||
+        status !== "authenticated"
+      )
+        return;
+      if (refUpdate.current) return;
+      try {
+        const tokens = await refreshToken(refresh);
+        refUpdate.current = true;
+        update(tokens)
+          .then(() => {
+            refUpdate.current = false;
+          })
+          .catch(console.error);
+      } catch (e) {
+        if (isAxiosError(e) && e.response) {
+          if (e.response.status === 401 && !refUpdate.current) {
+            signOut()
+              .then(() => (refUpdate.current = false))
+              .catch(console.error);
+          }
+          refUpdate.current = false;
+        }
+      }
+    };
+
     if (status === "authenticated" && !userSession) {
       signOut().catch(console.error);
     }
@@ -71,13 +75,13 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
     ) {
       actionRefreshToken(userSession?.refreshToken).catch(console.error);
     }
-  }, [data]);
+  }, [data, status, userSession, dispacth, update]);
 
   useEffect(() => {
     if (status === "unauthenticated") {
       dispacth(removeUser());
     }
-  }, [status]);
+  }, [status, dispacth]);
 
   return <>{children}</>;
 };

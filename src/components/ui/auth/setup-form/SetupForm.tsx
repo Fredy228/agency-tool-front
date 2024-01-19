@@ -54,7 +54,7 @@ const SetupForm: FC<Props> = ({ isEdit }) => {
         }
       }
     });
-  }, [router]);
+  }, [router, isEdit]);
 
   const submitForm: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
