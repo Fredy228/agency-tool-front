@@ -4,6 +4,8 @@ import { type FC, type PropsWithChildren, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence } from "framer-motion";
 import { useSelector } from "react-redux";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 import styleContainer from "@/components/styles/container.module.scss";
 import styles from "./user-layout.module.scss";
@@ -14,17 +16,21 @@ import {
   IconWhatsNew,
 } from "@/components/reused/icons/icons";
 import Avatar from "@/components/layout/user-layout/user-avatar/Avatar";
-
 import logoImg from "./logo.png";
-import Image from "next/image";
 import UserMenu from "@/components/layout/user-layout/user-menu/UserMenu";
 import Backdrop from "@/components/reused/backdrop/Backdrop";
 import { selectUser } from "@/redux/user/selectors";
+import LoaderPage from "@/components/reused/loader/loader-page";
 
 const UserLayout: FC<PropsWithChildren> = ({ children }) => {
+  const user = useSelector(selectUser);
+  const { status } = useSession();
+
   const [isShowProfileMenu, setIsShowProfileMenu] = useState<boolean>(false);
   const [isShowNavMenu, setIsShowNavMenu] = useState<boolean>(false);
-  const user = useSelector(selectUser);
+
+  if (status === "loading" || (status === "authenticated" && !user.accessToken))
+    return <LoaderPage isFull={true} />;
 
   return (
     <>

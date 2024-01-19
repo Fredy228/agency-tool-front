@@ -1,10 +1,15 @@
 import { type FC } from "react";
+import Link from "next/link";
 
 import styles from "./welcome-create.module.scss";
 import formStyles from "@/components/styles/form-common.module.scss";
-import Link from "next/link";
 
-const WelcomeCreate: FC = () => {
+import { OrganizationInterface } from "@/interfaces/organization";
+
+type Props = {
+  org: OrganizationInterface | null;
+};
+const WelcomeCreate: FC<Props> = ({ org }) => {
   return (
     <ul className={styles.welcomeCreate_list}>
       <li className={styles.welcomeCreate_item}>
@@ -13,8 +18,16 @@ const WelcomeCreate: FC = () => {
           You haven&apos;t created any dashboards yet, you need to do this
         </p>
         <Link
-          href={"/welcome/new-dashboard"}
+          href={org ? "/welcome/new-dashboard" : ""}
           className={`${styles.welcomeCreate_btn} ${formStyles.form_applyBtn}`}
+          style={
+            org
+              ? {}
+              : {
+                  backgroundColor: "rgba(25, 25, 25, 0.2)",
+                  borderColor: "rgba(25, 25, 25, 0.2)",
+                }
+          }
         >
           Create new dashboards
         </Link>
@@ -24,12 +37,14 @@ const WelcomeCreate: FC = () => {
         <p className={styles.welcomeCreate_text}>
           Visualize your company&apos;s data conveniently and effortlessly
         </p>
-        <button
-          className={`${styles.welcomeCreate_btn} ${formStyles.form_cancelBtn}`}
-          type={"button"}
+        <Link
+          href={org ? "/auth/first-setup?option=edit" : "/auth/first-setup"}
+          className={`${styles.welcomeCreate_btn} ${
+            org ? formStyles.form_cancelBtn : formStyles.form_applyBtn
+          }`}
         >
-          Edit your company
-        </button>
+          {org ? "Edit your company" : "Create your company"}
+        </Link>
       </li>
     </ul>
   );

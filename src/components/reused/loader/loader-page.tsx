@@ -3,13 +3,16 @@
 import { FC } from "react";
 import { ColorRing } from "react-loader-spinner";
 
-type Props = {};
-const LoaderPage: FC<Props> = () => {
+type Props = {
+  isFull?: boolean;
+};
+const LoaderPage: FC<Props> = ({ isFull = false }) => {
   return (
     <div
       style={{
-        width: "100%",
-        height: "100%",
+        width: `100${isFull ? "vw" : "%"}`,
+        height: `100${isFull ? "vh" : "%"}`,
+        padding: "30px",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",

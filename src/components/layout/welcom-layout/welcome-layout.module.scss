@@ -5,13 +5,18 @@
   }
 
   &_text {
-    font-size: $text-size-md;
     font-weight: 700;
     line-height: 1.1;
     letter-spacing: 2.5px;
     text-transform: uppercase;
     padding-bottom: 24px;
     padding-top: 40px;
+    font-size: $text-size-md;
+
+    @media screen and (max-width: 767px) {
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
   }
 
   &_title {
@@ -21,5 +26,9 @@
     font-size: 50px;
     line-height: 1.2;
     font-weight: 700;
+
+    @media screen and (max-width: 767px) {
+      font-size: 30px;
+    }
   }
 }

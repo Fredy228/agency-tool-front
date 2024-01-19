@@ -20,7 +20,7 @@ const NotFound: NextPage<Props> = () => {
         <p className={styles.notFound_text}>
           The page you are looking for might have been <br /> removed had its
         </p>
-        <Link className={styles.notFound_btn} href={"/"}>
+        <Link className={styles.notFound_btn} href={"/welcome"}>
           Go Home
         </Link>
       </div>

@@ -24,9 +24,8 @@ export const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getMe.fulfilled, (state, { payload }) => {
+    builder.addCase(getMe.fulfilled, (_state, { payload }) => {
       if (payload) {
-        console.log("payload", payload);
         return { ...payload };
       }
     });

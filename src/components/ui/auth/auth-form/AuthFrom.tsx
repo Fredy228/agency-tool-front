@@ -1,12 +1,12 @@
 "use client";
 
+import type { FormEventHandler } from "react";
 import { useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 
 import type { NextPage } from "next";
-import type { FormEventHandler } from "react";
 
 import styles from "./auth-form.module.scss";
 import formStyles from "@/components/styles/form-common.module.scss";
@@ -71,7 +71,10 @@ const AuthForm: NextPage<Props> = ({ isRegister }) => {
 
     if (answer?.error) {
       if (answer.status === 401) {
-        console.error("Error 401");
+        if (!isRegister)
+          getToastify("Invalid login or password", ToastifyEnum.ERROR);
+        if (isRegister)
+          getToastify("Such a user already exists", ToastifyEnum.ERROR);
       } else {
         console.error("Unknown error");
       }

@@ -7,7 +7,6 @@ import styles from "./welcome-layout.module.scss";
 import styleContainer from "@/components/styles/container.module.scss";
 
 import { selectUser } from "@/redux/user/selectors";
-import { useSession } from "next-auth/react";
 
 const WelcomeLayout: FC<PropsWithChildren> = ({ children }) => {
   const user = useSelector(selectUser);

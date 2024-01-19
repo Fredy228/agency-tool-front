@@ -1,46 +1,109 @@
 "use client";
 
-import { type FC, type FormEventHandler, useState } from "react";
+import { type FC, type FormEventHandler, useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { isAxiosError } from "axios";
 
 import styles from "./setup-form.module.scss";
 import formStyles from "@/components/styles/form-common.module.scss";
 
 import UploadImage from "@/components/reused/upload-image/UploadImage";
-import { orgCreateSchema } from "@/joi/organization-schema";
+import { orgCreateSchema, orgUpdateSchema } from "@/joi/organization-schema";
 import { getToastify, ToastifyEnum } from "@/services/toastify";
-import { createOrganizationAPI } from "@/axios/organization";
+import {
+  createOrganizationAPI,
+  getOrganizationAPI,
+  updateOrganizationAPI,
+} from "@/axios/organization";
+import LoaderPage from "@/components/reused/loader/loader-page";
+import LoaderOrig from "@/components/reused/loader/loader-button";
+import { OrganizationInterface } from "@/interfaces/organization";
 
-const SetupForm: FC = () => {
+type Props = {
+  isEdit: boolean;
+};
+const SetupForm: FC<Props> = ({ isEdit }) => {
+  const router = useRouter();
+
+  const [resOrg, setResOrg] = useState<OrganizationInterface | null>(null);
+
   const [name, setName] = useState<string>("");
   const [logo, setLogo] = useState<File | undefined>(undefined);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [invalidInput, setInvalidInput] = useState<Array<string>>([]);
+  const [isGetting, setIsGetting] = useState<boolean>(true);
 
-  console.log("logo", logo);
+  useEffect(() => {
+    const getOrg = async () => {
+      const data = await getOrganizationAPI();
+      if (data && !isEdit) router.push("/welcome");
+      if (data && isEdit) {
+        setResOrg(data);
+        setName(data.name);
+        setIsGetting(false);
+      }
+    };
+
+    getOrg().catch((e) => {
+      setIsGetting(false);
+      if (isAxiosError(e) && e.response) {
+        if (e.response.status !== 404) {
+          getToastify("Unknown error", ToastifyEnum.ERROR);
+        }
+      }
+    });
+  }, [router]);
 
   const submitForm: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
     setIsLoading(true);
     setInvalidInput([]);
 
-    const { error } = orgCreateSchema.validate({ name });
+    let joiError;
 
-    console.log("err", error);
+    if (isEdit) {
+      const { error } = orgUpdateSchema.validate({ name });
+      joiError = error;
+    } else {
+      const { error } = orgCreateSchema.validate({ name });
+      joiError = error;
+    }
 
-    if (error) {
-      const nameField = error.message.split("|")[0];
+    if (joiError) {
+      const nameField = joiError.message.split("|")[0];
       setInvalidInput((prevState) => [...prevState, nameField]);
 
       setIsLoading(false);
-      return getToastify(error.message.split("|")[1], ToastifyEnum.ERROR, 5000);
+      return getToastify(
+        joiError.message.split("|")[1],
+        ToastifyEnum.ERROR,
+        5000,
+      );
     }
 
-    const data = await createOrganizationAPI({ name, logo });
+    let data;
 
-    console.log("data", data);
+    if (isEdit && resOrg) {
+      const bodyReq = {
+        name: resOrg.name === name ? undefined : name,
+        logo,
+      };
+
+      const isChanged = Object.values(bodyReq).every((i) => !i);
+
+      if (isChanged) return router.push("/welcome");
+
+      data = await updateOrganizationAPI(bodyReq);
+    } else {
+      data = await createOrganizationAPI({ name, logo });
+    }
+
+    if (data) router.push("/welcome");
   };
+
+  if (isGetting) return <LoaderPage />;
 
   return (
     <form
@@ -58,7 +121,6 @@ const SetupForm: FC = () => {
           placeholder={"Enter your organization's name"}
           value={name}
           name={"name"}
-          // required={true}
           onChange={(e) => setName(e.currentTarget.value)}
         />
       </label>
@@ -72,15 +134,20 @@ const SetupForm: FC = () => {
         <button
           className={`${formStyles.form_applyBtn} ${styles.setupForm_buttonSign}`}
           type={"submit"}
+          disabled={isLoading}
         >
-          Confirm
+          {isLoading ? (
+            <LoaderOrig color={"#fff"} />
+          ) : (
+            <>{isEdit ? "Edit" : "Confirm"}</>
+          )}
         </button>
 
         <Link
           href={isLoading ? "" : "/welcome"}
           className={`${formStyles.form_cancelBtn} ${styles.setupForm_buttonSign}`}
         >
-          Skip
+          {isEdit ? "Cancel" : "Skip"}
         </Link>
       </div>
     </form>
