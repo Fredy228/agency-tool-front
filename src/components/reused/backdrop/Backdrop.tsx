@@ -39,7 +39,7 @@ const Backdrop: FC<Props> = ({
       if (scrollPage) noScroll(false);
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [setShow]);
+  }, [setShow, scrollPage]);
 
   return (
     <motion.div
