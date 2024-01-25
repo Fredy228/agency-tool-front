@@ -3,7 +3,6 @@ import axios, { setAuthHeader } from "@/axios/base";
 import { TGoogleAuth, TLoginBody, TRegisterBody } from "@/types/auth-types";
 import { UserInterface } from "@/interfaces/user";
 import { generateJwtToken } from "@/services/jwtToken";
-import { headers } from "next/headers";
 
 export const loginUser = async (
   credentials: TLoginBody,
@@ -45,4 +44,14 @@ export const logoutUser = async (token: string): Promise<void> => {
   await axios.get("/api/auth/logout", {
     headers: { Authorization: `Bearer ${token}` },
   });
+};
+
+export const setUserAgentAPI = async (token: string): Promise<string> => {
+  const res = await axios.patch(
+    "/api/auth/user-agent",
+    {},
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+
+  return res.data;
 };

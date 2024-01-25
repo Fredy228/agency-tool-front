@@ -2,21 +2,24 @@
 
 import { signOut, useSession } from "next-auth/react";
 import { Dispatch, ReactNode, useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { isAxiosError } from "axios";
 
 import { setAuthHeader } from "@/axios/base";
 
 import { SessionInterface } from "@/interfaces/user";
 import { getMe } from "@/redux/user/operations";
-import { removeUser } from "@/redux/user/slice";
-import { refreshToken } from "@/axios/auth";
+import { removeUser, setUserAgent } from "@/redux/user/slice";
+import { refreshToken, setUserAgentAPI } from "@/axios/auth";
+import { selectUser } from "@/redux/user/selectors";
 
 export const AuthProviders = ({ children }: { children: ReactNode }) => {
   const { data, status, update } = useSession();
   const dispacth: Dispatch<any> = useDispatch();
   const refUpdate = useRef(false);
+  const user = useSelector(selectUser);
   console.log("status", status);
+  console.log("user", user);
 
   const userSession = data?.user as SessionInterface | null;
 
@@ -63,7 +66,11 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
       signOut().catch(console.error);
     }
 
-    if (status === "authenticated" && userSession?.accessToken) {
+    if (
+      status === "authenticated" &&
+      userSession?.accessToken &&
+      !user.accessToken
+    ) {
       setAuthHeader(userSession.accessToken);
       actionAuthenticated().catch(console.log);
     }
@@ -82,6 +89,16 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
       dispacth(removeUser());
     }
   }, [status, dispacth]);
+
+  useEffect(() => {
+    if (!user.refreshToken || user.currentDevice?.deviceModel) return;
+
+    setUserAgentAPI(user.refreshToken)
+      .then((res) => {
+        dispacth(setUserAgent(res));
+      })
+      .catch(console.error);
+  }, [user, dispacth]);
 
   return <>{children}</>;
 };

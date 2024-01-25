@@ -1,3 +1,5 @@
+import { SettingsUserType } from "@/types/user-types";
+
 export interface UserInterface {
   id: number;
   email: string;
@@ -6,9 +8,10 @@ export interface UserInterface {
   sex: number | null;
   image: string | null;
   verified: 0 | 1;
-  firstSettings: 0 | 1;
+  settings: Partial<SettingsUserType> | null;
   accessToken: string;
   refreshToken: string;
+  currentDevice?: UserDeviceInterface;
   devices?: Array<UserDeviceInterface>;
 }
 
@@ -16,7 +19,8 @@ export interface UserDeviceInterface {
   id: number;
   deviceModel: string | null;
   createAt: Date;
-  token: string;
+  accessToken: string;
+  refreshToken: string;
   userId: number;
 }
 

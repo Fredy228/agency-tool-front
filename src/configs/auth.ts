@@ -2,17 +2,11 @@ import type { AuthOptions, User } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 
-import {
-  googleAuth,
-  loginUser,
-  refreshToken,
-  registerUser,
-} from "@/axios/auth";
+import { googleAuth, loginUser, registerUser } from "@/axios/auth";
 import { AdapterUser } from "next-auth/adapters";
 import { TGoogleProfile } from "@/types/auth-types";
 import { decodeJwtToken } from "@/services/jwtToken";
 import { UserInterface } from "@/interfaces/user";
-import axios from "axios";
 
 export const authConfig: AuthOptions = {
   providers: [

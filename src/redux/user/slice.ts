@@ -9,18 +9,23 @@ const initialState: UserInterface = {
   lastName: "",
   sex: null,
   image: null,
+  settings: null,
   verified: 0,
-  firstSettings: 0,
   accessToken: "",
   refreshToken: "",
+  currentDevice: undefined,
+  devices: undefined,
 };
 
 export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    removeUser: (state) => {
+    removeUser: () => {
       return { ...initialState };
+    },
+    setUserAgent: (state, { payload }: { payload: string }) => {
+      if (state.currentDevice) state.currentDevice.deviceModel = payload;
     },
   },
   extraReducers: (builder) => {
@@ -32,6 +37,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { removeUser } = userSlice.actions;
+export const { removeUser, setUserAgent } = userSlice.actions;
 
 export default userSlice.reducer;
