@@ -24,14 +24,14 @@ import {
 SwiperCore.use([Navigation, FreeMode]);
 
 type Props = {
-  image: string | null;
-  setImage: Dispatch<SetStateAction<string | null>>;
+  screenUrl: string;
+  setScreenUrl: Dispatch<SetStateAction<string>>;
 };
-const AdminDashboardImage: FC<Props> = ({ image, setImage }) => {
-  const [screens, setScreens] = useState(listWelcomeScreen);
+const AdminDashboardImage: FC<Props> = ({ screenUrl, setScreenUrl }) => {
+  const [screens, setScreens] = useState<string[]>([...listWelcomeScreen]);
 
   return (
-    <section className={styles.adminScreen}>
+    <section id={"screen"} className={styles.adminScreen}>
       <h3 className={styleSection.adminSection_title}>Welcome Screen</h3>
       <div className={styles.adminScreen_wrapper}>
         <div className={styles.adminScreen_wrapperSlider}>
@@ -46,24 +46,29 @@ const AdminDashboardImage: FC<Props> = ({ image, setImage }) => {
             style={{}}
           >
             {screens.map((item) => (
-              <SwiperSlide key={item.id} style={{ width: "144px" }}>
+              <SwiperSlide key={item} style={{ width: "144px" }}>
                 <div
                   className={styles.adminScreen_slide}
-                  onClick={() => setImage(item.id)}
+                  onClick={() => setScreenUrl(item)}
                 >
                   <Image
                     className={styles.adminScreen_img}
-                    src={`${process.env.NEXTAUTH_URL}/${item.url}`}
+                    src={`${process.env.NEXTAUTH_URL}/${item}`}
                     alt={"Welcome Screen"}
                     width={"144"}
                     height={"188"}
                   />
                   <div className={styles.adminScreen_check}>
-                    {item.id === image && <IconTick />}
+                    {item === screenUrl && <IconTick />}
                   </div>
-                  <button className={styles.adminScreen_cross} type={"button"}>
-                    <IconCross />
-                  </button>
+                  {!listWelcomeScreen.includes(item) && (
+                    <button
+                      className={styles.adminScreen_cross}
+                      type={"button"}
+                    >
+                      <IconCross />
+                    </button>
+                  )}
                 </div>
               </SwiperSlide>
             ))}

@@ -14,7 +14,7 @@ type Props = {
 };
 const AdminDashboardPartner: FC<Props> = ({ logo, setLogo }) => {
   return (
-    <section className={styles.adminPartner}>
+    <section id={"logo-partner"} className={styles.adminPartner}>
       <h3 className={styleSection.adminSection_title}>Logo your partner</h3>
       <div className={styles.adminPartner_wrapper}>
         <div className={styles.adminPartner_wrapLogo}>

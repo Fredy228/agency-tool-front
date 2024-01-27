@@ -1,4 +1,4 @@
-import { Dispatch, type FC, SetStateAction, useRef } from "react";
+import { Dispatch, type FC, SetStateAction, useEffect, useRef } from "react";
 import Image from "next/image";
 
 import styles from "./admin-dashboard-text.module.scss";
@@ -7,6 +7,7 @@ import styleSection from "../dashboard-build/admin-dashboard-section.module.scss
 import EditTextBtns from "@/components/reused/edit-text-btns/EditTextBtns";
 
 import examplePhoto from "./welcome-example.png";
+import { scrollIntoView } from "@/services/scrollIntoView";
 
 type Props = {
   textOne: string;
@@ -17,11 +18,16 @@ type Props = {
   setTextThree: Dispatch<SetStateAction<string>>;
   editText: string | null;
   setEditText: Dispatch<SetStateAction<string | null>>;
+  invalidInput: string | null;
 };
 const AdminDashboardText: FC<Props> = (props) => {
   const refOne = useRef<HTMLTextAreaElement | null>(null);
   const refTwo = useRef<HTMLTextAreaElement | null>(null);
   const refThree = useRef<HTMLTextAreaElement | null>(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
+
+  const { invalidInput } = props;
+  console.log("invalidInput", invalidInput);
 
   const fnFocus = (name: string) => {
     switch (name) {
@@ -39,9 +45,25 @@ const AdminDashboardText: FC<Props> = (props) => {
     }
   };
 
+  useEffect(() => {
+    if (
+      !invalidInput ||
+      !["textOne", "textTwo", "textThree"].includes(invalidInput)
+    )
+      return;
+
+    scrollIntoView(sectionRef.current);
+  }, [invalidInput]);
+
   return (
-    <section className={styles.adminText}>
-      <h3 className={styleSection.adminSection_title}>
+    <section id={"text"} ref={sectionRef} className={styles.adminText}>
+      <h3
+        className={`${styleSection.adminSection_title} ${
+          invalidInput &&
+          ["textOne", "textTwo", "textThree"].includes(invalidInput) &&
+          styleSection.invalid
+        }`}
+      >
         Text on Welcome Screen
       </h3>
       <div className={styles.adminText_wrapper}>

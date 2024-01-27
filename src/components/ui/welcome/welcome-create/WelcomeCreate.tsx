@@ -4,12 +4,10 @@ import Link from "next/link";
 import styles from "./welcome-create.module.scss";
 import formStyles from "@/components/styles/form-common.module.scss";
 
-import { OrganizationInterface } from "@/interfaces/organization";
-
 type Props = {
-  org: OrganizationInterface | null;
+  isOrg: boolean;
 };
-const WelcomeCreate: FC<Props> = ({ org }) => {
+const WelcomeCreate: FC<Props> = ({ isOrg }) => {
   return (
     <ul className={styles.welcomeCreate_list}>
       <li className={styles.welcomeCreate_item}>
@@ -18,10 +16,10 @@ const WelcomeCreate: FC<Props> = ({ org }) => {
           You haven&apos;t created any dashboards yet, you need to do this
         </p>
         <Link
-          href={org ? "/welcome/new-dashboard" : ""}
+          href={isOrg ? "/welcome/new-dashboard" : ""}
           className={`${styles.welcomeCreate_btn} ${formStyles.form_applyBtn}`}
           style={
-            org
+            isOrg
               ? {}
               : {
                   backgroundColor: "rgba(25, 25, 25, 0.2)",
@@ -38,12 +36,12 @@ const WelcomeCreate: FC<Props> = ({ org }) => {
           Visualize your company&apos;s data conveniently and effortlessly
         </p>
         <Link
-          href={org ? "/auth/first-setup?option=edit" : "/auth/first-setup"}
+          href={isOrg ? "/auth/first-setup?option=edit" : "/auth/first-setup"}
           className={`${styles.welcomeCreate_btn} ${
-            org ? formStyles.form_cancelBtn : formStyles.form_applyBtn
+            isOrg ? formStyles.form_cancelBtn : formStyles.form_applyBtn
           }`}
         >
-          {org ? "Edit your company" : "Create your company"}
+          {isOrg ? "Edit your company" : "Create your company"}
         </Link>
       </li>
     </ul>

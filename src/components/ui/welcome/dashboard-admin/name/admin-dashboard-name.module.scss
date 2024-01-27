@@ -3,6 +3,8 @@
 
 .adminName {
   &_wraperInput {
+    width: 100%;
+    flex: 1;
     display: flex;
     gap: 15px;
 
@@ -24,5 +26,22 @@
 
   &_button {
     @include button-third;
+  }
+}
+
+.adminPass {
+  display: flex;
+  align-items: flex-start;
+
+  @media screen and (max-width: 767px) {
+    flex-direction: column;
+  }
+
+  &_hint {
+    width: 310px;
+
+    @media screen and (max-width: 767px) {
+      width: 100%;
+    }
   }
 }

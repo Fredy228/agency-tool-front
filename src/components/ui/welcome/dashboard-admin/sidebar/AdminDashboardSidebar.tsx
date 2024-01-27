@@ -10,7 +10,7 @@ const AdminDashboardSidebar: FC = () => {
       <ul className={styles.adminSidebar_list}>
         {listSidebar.map((item) => (
           <li className={styles.adminSidebar_item} key={item.id}>
-            <a className={styles.adminSidebar_link} href={`#${item.id}`}>
+            <a className={styles.adminSidebar_link} href={`#${item.to}`}>
               {item.name}
             </a>
           </li>
