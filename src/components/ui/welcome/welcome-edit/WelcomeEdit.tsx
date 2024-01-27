@@ -2,6 +2,7 @@ import { type FC } from "react";
 import Link from "next/link";
 
 import styles from "./welcome-edit.module.scss";
+import { IconEdit, IconPlus } from "@/components/reused/icons/icons";
 
 const WelcomeEdit: FC = () => {
   return (
@@ -12,6 +13,7 @@ const WelcomeEdit: FC = () => {
           className={`${styles.welcomeEdit_btn}`}
         >
           <span className={styles.welcomeEdit_text}>Create new dashboards</span>
+          <IconPlus />
         </Link>
       </li>
       <li className={styles.welcomeEdit_item}>
@@ -20,6 +22,7 @@ const WelcomeEdit: FC = () => {
           className={`${styles.welcomeEdit_btn}`}
         >
           <span className={styles.welcomeEdit_text}>Edit your company</span>
+          <IconEdit />
         </Link>
       </li>
     </ul>

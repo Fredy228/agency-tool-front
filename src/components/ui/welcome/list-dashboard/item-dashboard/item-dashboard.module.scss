@@ -1,0 +1,51 @@
+@import "src/style-variables/font-variables";
+@import "src/style-variables/color-variables";
+@import "src/components/styles/icon-three-dots.module";
+
+.itemDashb {
+  @include color-bg-item;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+
+  &_btnOption {
+    @include wrapper-icon-dots;
+
+    position: absolute;
+    right: 15px;
+    top: 15px;
+  }
+
+  &_buttonIco {
+    @include three-dots;
+  }
+
+  &_title {
+    font-size: $text-size-lg;
+    font-weight: 700;
+    line-height: 1.55;
+  }
+
+  &_wrapCount {
+    display: flex;
+    gap: 20px;
+    margin: 12px 0;
+  }
+
+  &_count {
+    font-size: $text-size-sm;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  &_wrapImage {
+    width: 100%;
+    height: 240px;
+  }
+
+  &_image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}

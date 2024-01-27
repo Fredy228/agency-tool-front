@@ -1,0 +1,28 @@
+@import "src/style-variables/font-variables";
+
+.listDashb {
+  width: 100%;
+
+  &_title {
+    font-size: $text-size-xl;
+    font-weight: 700;
+    font-family: "Playfair Display", sans-serif;
+  }
+
+  &_list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    margin: 24px 0;
+
+    @media screen and (max-width: 1023px) {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+    }
+
+    @media screen and (max-width: 767px) {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+  }
+}

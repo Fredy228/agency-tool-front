@@ -12,6 +12,7 @@ import { isAxiosError } from "axios";
 import { getToastify, ToastifyEnum } from "@/services/toastify";
 import { getAllDashboardsAPI } from "@/axios/dashboad";
 import { DashboardInterface } from "@/interfaces/dashboard";
+import ListDashboards from "@/components/ui/welcome/list-dashboard/ListDashboards";
 
 const Welcome: NextPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -50,7 +51,10 @@ const Welcome: NextPage = () => {
   return (
     <div>
       {dashboards.length > 0 ? (
-        <WelcomeEdit />
+        <>
+          <WelcomeEdit />
+          <ListDashboards dashboards={dashboards} />
+        </>
       ) : (
         <WelcomeCreate isOrg={isOrg} />
       )}

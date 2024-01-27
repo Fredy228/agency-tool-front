@@ -1,19 +1,28 @@
 @import "src/style-variables/color-variables";
 @import "src/style-variables/font-variables";
+@import "src/style-variables/anim-variables";
 
 .welcomeEdit {
   &_list {
     display: flex;
     gap: 16px;
     margin: 34px 0;
+
+    @media screen and (max-width: 767px) {
+      flex-direction: column;
+    }
   }
 
   &_item {
     width: 50%;
+
+    @media screen and (max-width: 767px) {
+      width: 100%;
+    }
   }
 
   &_btn {
-    padding: 22px 10px 22px 32px;
+    padding: 22px 16px 22px 32px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -24,6 +33,17 @@
     color: $color-primary;
     font-weight: 500;
 
+    transition: box-shadow $anim-duration $anim-func;
+
     @include color-bg-item;
+
+    > svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    &:hover {
+      box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    }
   }
 }

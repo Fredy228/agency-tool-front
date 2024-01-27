@@ -7,6 +7,7 @@ export { default as IconCross } from "./store/cross.svg";
 export { default as IconPlus } from "./store/plus.svg";
 export { default as IconHint } from "./store/hint.svg";
 export { default as IconSave } from "./store/save.svg";
+export { default as IconEdit } from "./store/edit.svg";
 
 // Auth icons
 export { default as IconGoogle } from "./store/google.svg";

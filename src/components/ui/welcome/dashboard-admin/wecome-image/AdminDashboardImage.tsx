@@ -45,7 +45,7 @@ const AdminDashboardImage: FC<Props> = ({ screenUrl, setScreenUrl }) => {
             freeMode={true}
             style={{}}
           >
-            {screens.map((item) => (
+            {screens.map((item, index) => (
               <SwiperSlide key={item} style={{ width: "144px" }}>
                 <div
                   className={styles.adminScreen_slide}
@@ -57,6 +57,7 @@ const AdminDashboardImage: FC<Props> = ({ screenUrl, setScreenUrl }) => {
                     alt={"Welcome Screen"}
                     width={"144"}
                     height={"188"}
+                    priority={index < 5}
                   />
                   <div className={styles.adminScreen_check}>
                     {item === screenUrl && <IconTick />}

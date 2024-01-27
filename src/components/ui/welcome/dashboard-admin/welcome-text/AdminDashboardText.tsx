@@ -27,7 +27,6 @@ const AdminDashboardText: FC<Props> = (props) => {
   const sectionRef = useRef<HTMLElement | null>(null);
 
   const { invalidInput } = props;
-  console.log("invalidInput", invalidInput);
 
   const fnFocus = (name: string) => {
     switch (name) {
