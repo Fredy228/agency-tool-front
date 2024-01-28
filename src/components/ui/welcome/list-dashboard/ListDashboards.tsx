@@ -1,4 +1,6 @@
-import { type FC } from "react";
+"use client";
+
+import { type FC, useState } from "react";
 
 import styles from "./list-dashboard.module.scss";
 
@@ -9,12 +11,19 @@ type Props = {
   dashboards: Array<Pick<DashboardInterface, "id" | "name" | "screenUrl">>;
 };
 const ListDashboards: FC<Props> = ({ dashboards }) => {
+  const [isShowCtrl, setIsShowCtrl] = useState<number | null>(null);
+
   return (
     <section className={styles.listDashb}>
       <h2 className={styles.listDashb_title}>Dashboards</h2>
       <ul className={styles.listDashb_list}>
         {dashboards.map((item) => (
-          <ItemDashboard key={item.id} item={item} />
+          <ItemDashboard
+            key={item.id}
+            item={item}
+            isShowCtrl={isShowCtrl}
+            setIsShowCtrl={setIsShowCtrl}
+          />
         ))}
       </ul>
     </section>

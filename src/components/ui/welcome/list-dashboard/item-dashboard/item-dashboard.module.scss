@@ -1,12 +1,23 @@
 @import "src/style-variables/font-variables";
 @import "src/style-variables/color-variables";
+@import "src/style-variables/cards-mixins";
 @import "src/components/styles/icon-three-dots.module";
 
 .itemDashb {
   @include color-bg-item;
   border-radius: 8px;
-  overflow: hidden;
   position: relative;
+  cursor: pointer;
+
+  &::before {
+    @include cardRotate;
+  }
+
+  &:hover {
+    &::before {
+      rotate: -4deg;
+    }
+  }
 
   &_btnOption {
     @include wrapper-icon-dots;
@@ -14,6 +25,11 @@
     position: absolute;
     right: 15px;
     top: 15px;
+
+    > svg {
+      width: 12px;
+      height: 12px;
+    }
   }
 
   &_buttonIco {
@@ -29,7 +45,7 @@
   &_wrapCount {
     display: flex;
     gap: 20px;
-    margin: 12px 0;
+    padding: 12px 0;
   }
 
   &_count {
@@ -41,6 +57,9 @@
   &_wrapImage {
     width: 100%;
     height: 240px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    overflow: hidden;
   }
 
   &_image {
