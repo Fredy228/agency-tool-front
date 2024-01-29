@@ -1,13 +1,11 @@
 export default function noScroll(isScroll: boolean) {
   if (isScroll) {
-    document.body.style.cssText = `
-        overflow: hidden;
-        padding-right: ${window.innerWidth - document.body.offsetWidth}px;
-        `;
+    document.body.style.paddingRight = `${
+      window.innerWidth - document.body.offsetWidth
+    }px`;
+    document.body.style.overflow = "hidden";
   } else {
-    document.body.style.cssText = `
-        overflow: initial;
-        padding-right: 0;
-        `;
+    document.body.style.overflow = "initial";
+    document.body.style.paddingRight = "0";
   }
 }

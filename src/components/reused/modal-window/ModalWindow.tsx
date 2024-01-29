@@ -1,9 +1,18 @@
-import type { Dispatch, FC, PropsWithChildren, SetStateAction } from "react";
-import React, { useEffect } from "react";
+import { createPortal } from "react-dom";
+import React, {
+  Dispatch,
+  FC,
+  PropsWithChildren,
+  SetStateAction,
+  useEffect,
+} from "react";
 import { motion } from "framer-motion";
 
-import styles from "./backdrop.module.scss";
+import styles from "./modal-window.module.scss";
+
 import noScroll from "@/services/no-scroll";
+
+const modalRoot = document.querySelector("#modal-root");
 
 type Props = {
   setShow?: Dispatch<SetStateAction<boolean>>;
@@ -13,7 +22,8 @@ type Props = {
   zIndex?: string;
   scrollPage?: boolean;
 } & PropsWithChildren;
-const Backdrop: FC<Props> = ({
+
+const ModalWindow: FC<Props> = ({
   children,
   setShow,
   setShowIdx,
@@ -43,19 +53,23 @@ const Backdrop: FC<Props> = ({
       if (scrollPage) noScroll(false);
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [setShow, scrollPage]);
+  }, [setShow, scrollPage, setShowIdx]);
 
-  return (
+  if (!modalRoot) return;
+
+  return createPortal(
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       style={{ backgroundColor, backdropFilter, zIndex }}
-      className={styles.backdrop}
+      className={styles.modal_backdrop}
       onClick={handleBackdropClick}
     >
-      {children}
-    </motion.div>
+      <div className={styles.modal_modal}>{children}</div>
+    </motion.div>,
+    modalRoot,
   );
 };
-export default Backdrop;
+
+export default ModalWindow;

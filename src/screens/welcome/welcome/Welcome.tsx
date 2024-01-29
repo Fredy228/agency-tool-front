@@ -1,7 +1,8 @@
 "use client";
 
 import { type NextPage } from "next";
-import { useEffect, useState } from "react";
+import { Dispatch, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import styles from "./welcome.module.scss";
 
@@ -11,22 +12,23 @@ import LoaderPage from "@/components/reused/loader/loader-page";
 import { isAxiosError } from "axios";
 import { getToastify, ToastifyEnum } from "@/services/toastify";
 import { getAllDashboardsAPI } from "@/axios/dashboad";
-import { DashboardInterface } from "@/interfaces/dashboard";
 import ListDashboards from "@/components/ui/welcome/list-dashboard/ListDashboards";
+import { setListDashb } from "@/redux/dashboard/slice";
+import { selectListDashb } from "@/redux/dashboard/selectors";
 
 const Welcome: NextPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isOrg, setIsOrg] = useState<boolean>(false);
-  const [dashboards, setDashboards] = useState<
-    Array<Pick<DashboardInterface, "id" | "name" | "screenUrl">>
-  >([]);
+  const dashboards = useSelector(selectListDashb);
+
+  const dispacth: Dispatch<any> = useDispatch();
 
   useEffect(() => {
     const getOrg = async () => {
       const data = await getAllDashboardsAPI();
       if (data) {
         setIsOrg(true);
-        setDashboards(data);
+        dispacth(setListDashb(data));
       }
       setIsLoading(false);
     };
@@ -39,7 +41,7 @@ const Welcome: NextPage = () => {
         }
       }
     });
-  }, []);
+  }, [dispacth]);
 
   if (isLoading)
     return (

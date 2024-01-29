@@ -3,20 +3,9 @@
 @import "src/style-variables/anim-variables";
 
 .userMenu {
-  position: absolute;
-  top: calc(100% + 24px);
-  right: 0;
-  padding: 8px 16px;
-
   max-width: 250px;
   min-width: 185px;
-
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.6);
-  box-shadow: 22.97px 22.97px 33.98px 0 rgba(0, 0, 0, 0.05);
-  backdrop-filter: blur(25px);
   color: $color-main-text;
-  z-index: 105;
 
   &_profile {
     display: flex;

@@ -9,7 +9,7 @@ import styles from "./link-dashboard.module.scss";
 
 import LinkList from "@/components/ui/dashboard/links/link-list/LinkList";
 import AddLink from "@/components/ui/dashboard/links/add-link/AddLink";
-import Backdrop from "@/components/reused/backdrop/Backdrop";
+import ModalWindow from "@/components/reused/modal-window/ModalWindow";
 
 const LinksDashboard: FC = () => {
   const [isShowAddLink, setIsShowAddLink] = useState<boolean>(false);
@@ -38,14 +38,13 @@ const LinksDashboard: FC = () => {
       </div>
       <AnimatePresence>
         {isShowAddLink && (
-          <>
-            <AddLink setIsShowAddLink={setIsShowAddLink} />{" "}
-            <Backdrop
-              backdropFilter={"blur(5px)"}
-              scrollPage={true}
-              setShow={setIsShowAddLink}
-            />
-          </>
+          <ModalWindow
+            setShow={setIsShowAddLink}
+            backdropFilter={"blur(5px)"}
+            scrollPage={true}
+          >
+            <AddLink setIsShowAddLink={setIsShowAddLink} />
+          </ModalWindow>
         )}
       </AnimatePresence>
     </section>

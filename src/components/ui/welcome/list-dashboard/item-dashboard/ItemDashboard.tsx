@@ -8,7 +8,7 @@ import { DashboardInterface } from "@/interfaces/dashboard";
 import { setImagePath } from "@/services/setImagePath";
 import ControlDashboard from "@/components/ui/welcome/list-dashboard/control-dashboard/ControlDashboard";
 import { IconCross } from "@/components/reused/icons/icons";
-import Backdrop from "@/components/reused/backdrop/Backdrop";
+import PopapMenuWrap from "@/components/reused/popap-menu-wrap/PopapMenuWrap";
 
 type Props = {
   item: Pick<DashboardInterface, "id" | "name" | "screenUrl">;
@@ -45,11 +45,19 @@ const ItemDashboard: FC<Props> = ({ item, isShowCtrl, setIsShowCtrl }) => {
           alt={"Welcome Screen"}
           width={"427"}
           height={"244"}
-          priority={true}
+          loading={"lazy"}
         />
       </div>
       <AnimatePresence>
-        {isCurrItem && <ControlDashboard keyMotion={item.id} />}
+        {isCurrItem && (
+          <PopapMenuWrap
+            stylePop={{ top: "62px", right: "16px" }}
+            keyItem={item.id}
+            setShowIdx={setIsShowCtrl}
+          >
+            <ControlDashboard keyItem={item.id} />
+          </PopapMenuWrap>
+        )}
       </AnimatePresence>
     </li>
   );

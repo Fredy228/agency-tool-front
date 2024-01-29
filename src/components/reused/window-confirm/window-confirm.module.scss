@@ -1,0 +1,30 @@
+@import "src/style-variables/color-variables";
+@import "src/style-variables/font-variables";
+@import "src/style-variables/form-mixins";
+
+.windowConfirm {
+  max-width: 470px;
+
+  &_text {
+    font-size: $text-size-lg;
+    font-weight: 500;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  &_wrapper {
+    margin-top: 30px;
+    width: 100%;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+  }
+
+  &_cancelBtn {
+    @include button-second;
+  }
+
+  &_applyBtn {
+    @include button-main;
+  }
+}

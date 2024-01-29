@@ -22,6 +22,7 @@ export default function RootLayout({
         <AuthProviders>
           <body>
             {children}
+            <div id="modal-root"></div>
             <ToastContainer limit={4} />
           </body>
         </AuthProviders>

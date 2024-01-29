@@ -32,3 +32,10 @@ export const createDashboardAPI = async ({
 
   return data;
 };
+
+export const deleteDashboardAPI = async (
+  id: number | string,
+): Promise<void> => {
+  await axios.delete(`/api/dashboard/${id}`);
+  return;
+};

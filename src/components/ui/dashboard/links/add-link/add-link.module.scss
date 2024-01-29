@@ -2,18 +2,8 @@
 @import "src/style-variables/font-variables";
 
 .addLink {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  padding: 30px;
-  background-color: $color-light;
-  border-radius: 8px;
-
   max-width: 530px;
   width: 100%;
-  z-index: 105;
 
   @media screen and (max-width: 767px) {
     width: calc(100% - 20px);

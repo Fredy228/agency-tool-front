@@ -18,9 +18,9 @@ import {
 import Avatar from "@/components/layout/user-layout/user-avatar/Avatar";
 import logoImg from "./logo.png";
 import UserMenu from "@/components/layout/user-layout/user-menu/UserMenu";
-import Backdrop from "@/components/reused/backdrop/Backdrop";
 import { selectUser } from "@/redux/user/selectors";
 import LoaderPage from "@/components/reused/loader/loader-page";
+import PopapMenuWrap from "@/components/reused/popap-menu-wrap/PopapMenuWrap";
 
 const UserLayout: FC<PropsWithChildren> = ({ children }) => {
   const user = useSelector(selectUser);
@@ -60,11 +60,11 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
               </button>
             </div>
             {isShowNavMenu && (
-              <Backdrop
+              <PopapMenuWrap
                 setShow={setIsShowNavMenu}
-                backgroundColor={"transparent"}
-                scrollPage={true}
-              />
+                stylePop={{}}
+                keyItem={23423}
+              ></PopapMenuWrap>
             )}
             <div
               className={`${styles.header_wrapperMenu} ${
@@ -126,13 +126,13 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
             </div>
             <AnimatePresence>
               {isShowProfileMenu && (
-                <>
+                <PopapMenuWrap
+                  stylePop={{ top: "calc(100% + 5px)", right: "0" }}
+                  keyItem={22}
+                  setShow={setIsShowProfileMenu}
+                >
                   <UserMenu user={user} />
-                  <Backdrop
-                    setShow={setIsShowProfileMenu}
-                    backgroundColor={"transparent"}
-                  />
-                </>
+                </PopapMenuWrap>
               )}
             </AnimatePresence>
           </div>

@@ -10,9 +10,9 @@
   }
 
   &_list {
-    width: 100%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+
     gap: 40px;
     margin: 24px 0;
 

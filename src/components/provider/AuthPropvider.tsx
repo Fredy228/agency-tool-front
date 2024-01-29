@@ -19,7 +19,7 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
   const refUpdate = useRef(false);
   const user = useSelector(selectUser);
   console.log("status", status);
-  console.log("user", user);
+  // console.log("user", user);
 
   const userSession = data?.user as SessionInterface | null;
 
@@ -82,7 +82,7 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
     ) {
       actionRefreshToken(userSession?.refreshToken).catch(console.error);
     }
-  }, [data, status, userSession, dispacth, update]);
+  }, [data, status, userSession, dispacth, update, user.accessToken]);
 
   useEffect(() => {
     if (status === "unauthenticated") {

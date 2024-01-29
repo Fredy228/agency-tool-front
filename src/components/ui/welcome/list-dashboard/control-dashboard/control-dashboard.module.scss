@@ -3,19 +3,6 @@
 @import "src/style-variables/anim-variables";
 
 .ctrlDashb {
-  position: absolute;
-
-  top: 62px;
-  right: 15px;
-
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.6);
-  box-shadow: 22.97px 22.97px 33.98px 0 rgba(0, 0, 0, 0.05);
-  backdrop-filter: blur(25px);
-
-  padding: 16px;
-  z-index: 110;
-
   &_list {
     display: grid;
     gap: 8px;

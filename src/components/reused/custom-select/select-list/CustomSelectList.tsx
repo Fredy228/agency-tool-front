@@ -1,7 +1,5 @@
 import type { Dispatch, FC, SetStateAction } from "react";
 
-import { motion } from "framer-motion";
-
 import styles from "./select-list.module.scss";
 
 import { TypeOptionSelectImg } from "@/types/custom-select-types";
@@ -23,12 +21,7 @@ const CustomSelectList: FC<Props> = ({
   };
 
   return (
-    <motion.ul
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className={styles.customSelect_list}
-    >
+    <ul className={styles.customSelect_list}>
       {options.map((item, index) => (
         <li
           key={index}
@@ -38,7 +31,7 @@ const CustomSelectList: FC<Props> = ({
           <CurrentItemSelect option={item} />
         </li>
       ))}
-    </motion.ul>
+    </ul>
   );
 };
 

@@ -4,7 +4,7 @@
 @import "src/style-variables/anim-variables";
 
 .header {
-  width: 100vw;
+  width: 100%;
   min-width: 320px;
 
   @media screen and (max-width: 767px) {

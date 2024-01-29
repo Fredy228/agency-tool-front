@@ -1,5 +1,4 @@
 import { type FC } from "react";
-import { motion } from "framer-motion";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 
@@ -24,12 +23,7 @@ const UserMenu: FC<Props> = ({ user }) => {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 1, transform: "translateY(100%)" }}
-      animate={{ opacity: 1, transform: "translateY(0)" }}
-      exit={{ opacity: 0, transform: "translateY(100%)" }}
-      className={styles.userMenu}
-    >
+    <div className={styles.userMenu}>
       {user.email && (
         <>
           <div className={styles.userMenu_profile}>
@@ -79,7 +73,7 @@ const UserMenu: FC<Props> = ({ user }) => {
           </li>
         )}
       </ul>
-    </motion.div>
+    </div>
   );
 };
 

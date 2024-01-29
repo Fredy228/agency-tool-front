@@ -50,8 +50,6 @@ const AuthForm: NextPage<Props> = ({ isRegister }) => {
       password,
     });
 
-    console.log("err", error?.details);
-
     if (error) {
       const nameField = error.message.split("|")[0];
       setInvalidInput((prevState) => [...prevState, nameField]);

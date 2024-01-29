@@ -11,7 +11,7 @@ import { TypeOptionSelectImg } from "@/types/custom-select-types";
 import CustomSelectList from "@/components/reused/custom-select/select-list/CustomSelectList";
 import CurrentItemSelect from "@/components/reused/custom-select/current-item/CurrentItemSelect";
 import { IconArrowDown } from "@/components/reused/icons/icons";
-import Backdrop from "@/components/reused/backdrop/Backdrop";
+import PopapMenuWrap from "@/components/reused/popap-menu-wrap/PopapMenuWrap";
 
 type Props = {
   options: TypeOptionSelectImg[];
@@ -41,18 +41,16 @@ const CustomSelect: FC<Props> = ({
       </button>
       <AnimatePresence>
         {isShowList && (
-          <>
+          <PopapMenuWrap
+            stylePop={{ left: "0", width: "100%", top: "calc(100% + 10px)" }}
+            keyItem={12324}
+          >
             <CustomSelectList
               options={options}
               setCurrentValue={setCurrentValue}
               setIsShowList={setIsShowList}
             />
-            <Backdrop
-              backgroundColor={"transparent"}
-              zIndex={"110"}
-              setShow={setIsShowList}
-            />
-          </>
+          </PopapMenuWrap>
         )}
       </AnimatePresence>
     </div>
