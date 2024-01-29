@@ -19,7 +19,7 @@ const Avatar: FC<Props> = ({ user }) => {
             alt={"Avatar"}
             width={"32"}
             height={"32"}
-            priority={true}
+            unoptimized={true}
           />
         )}
         {user && user.email && !user.image && <span>{user.firstName[0]}</span>}
