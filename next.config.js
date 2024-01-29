@@ -20,6 +20,7 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "fredytest.kyiv.ua",
+        port: "4445",
       },
     ],
   },
