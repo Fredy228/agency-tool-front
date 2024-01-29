@@ -43,12 +43,12 @@ const UserMenu: FC<Props> = ({ user }) => {
           <>
             <span className={styles.userMenu_line}>line</span>
             <li className={styles.userMenu_item}>
-              <Link className={styles.userMenu_link} href={"/settings"}>
+              <Link className={styles.userMenu_link} href={"/welcome"}>
                 <IconSettings /> Settings
               </Link>
             </li>
             <li className={styles.userMenu_item}>
-              <Link className={styles.userMenu_link} href={"/billings"}>
+              <Link className={styles.userMenu_link} href={"/welcome"}>
                 <IconBilling /> Billings
               </Link>
             </li>

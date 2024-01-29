@@ -14,7 +14,13 @@ const Avatar: FC<Props> = ({ user }) => {
       <span className={styles.avatar_default}>
         {user && !user.email && <IconDefaultAvatar />}
         {user && user.image && (
-          <Image src={user.image} alt={"Avatar"} width={"32"} height={"32"} />
+          <Image
+            src={user.image}
+            alt={"Avatar"}
+            width={"32"}
+            height={"32"}
+            priority={true}
+          />
         )}
         {user && user.email && !user.image && <span>{user.firstName[0]}</span>}
       </span>

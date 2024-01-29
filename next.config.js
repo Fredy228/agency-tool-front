@@ -10,17 +10,17 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
+        protocol: "https",
+        hostname: "fredytest.kyiv.ua",
+        port: "4445",
+      },
+      {
         protocol: "http",
         hostname: "localhost",
       },
       {
         protocol: "https",
         hostname: "lh3.googleusercontent.com",
-      },
-      {
-        protocol: "https",
-        hostname: "fredytest.kyiv.ua",
-        port: "4445",
       },
     ],
   },
