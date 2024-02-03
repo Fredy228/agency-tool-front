@@ -14,12 +14,18 @@ type Props = {
   item: Pick<DashboardInterface, "id" | "name" | "screenUrl">;
   isShowCtrl: number | null;
   setIsShowCtrl: Dispatch<SetStateAction<number | null>>;
+  toDashboard: (id: number) => void;
 };
-const ItemDashboard: FC<Props> = ({ item, isShowCtrl, setIsShowCtrl }) => {
+const ItemDashboard: FC<Props> = ({
+  item,
+  isShowCtrl,
+  setIsShowCtrl,
+  toDashboard,
+}) => {
   const isCurrItem = isShowCtrl === item.id;
 
   return (
-    <li className={styles.itemDashb}>
+    <li className={styles.itemDashb} onClick={() => toDashboard(item.id)}>
       <button
         className={styles.itemDashb_btnOption}
         type={"button"}

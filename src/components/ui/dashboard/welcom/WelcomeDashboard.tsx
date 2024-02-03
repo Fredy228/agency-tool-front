@@ -7,9 +7,12 @@ import styleContainer from "@/components/styles/container.module.scss";
 
 import welcomeImage from "./welcome.png";
 import { IconArrowRightLong } from "@/components/reused/icons/icons";
+import { DashboardInterface } from "@/interfaces/dashboard";
 
-type Props = {};
-const WelcomeDashboard: FC<Props> = ({}) => {
+type Props = {
+  dashboard: DashboardInterface;
+};
+const WelcomeDashboard: FC<Props> = ({ dashboard }) => {
   return (
     <section className={styles.welcome}>
       <div className={styleContainer.container} style={{ height: "100%" }}>
@@ -18,8 +21,10 @@ const WelcomeDashboard: FC<Props> = ({}) => {
             <div className={styles.welcome_imgBox}>
               <Image
                 className={styles.welcome_img}
-                src={welcomeImage}
+                src={`${process.env.NEXTAUTH_URL}/${dashboard.screenUrl}`}
                 alt={"Welcome image"}
+                priority
+                quality={100}
                 width={"519"}
                 height={"690"}
               />
@@ -28,14 +33,11 @@ const WelcomeDashboard: FC<Props> = ({}) => {
           <div className={styles.welcome_wrapperHello}>
             <div className={styles.welcome_helloBox}>
               <span className={styles.welcome_mottoFirst}>
-                Don&apos;t Waste Time on Fruitless Searches.
+                {dashboard.textOne}
               </span>
-              <h1 className={styles.welcome_title}>
-                Welcome, where everything finds its <span>perfect home!</span>
-              </h1>
+              <h1 className={styles.welcome_title}>{dashboard.textTwo}</h1>
               <p className={styles.welcome_mottoSecond}>
-                Save, group, and share links with ease. Join us and make your
-                space more organized
+                {dashboard.textThree}
               </p>
             </div>
           </div>

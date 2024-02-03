@@ -133,25 +133,19 @@ export const authConfig: AuthOptions = {
 
       console.log(
         "Left access:",
-        currExpAs &&
-          Math.floor((currExpAs - currTime) / 60)
-            .toString()
-            .slice(0, 2) + "m",
+        currExpAs && Math.floor((currExpAs - currTime) / 1000 / 60) + "m",
       );
       console.log(
         "Left refresh:",
-        currExpRf &&
-          Math.floor((currExpRf - currTime) / 60)
-            .toString()
-            .slice(0, 2) + "m",
+        currExpRf && Math.floor((currExpRf - currTime) / 1000 / 60 / 60) + "h",
       );
 
-      if (currExpRf && currTime > currExpRf) {
+      if (currExpRf && currTime > currExpRf - 900000) {
         session.user = undefined;
         return session;
       }
 
-      if (currExpAs && currTime > currExpAs - 1000) {
+      if (currExpAs && currTime > currExpAs - 900000) {
         const clearToken = { accessToken: null };
         session.user = { ...session.user, ...clearToken };
       }

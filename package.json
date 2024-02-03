@@ -28,6 +28,7 @@
     "redux-persist": "^6.0.0",
     "sass": "^1.69.5",
     "sharp": "^0.33.1",
+    "sjcl": "^1.0.8",
     "swiper": "^11.0.5",
     "tlds": "^1.248.0"
   },
@@ -36,6 +37,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/sjcl": "^1.0.34",
     "eslint": "^8",
     "eslint-config-next": "14.0.3",
     "typescript": "^5"

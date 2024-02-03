@@ -19,7 +19,7 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
   const refUpdate = useRef(false);
   const user = useSelector(selectUser);
   console.log("status", status);
-  // console.log("user", user);
+  console.log("user", user);
 
   const userSession = data?.user as SessionInterface | null;
 

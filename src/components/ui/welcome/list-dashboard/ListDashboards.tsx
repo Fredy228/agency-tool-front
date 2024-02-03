@@ -6,12 +6,18 @@ import styles from "./list-dashboard.module.scss";
 
 import { DashboardInterface } from "@/interfaces/dashboard";
 import ItemDashboard from "@/components/ui/welcome/list-dashboard/item-dashboard/ItemDashboard";
+import { useRouter } from "next/navigation";
 
 type Props = {
   dashboards: Array<Pick<DashboardInterface, "id" | "name" | "screenUrl">>;
 };
 const ListDashboards: FC<Props> = ({ dashboards }) => {
   const [isShowCtrl, setIsShowCtrl] = useState<number | null>(null);
+  const router = useRouter();
+
+  const toDashboard = (id: number) => {
+    router.push(`/dashboard/${id}`);
+  };
 
   return (
     <section className={styles.listDashb}>
@@ -23,6 +29,7 @@ const ListDashboards: FC<Props> = ({ dashboards }) => {
             item={item}
             isShowCtrl={isShowCtrl}
             setIsShowCtrl={setIsShowCtrl}
+            toDashboard={toDashboard}
           />
         ))}
       </ul>

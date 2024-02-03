@@ -10,6 +10,19 @@ export const getAllDashboardsAPI = async (): Promise<
   return data;
 };
 
+export const getDashboardByIdAPI = async (
+  id: string | number,
+  password: string | undefined,
+): Promise<DashboardInterface> => {
+  const { data } = await axios.get(`/api/dashboard/${id}`, {
+    params: {
+      password,
+    },
+  });
+
+  return data;
+};
+
 export const createDashboardAPI = async ({
   name,
   password,
