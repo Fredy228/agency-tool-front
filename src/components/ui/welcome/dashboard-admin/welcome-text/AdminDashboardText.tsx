@@ -8,6 +8,7 @@ import EditTextBtns from "@/components/reused/edit-text-btns/EditTextBtns";
 
 import examplePhoto from "./welcome-example.png";
 import { scrollIntoView } from "@/services/scrollIntoView";
+import { DashboardInterface } from "@/interfaces/dashboard";
 
 type Props = {
   textOne: string;
@@ -19,6 +20,8 @@ type Props = {
   editText: string | null;
   setEditText: Dispatch<SetStateAction<string | null>>;
   invalidInput: string | null;
+  edit?: boolean;
+  dashboard?: DashboardInterface;
 };
 const AdminDashboardText: FC<Props> = (props) => {
   const refOne = useRef<HTMLTextAreaElement | null>(null);
@@ -86,6 +89,8 @@ const AdminDashboardText: FC<Props> = (props) => {
               name={"textOne"}
               setValue={props.setTextOne}
               fnFocus={fnFocus}
+              isUpdate={props.edit}
+              initialName={props.dashboard?.textOne}
             />
           </li>
           <li className={styles.adminText_item}>
@@ -107,6 +112,8 @@ const AdminDashboardText: FC<Props> = (props) => {
               name={"textTwo"}
               setValue={props.setTextTwo}
               fnFocus={fnFocus}
+              isUpdate={props.edit}
+              initialName={props.dashboard?.textTwo}
             />
           </li>
           <li className={styles.adminText_item}>
@@ -128,6 +135,8 @@ const AdminDashboardText: FC<Props> = (props) => {
               name={"textThree"}
               setValue={props.setTextThree}
               fnFocus={fnFocus}
+              isUpdate={props.edit}
+              initialName={props.dashboard?.textThree}
             />
           </li>
         </ul>
@@ -138,6 +147,7 @@ const AdminDashboardText: FC<Props> = (props) => {
             alt={"Example photo"}
             width={"276"}
             height={"171"}
+            priority={true}
           />
         </div>
       </div>

@@ -1,0 +1,13 @@
+@import "src/style-variables/font-variables";
+
+.clipboard {
+  &_title {
+    margin-bottom: 5px;
+    font-size: $text-size-md;
+    font-weight: 500;
+  }
+
+  &_copy {
+    margin: 15px auto 0 auto;
+  }
+}

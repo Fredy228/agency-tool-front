@@ -1,11 +1,8 @@
-import axios from "@/axios/base";
-
+import $api from "@/axios/base";
 import { UserInterface } from "@/interfaces/user";
 
-export const getUser = async (token: string): Promise<UserInterface> => {
-  const { data } = await axios.get("/api/user", {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+export const getUser = async (): Promise<UserInterface> => {
+  const { data } = await $api.get("/api/user");
 
   return data;
 };

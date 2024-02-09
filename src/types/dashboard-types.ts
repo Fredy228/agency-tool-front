@@ -3,7 +3,7 @@ export type ThemeDashboard = {
   color_second: string;
 };
 
-export type CreateDashType = {
+export type DashType = {
   name: string;
   password: string;
   screenUrl: string;

@@ -7,6 +7,8 @@ import styleSection from "../dashboard-build/admin-dashboard-section.module.scss
 
 import EditTextBtns from "@/components/reused/edit-text-btns/EditTextBtns";
 import { scrollIntoView } from "@/services/scrollIntoView";
+import { DashboardInterface } from "@/interfaces/dashboard";
+import dashboard from "@/screens/dashboard/Dashboard";
 
 type Props = {
   name: string;
@@ -14,6 +16,8 @@ type Props = {
   editText: string | null;
   setEditText: Dispatch<SetStateAction<string | null>>;
   invalidInput: string | null;
+  edit?: boolean;
+  dashboard?: DashboardInterface;
 };
 
 const AdminDashboardName: FC<Props> = ({
@@ -22,6 +26,8 @@ const AdminDashboardName: FC<Props> = ({
   editText,
   setEditText,
   invalidInput,
+  edit,
+  dashboard,
 }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -61,6 +67,8 @@ const AdminDashboardName: FC<Props> = ({
           name={"name"}
           setValue={setName}
           fnFocus={fnFocus}
+          isUpdate={edit}
+          initialName={dashboard?.name}
         />
       </div>
     </section>

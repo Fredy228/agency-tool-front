@@ -23,13 +23,14 @@ const ListDashboards: FC<Props> = ({ dashboards }) => {
     <section className={styles.listDashb}>
       <h2 className={styles.listDashb_title}>Dashboards</h2>
       <ul className={styles.listDashb_list}>
-        {dashboards.map((item) => (
+        {dashboards.map((item, index) => (
           <ItemDashboard
             key={item.id}
             item={item}
             isShowCtrl={isShowCtrl}
             setIsShowCtrl={setIsShowCtrl}
             toDashboard={toDashboard}
+            index={index}
           />
         ))}
       </ul>

@@ -8,6 +8,7 @@ import styleSection from "../dashboard-build/admin-dashboard-section.module.scss
 import EditTextBtns from "@/components/reused/edit-text-btns/EditTextBtns";
 import AdminDashboardHint from "@/components/ui/welcome/dashboard-admin/hint/AdminDashboardHint";
 import { scrollIntoView } from "@/services/scrollIntoView";
+import { DashboardInterface } from "@/interfaces/dashboard";
 
 type Props = {
   pass: string;
@@ -15,6 +16,8 @@ type Props = {
   editText: string | null;
   setEditText: Dispatch<SetStateAction<string | null>>;
   invalidInput: string | null;
+  edit?: boolean;
+  dashboard?: DashboardInterface;
 };
 
 const AdminDashboardPassword: FC<Props> = ({
@@ -23,6 +26,8 @@ const AdminDashboardPassword: FC<Props> = ({
   editText,
   setEditText,
   invalidInput,
+  edit,
+  dashboard,
 }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -63,6 +68,8 @@ const AdminDashboardPassword: FC<Props> = ({
             name={"password"}
             setValue={setPass}
             fnFocus={fnFocus}
+            isUpdate={edit}
+            initialName={dashboard?.password}
           />
         </div>
         <div className={styles.adminPass_hint}>

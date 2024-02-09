@@ -17,6 +17,7 @@ type Props = {
   setShowIdx?: Dispatch<SetStateAction<number | null>>;
   stylePop: Record<string, string>;
   keyItem: number | string;
+  isContains?: boolean;
 } & PropsWithChildren;
 const PopapMenuWrap: FC<Props> = ({
   children,
@@ -24,10 +25,12 @@ const PopapMenuWrap: FC<Props> = ({
   setShowIdx,
   stylePop,
   keyItem,
+  isContains = true,
 }) => {
   const wrapRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    if (!isContains) return;
     const listenerFn = (event: MouseEvent) => {
       const target = event.target as Node;
 

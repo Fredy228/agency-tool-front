@@ -1,12 +1,10 @@
 "use client";
 
-import type { FormEventHandler } from "react";
-import { useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
-import { signIn } from "next-auth/react";
-import Link from "next/link";
-
+import { Dispatch, FormEventHandler } from "react";
 import type { NextPage } from "next";
+import Link from "next/link";
+import { useState } from "react";
+import { set } from "local-storage";
 
 import styles from "./auth-form.module.scss";
 import formStyles from "@/components/styles/form-common.module.scss";
@@ -19,6 +17,11 @@ import {
 import { getToastify, ToastifyEnum } from "@/services/toastify";
 import { userCreateSchema, userLoginSchema } from "@/joi/auth-schema";
 import LoaderOrig from "@/components/reused/loader/loader-button";
+import { loginUser, registerUser } from "@/axios/auth";
+import { isAxiosError } from "axios";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/redux/user/slice";
+import { setAuthorize } from "@/redux/slice-param";
 
 type Props = {
   isRegister: boolean;
@@ -32,10 +35,8 @@ const AuthForm: NextPage<Props> = ({ isRegister }) => {
   const [isShowPass, setIsShowPass] = useState<boolean>(false);
   const [invalidInput, setInvalidInput] = useState<Array<string>>([]);
 
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/welcome";
   const isMatchesPass = (isRegister && password === rePassword) || !isRegister;
+  const dispacth: Dispatch<any> = useDispatch();
 
   const submitForm: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
@@ -44,7 +45,7 @@ const AuthForm: NextPage<Props> = ({ isRegister }) => {
 
     const schema = isRegister ? userCreateSchema : userLoginSchema;
 
-    const { error, warning } = schema.validate({
+    const { error } = schema.validate({
       email: email.trim(),
       firstName: name.trim(),
       password,
@@ -58,44 +59,34 @@ const AuthForm: NextPage<Props> = ({ isRegister }) => {
       return getToastify(error.message.split("|")[1], ToastifyEnum.ERROR, 5000);
     }
 
-    const answer = await signIn("credentials", {
-      email: email.trim(),
-      password,
-      name: name.trim(),
-      type: pathname.split("/")[2],
-      redirect: false,
-    });
-    console.log("answer", answer);
-
-    if (answer?.error) {
-      if (answer.status === 401) {
-        if (!isRegister)
-          getToastify("Invalid login or password", ToastifyEnum.ERROR);
-        if (isRegister)
-          getToastify("Such a user already exists", ToastifyEnum.ERROR);
+    try {
+      let authUser;
+      if (isRegister) {
+        authUser = await registerUser({
+          email: email.trim(),
+          password,
+          firstName: name.trim(),
+        });
       } else {
-        console.error("Unknown error");
+        authUser = await loginUser({ email: email.trim(), password });
       }
-    }
 
-    setIsLoading(false);
+      set<string>("token", authUser.accessToken);
+      dispacth(setUser(authUser));
+      dispacth(setAuthorize(true));
+    } catch (e) {
+      console.log("e", e);
+      if (isAxiosError(e)) {
+      } else {
+        getToastify("Unknown error", ToastifyEnum.ERROR, 3000);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const signInWithGoogle = async () => {
-    setIsLoading(true);
-    const answer = await signIn("google", {
-      callbackUrl,
-    });
-
-    if (answer?.error) {
-      if (answer.status === 401) {
-        console.error("Error 401");
-      } else {
-        console.error("Unknown error");
-      }
-    }
-
-    setIsLoading(false);
+    window.open(`${process.env.SERVER_URL}/api/auth/google`, "_self");
   };
 
   return (

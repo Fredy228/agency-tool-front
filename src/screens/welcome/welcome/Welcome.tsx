@@ -1,7 +1,7 @@
 "use client";
 
 import { type NextPage } from "next";
-import { Dispatch, useEffect, useState } from "react";
+import { Dispatch, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import styles from "./welcome.module.scss";
@@ -23,7 +23,11 @@ const Welcome: NextPage = () => {
 
   const dispacth: Dispatch<any> = useDispatch();
 
+  const isFirst = useRef<boolean>(false);
+
   useEffect(() => {
+    if (isFirst.current) return;
+    isFirst.current = true;
     const getOrg = async () => {
       const data = await getAllDashboardsAPI();
       if (data) {
@@ -51,10 +55,15 @@ const Welcome: NextPage = () => {
     );
 
   return (
-    <div>
+    <div className={styles.welcome}>
       {dashboards.length > 0 ? (
         <>
           <WelcomeEdit />
+          {dashboards.length >= 6 && (
+            <p className={styles.welcome_notice}>
+              You can create up to 6 dashboards
+            </p>
+          )}
           <ListDashboards dashboards={dashboards} />
         </>
       ) : (

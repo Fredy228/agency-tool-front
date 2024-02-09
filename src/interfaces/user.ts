@@ -23,12 +23,3 @@ export interface UserDeviceInterface {
   refreshToken: string;
   userId: number;
 }
-
-export interface SessionInterface {
-  id: string;
-  email: string;
-  image: string;
-  name: string;
-  accessToken: string;
-  refreshToken: string;
-}

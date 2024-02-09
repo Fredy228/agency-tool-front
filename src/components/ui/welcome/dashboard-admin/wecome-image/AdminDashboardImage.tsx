@@ -57,7 +57,7 @@ const AdminDashboardImage: FC<Props> = ({ screenUrl, setScreenUrl }) => {
                     alt={"Welcome Screen"}
                     width={"144"}
                     height={"188"}
-                    objectFit={"cover"}
+                    priority={index <= 4}
                   />
                   <div className={styles.adminScreen_check}>
                     {item === screenUrl && <IconTick />}

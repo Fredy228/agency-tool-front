@@ -1,104 +1,61 @@
 "use client";
 
-import { signOut, useSession } from "next-auth/react";
-import { Dispatch, ReactNode, useEffect, useRef } from "react";
+import { Dispatch, type ReactNode, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { isAxiosError } from "axios";
+import { useSearchParams } from "next/navigation";
+import { getUser } from "@/axios/user";
+import { get, set } from "local-storage";
 
-import { setAuthHeader } from "@/axios/base";
-
-import { SessionInterface } from "@/interfaces/user";
-import { getMe } from "@/redux/user/operations";
-import { removeUser, setUserAgent } from "@/redux/user/slice";
-import { refreshToken, setUserAgentAPI } from "@/axios/auth";
+import { setUser } from "@/redux/user/slice";
+import { setAuthorize, setLoadingApp } from "@/redux/slice-param";
 import { selectUser } from "@/redux/user/selectors";
 
 export const AuthProviders = ({ children }: { children: ReactNode }) => {
-  const { data, status, update } = useSession();
   const dispacth: Dispatch<any> = useDispatch();
-  const refUpdate = useRef(false);
+  const searchParams = useSearchParams();
+  const tokenGoogle = searchParams.get("token");
+
+  const isFirst = useRef<boolean>(false);
+
   const user = useSelector(selectUser);
-  console.log("status", status);
   console.log("user", user);
 
-  const userSession = data?.user as SessionInterface | null;
-
   useEffect(() => {
-    const actionAuthenticated = async () => {
-      if (!userSession) return;
-      dispacth(
-        getMe({
-          accessToken: userSession?.accessToken,
-          refreshToken: userSession?.refreshToken,
-        }),
-      );
-    };
+    if (!tokenGoogle && !get<string>("token")) {
+      dispacth(setAuthorize(false));
+      dispacth(setLoadingApp(false));
+      return;
+    }
 
-    const actionRefreshToken = async (refresh: string) => {
-      if (
-        !userSession ||
-        userSession?.accessToken ||
-        status !== "authenticated"
-      )
-        return;
-      if (refUpdate.current) return;
+    if (isFirst.current) return;
+    isFirst.current = true;
+
+    if (tokenGoogle && !get<string>("token")) {
+      set<string>("token", tokenGoogle);
+      const currentUrl = window.location.href;
+      const url = new URL(currentUrl);
+      url.searchParams.delete("paramToRemove");
+      window.history.replaceState({}, "", url.toString());
+    }
+    const getUserCurrent = async () => {
+      console.log("Getting...");
       try {
-        const tokens = await refreshToken(refresh);
-        refUpdate.current = true;
-        update(tokens)
-          .then(() => {
-            refUpdate.current = false;
-          })
-          .catch(console.error);
+        const user = await getUser();
+        dispacth(setUser(user));
+        dispacth(setAuthorize(true));
       } catch (e) {
-        if (isAxiosError(e) && e.response) {
-          if (e.response.status === 401 && !refUpdate.current) {
-            signOut()
-              .then(() => (refUpdate.current = false))
-              .catch(console.error);
-          }
-          refUpdate.current = false;
+        if (isAxiosError(e) && e.response?.status === 401) {
+          dispacth(setAuthorize(false));
+        } else {
+          console.error(e);
         }
+      } finally {
+        dispacth(setLoadingApp(false));
       }
     };
-
-    if (status === "authenticated" && !userSession) {
-      signOut().catch(console.error);
-    }
-
-    if (
-      status === "authenticated" &&
-      userSession?.accessToken &&
-      !user.accessToken
-    ) {
-      setAuthHeader(userSession.accessToken);
-      actionAuthenticated().catch(console.log);
-    }
-
-    if (
-      status === "authenticated" &&
-      !userSession?.accessToken &&
-      userSession?.refreshToken
-    ) {
-      actionRefreshToken(userSession?.refreshToken).catch(console.error);
-    }
-  }, [data, status, userSession, dispacth, update, user.accessToken]);
-
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      dispacth(removeUser());
-    }
-  }, [status, dispacth]);
-
-  useEffect(() => {
-    if (!user.refreshToken || user.currentDevice?.deviceModel) return;
-
-    setUserAgentAPI(user.refreshToken)
-      .then((res) => {
-        dispacth(setUserAgent(res));
-      })
-      .catch(console.error);
-  }, [user, dispacth]);
+    getUserCurrent();
+  }, [dispacth, tokenGoogle]);
 
   return <>{children}</>;
 };

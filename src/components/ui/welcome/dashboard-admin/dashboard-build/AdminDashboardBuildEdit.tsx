@@ -2,6 +2,7 @@
 
 import { type Dispatch, type FC, type SetStateAction, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import styles from "./admin-dashboard-build.module.scss";
 
@@ -10,25 +11,25 @@ import AdminDashboardImage from "@/components/ui/welcome/dashboard-admin/wecome-
 import AdminDashboardText from "@/components/ui/welcome/dashboard-admin/welcome-text/AdminDashboardText";
 import AdminDashboardPartner from "@/components/ui/welcome/dashboard-admin/logo-partner/AdminDashboardPartner";
 import AdminDashboardPassword from "@/components/ui/welcome/dashboard-admin/name/AdminDashboardPassword";
-import { listWelcomeScreen } from "@/components/ui/welcome/dashboard-admin/wecome-image/list";
 import { dashboardCreateSchema } from "@/joi/dashbard-schema";
 import { getToastify, ToastifyEnum } from "@/services/toastify";
-import { createDashboardAPI } from "@/axios/dashboad";
+import { updateDashboardAPI } from "@/axios/dashboad";
 import LoaderOrig from "@/components/reused/loader/loader-button";
-import { useRouter } from "next/navigation";
+import { DashboardInterface } from "@/interfaces/dashboard";
 
 type Props = {
   name: string;
   setName: Dispatch<SetStateAction<string>>;
+  dashboard: DashboardInterface;
 };
-const AdminDashBoardBuild: FC<Props> = ({ name, setName }) => {
+const AdminDashBoardBuildEdit: FC<Props> = ({ name, setName, dashboard }) => {
   const router = useRouter();
 
-  const [password, setPassword] = useState<string>("");
-  const [screenUrl, setScreenUrl] = useState<string>(listWelcomeScreen[0]);
-  const [textOne, setTextOne] = useState<string>("");
-  const [textTwo, setTextTwo] = useState<string>("");
-  const [textThree, setTextThree] = useState<string>("");
+  const [password, setPassword] = useState<string>(dashboard.password);
+  const [screenUrl, setScreenUrl] = useState<string>(dashboard.screenUrl);
+  const [textOne, setTextOne] = useState<string>(dashboard.textOne);
+  const [textTwo, setTextTwo] = useState<string>(dashboard.textTwo);
+  const [textThree, setTextThree] = useState<string>(dashboard.textThree);
   const [logo, setLogo] = useState<File | undefined>(undefined);
 
   const [editText, setEditText] = useState<string | null>(null);
@@ -52,23 +53,24 @@ const AdminDashBoardBuild: FC<Props> = ({ name, setName }) => {
       const nameField = error.message.split("|")[0];
       setInvalidInput(nameField);
 
-      console.log("error", error.details);
-
       setIsLoading(false);
       return getToastify(error.message.split("|")[1], ToastifyEnum.ERROR, 5000);
     }
 
     try {
-      await createDashboardAPI({
-        name,
-        password,
-        screenUrl,
-        textOne,
-        textThree,
-        textTwo,
-        logoPartner: logo,
-      });
-
+      await updateDashboardAPI(
+        {
+          name: name === dashboard.name ? undefined : name,
+          password: password === dashboard.password ? undefined : password,
+          screenUrl: screenUrl === dashboard.screenUrl ? undefined : screenUrl,
+          textOne: textOne === dashboard.textOne ? undefined : textOne,
+          textThree: textThree === dashboard.textThree ? undefined : textThree,
+          textTwo: textTwo === dashboard.textTwo ? undefined : textTwo,
+          logoPartner: logo,
+        },
+        dashboard.id,
+      );
+      getToastify("Updated successful", ToastifyEnum.SUCCESS, 3000);
       router.push("/welcome");
     } catch (e) {
       setIsLoading(false);
@@ -84,6 +86,8 @@ const AdminDashBoardBuild: FC<Props> = ({ name, setName }) => {
         editText={editText}
         setEditText={setEditText}
         invalidInput={invalidInput}
+        edit={true}
+        dashboard={dashboard}
       />
       <span className={styles.adminBuild_line}></span>
       <AdminDashboardImage screenUrl={screenUrl} setScreenUrl={setScreenUrl} />
@@ -98,6 +102,8 @@ const AdminDashBoardBuild: FC<Props> = ({ name, setName }) => {
         editText={editText}
         setEditText={setEditText}
         invalidInput={invalidInput}
+        edit={true}
+        dashboard={dashboard}
       />
       <span className={styles.adminBuild_line}></span>
       <AdminDashboardPartner logo={logo} setLogo={setLogo} />
@@ -108,6 +114,8 @@ const AdminDashBoardBuild: FC<Props> = ({ name, setName }) => {
         editText={editText}
         setEditText={setEditText}
         invalidInput={invalidInput}
+        edit={true}
+        dashboard={dashboard}
       />
       <div className={styles.adminBuild_wrapBtn}>
         <Link
@@ -122,10 +130,10 @@ const AdminDashBoardBuild: FC<Props> = ({ name, setName }) => {
           type={"button"}
           disabled={isLoading}
         >
-          {isLoading ? <LoaderOrig color={"#fff"} /> : "Save"}
+          {isLoading ? <LoaderOrig color={"#fff"} /> : "Update"}
         </button>
       </div>
     </div>
   );
 };
-export default AdminDashBoardBuild;
+export default AdminDashBoardBuildEdit;

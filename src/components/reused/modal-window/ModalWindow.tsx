@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 import styles from "./modal-window.module.scss";
 
 import noScroll from "@/services/no-scroll";
+import { IconCross } from "@/components/reused/icons/icons";
 
 const modalRoot = document.querySelector("#modal-root");
 
@@ -37,6 +38,11 @@ const ModalWindow: FC<Props> = ({
       if (setShowIdx) setShowIdx(null);
       if (setShow) setShow(false);
     }
+  };
+
+  const handleCloseBtn = () => {
+    if (setShowIdx) setShowIdx(null);
+    if (setShow) setShow(false);
   };
 
   useEffect(() => {
@@ -66,7 +72,16 @@ const ModalWindow: FC<Props> = ({
       className={styles.modal_backdrop}
       onClick={handleBackdropClick}
     >
-      <div className={styles.modal_modal}>{children}</div>
+      <div className={styles.modal_modal}>
+        <button
+          className={styles.modal_btn}
+          type={"button"}
+          onClick={handleCloseBtn}
+        >
+          <IconCross />
+        </button>
+        {children}
+      </div>
     </motion.div>,
     modalRoot,
   );
