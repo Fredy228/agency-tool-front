@@ -45,7 +45,7 @@ const PopapMenuWrap: FC<Props> = ({
     return () => {
       document.removeEventListener("click", listenerFn);
     };
-  }, [setShow, setShowIdx]);
+  }, [isContains, setShow, setShowIdx]);
 
   return (
     <motion.div

@@ -1,7 +1,7 @@
 "use client";
 
 import { Dispatch, type ReactNode, useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { isAxiosError } from "axios";
 import { useSearchParams } from "next/navigation";
 import { getUser } from "@/axios/user";
@@ -9,7 +9,6 @@ import { get, set } from "local-storage";
 
 import { setUser } from "@/redux/user/slice";
 import { setAuthorize, setLoadingApp } from "@/redux/slice-param";
-import { selectUser } from "@/redux/user/selectors";
 
 export const AuthProviders = ({ children }: { children: ReactNode }) => {
   const dispacth: Dispatch<any> = useDispatch();
@@ -17,9 +16,6 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
   const tokenGoogle = searchParams.get("token");
 
   const isFirst = useRef<boolean>(false);
-
-  const user = useSelector(selectUser);
-  console.log("user", user);
 
   useEffect(() => {
     if (!tokenGoogle && !get<string>("token")) {
