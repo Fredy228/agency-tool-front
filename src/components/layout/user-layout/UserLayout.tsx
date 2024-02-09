@@ -4,7 +4,6 @@ import { type FC, type PropsWithChildren, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence } from "framer-motion";
 import { useSelector } from "react-redux";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 
 import styleContainer from "@/components/styles/container.module.scss";
@@ -21,16 +20,17 @@ import UserMenu from "@/components/layout/user-layout/user-menu/UserMenu";
 import { selectUser } from "@/redux/user/selectors";
 import LoaderPage from "@/components/reused/loader/loader-page";
 import PopapMenuWrap from "@/components/reused/popap-menu-wrap/PopapMenuWrap";
+import { selectIsAuthorize, selectIsLoadingApp } from "@/redux/selector-param";
 
 const UserLayout: FC<PropsWithChildren> = ({ children }) => {
   const user = useSelector(selectUser);
-  const { status } = useSession();
+  const isLoadingApp = useSelector(selectIsLoadingApp);
+  const isAuthorize = useSelector(selectIsAuthorize);
 
   const [isShowProfileMenu, setIsShowProfileMenu] = useState<boolean>(false);
   const [isShowNavMenu, setIsShowNavMenu] = useState<boolean>(false);
 
-  if (status === "loading" || (status === "authenticated" && !user.accessToken))
-    return <LoaderPage isFull={true} />;
+  if (isLoadingApp) return <LoaderPage isFull={true} />;
 
   return (
     <>
@@ -72,7 +72,7 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
               }`}
             >
               <ul className={styles.header_menuList}>
-                {user.email && (
+                {isAuthorize && (
                   <li className={styles.header_menuItem}>
                     <Link className={styles.header_pageLink} href={"/welcome"}>
                       <IconDashboards /> Dashboards

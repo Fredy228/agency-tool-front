@@ -3,18 +3,20 @@
 import type { NextPage } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { useSession } from "next-auth/react";
 
 import styles from "./auth-forgot.module.scss";
 import ForgotForm from "@/components/ui/auth/forgot-form/ForgotForm";
 import LoaderPage from "@/components/reused/loader/loader-page";
+import { useSelector } from "react-redux";
+import { selectIsAuthorize, selectIsLoadingApp } from "@/redux/selector-param";
 
 type Props = {};
 const AuthForgot: NextPage<Props> = () => {
-  const session = useSession();
+  const isLoadingApp = useSelector(selectIsLoadingApp);
+  const isAuthorize = useSelector(selectIsAuthorize);
 
-  if (session.status === "loading") return <LoaderPage />;
-  if (session.status === "authenticated") redirect("/welcome");
+  if (isLoadingApp) return <LoaderPage />;
+  if (!isLoadingApp && isAuthorize) redirect("/welcome");
 
   return (
     <div className={styles.authForgot}>

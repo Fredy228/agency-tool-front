@@ -1,27 +1,31 @@
 "use client";
 
 import { type NextPage } from "next";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { isAxiosError } from "axios";
+import { useRouter } from "next/navigation";
 
 import styles from "./new-dashborad.module.scss";
 import styleContainer from "@/components/styles/container.module.scss";
 
 import AdminDashboardHeader from "@/components/ui/welcome/dashboard-admin/header/AdminDashboardHeader";
 import AdminDashboardSidebar from "@/components/ui/welcome/dashboard-admin/sidebar/AdminDashboardSidebar";
-import AdminDashBoardBuild from "@/components/ui/welcome/dashboard-admin/dashboard-build/AdminDashBoardBuild";
+import AdminDashBoardBuildNew from "@/components/ui/welcome/dashboard-admin/dashboard-build/AdminDashBoardBuildNew";
 import { getToastify, ToastifyEnum } from "@/services/toastify";
 import { getOrganizationAPI } from "@/axios/organization";
 import LoaderPage from "@/components/reused/loader/loader-page";
-import { useRouter } from "next/navigation";
 
 const NewDashboard: NextPage = () => {
   const [name, setName] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  const isFirst = useRef<boolean>(false);
+
   const router = useRouter();
 
   useEffect(() => {
+    if (isFirst.current) return;
+    isFirst.current = true;
     const getOrg = async () => {
       const data = await getOrganizationAPI();
       if (!data) router.push("/welcome");
@@ -54,7 +58,7 @@ const NewDashboard: NextPage = () => {
           <AdminDashboardHeader name={name} />
           <div className={styles.newDashboard_flex}>
             <AdminDashboardSidebar />
-            <AdminDashBoardBuild name={name} setName={setName} />
+            <AdminDashBoardBuildNew name={name} setName={setName} />
           </div>
         </div>
       </div>

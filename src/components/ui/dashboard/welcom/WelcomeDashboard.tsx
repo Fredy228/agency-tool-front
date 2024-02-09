@@ -5,7 +5,6 @@ import Image from "next/image";
 import styles from "./welcome-dashboard.module.scss";
 import styleContainer from "@/components/styles/container.module.scss";
 
-import welcomeImage from "./welcome.png";
 import { IconArrowRightLong } from "@/components/reused/icons/icons";
 import { DashboardInterface } from "@/interfaces/dashboard";
 

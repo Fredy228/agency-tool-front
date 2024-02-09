@@ -1,6 +1,7 @@
-import { type FC } from "react";
+"use client";
+
+import { Dispatch, type FC } from "react";
 import Link from "next/link";
-import { signOut } from "next-auth/react";
 
 import styles from "./user-menu.module.scss";
 
@@ -12,19 +13,27 @@ import {
 } from "@/components/reused/icons/icons";
 import { UserInterface } from "@/interfaces/user";
 import { logoutUser } from "@/axios/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { selectIsAuthorize } from "@/redux/selector-param";
+import { remove } from "local-storage";
+import { setAuthorize } from "@/redux/slice-param";
 
 type Props = {
   user: UserInterface;
 };
 const UserMenu: FC<Props> = ({ user }) => {
+  const dispacth: Dispatch<any> = useDispatch();
+  const isAuthorize = useSelector(selectIsAuthorize);
+
   const logoutAction = async () => {
-    await logoutUser(user.refreshToken);
-    signOut().catch(console.error);
+    await logoutUser();
+    remove("token");
+    dispacth(setAuthorize(false));
   };
 
   return (
     <div className={styles.userMenu}>
-      {user.email && (
+      {isAuthorize && (
         <>
           <div className={styles.userMenu_profile}>
             <Avatar user={user} />
@@ -39,7 +48,7 @@ const UserMenu: FC<Props> = ({ user }) => {
       )}
 
       <ul className={styles.userMenu_list}>
-        {user.email && (
+        {isAuthorize && (
           <>
             <span className={styles.userMenu_line}>line</span>
             <li className={styles.userMenu_item}>
@@ -55,7 +64,7 @@ const UserMenu: FC<Props> = ({ user }) => {
             <span className={styles.userMenu_line}>line</span>
           </>
         )}
-        {user.email ? (
+        {isAuthorize ? (
           <li className={styles.userMenu_item}>
             <button
               type={"button"}

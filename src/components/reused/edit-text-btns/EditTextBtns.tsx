@@ -10,6 +10,7 @@ type Props = {
   setValue: Dispatch<SetStateAction<string>>;
   fnFocus: Function;
   isUpdate?: boolean;
+  initialName?: string;
 };
 const EditTextBtns: FC<Props> = ({
   isEdit,
@@ -18,10 +19,11 @@ const EditTextBtns: FC<Props> = ({
   setValue,
   fnFocus,
   isUpdate = false,
+  initialName,
 }) => {
   const handleCancel = () => {
     setEdit(null);
-    setValue("");
+    setValue(initialName ? initialName : "");
   };
 
   const handleEdit = async () => {
@@ -60,7 +62,7 @@ const EditTextBtns: FC<Props> = ({
           name={"edit"}
           onClick={handleEdit}
         >
-          Edit
+          {isUpdate ? "Edit" : "Add"}
         </button>
       )}
     </div>

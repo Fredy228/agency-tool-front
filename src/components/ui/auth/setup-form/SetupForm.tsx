@@ -1,6 +1,12 @@
 "use client";
 
-import { type FC, type FormEventHandler, useEffect, useState } from "react";
+import {
+  type FC,
+  type FormEventHandler,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { isAxiosError } from "axios";
@@ -35,7 +41,12 @@ const SetupForm: FC<Props> = ({ isEdit }) => {
   const [invalidInput, setInvalidInput] = useState<Array<string>>([]);
   const [isGetting, setIsGetting] = useState<boolean>(true);
 
+  const isFirst = useRef<boolean>(false);
+
   useEffect(() => {
+    if (isFirst.current) return;
+    isFirst.current = true;
+
     const getOrg = async () => {
       const data = await getOrganizationAPI();
       if (data && !isEdit) router.push("/welcome");

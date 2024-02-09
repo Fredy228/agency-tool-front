@@ -1,22 +1,24 @@
 "use client";
 
 import type { NextPage } from "next";
-import { usePathname, redirect } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { usePathname, redirect, useRouter } from "next/navigation";
 
 import styles from "./auth.module.scss";
 
 import AuthForm from "@/components/ui/auth/auth-form/AuthFrom";
 import LoaderPage from "@/components/reused/loader/loader-page";
+import { useSelector } from "react-redux";
+import { selectIsAuthorize, selectIsLoadingApp } from "@/redux/selector-param";
 
 const Auth: NextPage = () => {
   const pathname = usePathname();
-  const session = useSession();
+  const isLoadingApp = useSelector(selectIsLoadingApp);
+  const isAuthorize = useSelector(selectIsAuthorize);
 
   const isRegister = pathname === "/auth/register";
 
-  if (session.status === "loading") return <LoaderPage />;
-  if (session.status === "authenticated") redirect("/welcome");
+  if (isLoadingApp) return <LoaderPage />;
+  if (isAuthorize && !isLoadingApp) return redirect("/welcome");
 
   return (
     <div className={styles.auth_form}>

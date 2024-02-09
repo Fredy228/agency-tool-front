@@ -1,0 +1,10 @@
+@import "src/style-variables/color-variables";
+@import "src/style-variables/font-variables";
+
+.welcome {
+  &_notice {
+    font-size: $text-size-xs;
+    color: $color-main-opacity;
+    font-weight: 500;
+  }
+}

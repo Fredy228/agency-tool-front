@@ -11,6 +11,11 @@
     align-items: center;
 
     margin-bottom: 15px;
+    height: 38px;
+
+    @media screen and (max-width: 1023px) {
+      height: 24px;
+    }
   }
 
   &_navLink {
@@ -26,7 +31,7 @@
   &_navTitle {
     font-size: $text-size-xl;
     font-weight: 700;
-    line-height: 1.1;
+    line-height: 1;
 
     @media screen and (max-width: 1023px) {
       font-size: 22px;

@@ -1,4 +1,4 @@
-import { Dispatch, type FC, SetStateAction } from "react";
+import { Dispatch, type FC, SetStateAction, useCallback } from "react";
 import Image from "next/image";
 import { AnimatePresence } from "framer-motion";
 
@@ -15,17 +15,19 @@ type Props = {
   isShowCtrl: number | null;
   setIsShowCtrl: Dispatch<SetStateAction<number | null>>;
   toDashboard: (id: number) => void;
+  index: number;
 };
 const ItemDashboard: FC<Props> = ({
   item,
   isShowCtrl,
   setIsShowCtrl,
   toDashboard,
+  index,
 }) => {
   const isCurrItem = isShowCtrl === item.id;
 
   return (
-    <li className={styles.itemDashb} onClick={() => toDashboard(item.id)}>
+    <li className={styles.itemDashb}>
       <button
         className={styles.itemDashb_btnOption}
         type={"button"}
@@ -44,14 +46,17 @@ const ItemDashboard: FC<Props> = ({
           <p className={styles.itemDashb_count}>Links</p>
         </div>
       </div>
-      <div className={styles.itemDashb_wrapImage}>
+      <div
+        className={styles.itemDashb_wrapImage}
+        onClick={() => toDashboard(item.id)}
+      >
         <Image
           className={styles.itemDashb_image}
           src={setImagePath(item.screenUrl)}
           alt={"Welcome Screen"}
           width={"427"}
           height={"244"}
-          loading={"lazy"}
+          priority={index <= 5}
         />
       </div>
       <AnimatePresence>
@@ -60,6 +65,7 @@ const ItemDashboard: FC<Props> = ({
             stylePop={{ top: "62px", right: "16px" }}
             keyItem={item.id}
             setShowIdx={setIsShowCtrl}
+            isContains={false}
           >
             <ControlDashboard keyItem={item.id} />
           </PopapMenuWrap>
