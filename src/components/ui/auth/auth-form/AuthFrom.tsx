@@ -75,8 +75,8 @@ const AuthForm: NextPage<Props> = ({ isRegister }) => {
       dispacth(setUser(authUser));
       dispacth(setAuthorize(true));
     } catch (e) {
-      console.log("e", e);
-      if (isAxiosError(e)) {
+      if (isAxiosError(e) && e.response?.data?.message) {
+        getToastify(e.response.data.message, ToastifyEnum.ERROR, 3000);
       } else {
         getToastify("Unknown error", ToastifyEnum.ERROR, 3000);
       }

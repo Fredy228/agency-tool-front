@@ -25,8 +25,8 @@ type Props = {
 const ControlDashboard: FC<Props> = ({ keyItem }) => {
   const [isShowConfirm, setIsShowConfirm] = useState<number | null>(null);
   const [question, setQuestion] = useState<string>("");
-  const [currentModal, setCurrentModal] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [currentModal, setCurrentModal] = useState<string>("");
 
   const dispacth: Dispatch<any> = useDispatch();
 

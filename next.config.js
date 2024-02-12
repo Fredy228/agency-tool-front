@@ -9,8 +9,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "fredytest.kyiv.ua",
-        port: "4445",
+        hostname: "fujitsuserver.fun",
       },
       {
         protocol: "http",
