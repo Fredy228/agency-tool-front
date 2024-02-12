@@ -8,12 +8,13 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "fujitsuserver.fun",
-      },
-      {
         protocol: "http",
         hostname: "localhost",
+      },
+      {
+        protocol: "https",
+        hostname: "fujitsuserver.fun",
+        port: "",
       },
       {
         protocol: "https",
