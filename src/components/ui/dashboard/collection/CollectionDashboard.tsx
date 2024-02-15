@@ -6,8 +6,10 @@ import styleSection from "@/components/styles/section-header.module.scss";
 
 import CollectionList from "@/components/ui/dashboard/collection/collection-list/CollectionLIst";
 
-type Props = {};
-const CollectionDashboard: FC<Props> = ({}) => {
+type Props = {
+  isOwn: boolean | undefined;
+};
+const CollectionDashboard: FC<Props> = ({ isOwn }) => {
   return (
     <section className={styles.collection}>
       <div className={styleContainer.container}>
@@ -19,9 +21,14 @@ const CollectionDashboard: FC<Props> = ({}) => {
                 Whole information are here
               </p>
             </div>
-            <button className={styleSection.sectionHeader_btn} type={"button"}>
-              Add project
-            </button>
+            {isOwn && (
+              <button
+                className={styleSection.sectionHeader_btn}
+                type={"button"}
+              >
+                Add project
+              </button>
+            )}
           </div>
           <CollectionList />
         </div>

@@ -1,7 +1,7 @@
 "use client";
 
-import { Dispatch, type FC, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { Dispatch, type FC, SetStateAction, useState } from "react";
+import { useDispatch } from "react-redux";
 import { isAxiosError } from "axios";
 
 import styles from "@/components/styles/ctrl-item.module.scss";
@@ -12,17 +12,18 @@ import {
   IconShare,
 } from "@/components/reused/icons/icons";
 import WindowConfirm from "@/components/reused/window-confirm/WindowConfirm";
-import { deleteDashboardAPI } from "@/axios/dashboad";
 import ModalWindow from "@/components/reused/modal-window/ModalWindow";
-import { deleteDasboards } from "@/redux/dashboard/slice";
 import { getToastify, ToastifyEnum } from "@/services/toastify";
 import CopyToClipboard from "@/components/reused/copy-to-clipboard/CopyToClipboard";
-import Link from "next/link";
+import { LinkInterface } from "@/interfaces/link";
+import { deleteLinkAPI } from "@/axios/link";
+import { actionLink, deleteLink } from "@/redux/link/slice";
 
 type Props = {
-  keyItem: number;
+  link: LinkInterface;
+  setIsShowAddLink: Dispatch<SetStateAction<boolean>>;
 };
-const ControlDashboard: FC<Props> = ({ keyItem }) => {
+const ControlLink: FC<Props> = ({ link, setIsShowAddLink }) => {
   const [isShowConfirm, setIsShowConfirm] = useState<number | null>(null);
   const [question, setQuestion] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -33,19 +34,24 @@ const ControlDashboard: FC<Props> = ({ keyItem }) => {
   const handleDelete = () => {
     setCurrentModal("delete");
     setQuestion("Are you sure you want to delete?");
-    setIsShowConfirm(keyItem);
+    setIsShowConfirm(link.id);
   };
 
   const handleShare = () => {
     setCurrentModal("share");
-    setIsShowConfirm(keyItem);
+    setIsShowConfirm(link.id);
+  };
+
+  const handleEdit = () => {
+    dispacth(actionLink(link));
+    setIsShowAddLink(true);
   };
 
   const actionDelete = async () => {
     try {
       setIsLoading(true);
-      await deleteDashboardAPI(keyItem);
-      dispacth(deleteDasboards(keyItem));
+      await deleteLinkAPI(link.id);
+      dispacth(deleteLink(link.id));
       getToastify("Deleted successful", ToastifyEnum.SUCCESS, 3000);
     } catch (e) {
       if (isAxiosError(e) && e.message) {
@@ -73,13 +79,13 @@ const ControlDashboard: FC<Props> = ({ keyItem }) => {
             </button>
           </li>
           <li className={styles.ctrlItem_item}>
-            <Link
-              href={`/dashboard/edit/${keyItem}`}
+            <button
               className={styles.ctrlItem_btn}
               type={"button"}
+              onClick={handleEdit}
             >
               <IconEdit /> Edit
-            </Link>
+            </button>
           </li>
           <li className={styles.ctrlItem_item}>
             <button
@@ -92,10 +98,10 @@ const ControlDashboard: FC<Props> = ({ keyItem }) => {
           </li>
         </ul>
       </div>
-      {isShowConfirm === keyItem && currentModal === "delete" && (
+      {isShowConfirm === link.id && currentModal === "delete" && (
         <ModalWindow scrollPage={true} setShowIdx={setIsShowConfirm}>
           <WindowConfirm
-            key={keyItem}
+            key={link.id}
             setShow={setIsShowConfirm}
             question={question}
             isLoading={isLoading}
@@ -104,13 +110,13 @@ const ControlDashboard: FC<Props> = ({ keyItem }) => {
         </ModalWindow>
       )}
 
-      {isShowConfirm === keyItem && currentModal === "share" && (
+      {isShowConfirm === link.id && currentModal === "share" && (
         <ModalWindow scrollPage={true} setShowIdx={setIsShowConfirm}>
-          <CopyToClipboard link={`dashboard/${keyItem}`} />
+          <CopyToClipboard link={link.url} />
         </ModalWindow>
       )}
     </>
   );
 };
 
-export default ControlDashboard;
+export default ControlLink;

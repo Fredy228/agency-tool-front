@@ -9,6 +9,10 @@ type Props = {
   link: string;
 };
 const CopyToClipboard: FC<Props> = ({ link }) => {
+  const url = link.startsWith("http")
+    ? link
+    : `${process.env.NEXTAUTH_URL}/${link}`;
+
   const handleCopyToClipboard = (_text: string, result: boolean) => {
     result
       ? getToastify("The link copied", ToastifyEnum.SUCCESS)
@@ -23,13 +27,10 @@ const CopyToClipboard: FC<Props> = ({ link }) => {
         className={formStyles.form_input}
         style={{ textAlign: "center" }}
         type={"text"}
-        value={`${process.env.NEXTAUTH_URL}/${link}`}
+        value={url}
         readOnly={true}
       />
-      <ReactCopyToClipboard
-        text={`${process.env.NEXTAUTH_URL}/${link}`}
-        onCopy={handleCopyToClipboard}
-      >
+      <ReactCopyToClipboard text={url} onCopy={handleCopyToClipboard}>
         <button
           className={`${formStyles.form_applyBtn} ${styles.clipboard_copy}`}
           type={"button"}

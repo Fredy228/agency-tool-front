@@ -1,28 +1,32 @@
 "use client";
 
+import { type Dispatch, useEffect, useRef, useState } from "react";
 import { type NextPage } from "next";
 import { get, set, remove } from "local-storage";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
+import { isAxiosError } from "axios";
 
 import styles from "./dashboard.module.scss";
 
 import WelcomeDashboard from "@/components/ui/dashboard/welcom/WelcomeDashboard";
 import CollectionDashboard from "@/components/ui/dashboard/collection/CollectionDashboard";
 import LinksDashboard from "@/components/ui/dashboard/links/LinksDashboard";
-import { useEffect, useRef, useState } from "react";
 import LoaderPage from "@/components/reused/loader/loader-page";
 import { getDashboardByIdAPI } from "@/axios/dashboad";
 import { DashboardInterface } from "@/interfaces/dashboard";
-import { isAxiosError } from "axios";
 import { getToastify, ToastifyEnum } from "@/services/toastify";
-import { useRouter } from "next/navigation";
 import DashboardEnterPass from "@/components/ui/dashboard/enter-pass/DashboardEnterPass";
 import { decryptionData, encryptionData } from "@/services/encryption-data";
+
+import { setListLink } from "@/redux/link/slice";
 
 type Props = {
   idDashboard: string;
 };
 const Dashboard: NextPage<Props> = ({ idDashboard }) => {
   const router = useRouter();
+  const dispacth: Dispatch<any> = useDispatch();
 
   const [dashboard, setDashboard] = useState<DashboardInterface>();
   const [password, setPassword] = useState<string>("");
@@ -30,18 +34,18 @@ const Dashboard: NextPage<Props> = ({ idDashboard }) => {
   const [isEnterPass, setIsEnterPass] = useState<boolean>(false);
 
   const isFirst = useRef<boolean>(false);
-
-  console.log("dashboard", dashboard);
+  const isOwn = Boolean(dashboard?.password);
 
   useEffect(() => {
     if (isFirst.current) return;
     isFirst.current = true;
 
-    if (isEnterPass) isFirst.current = false;
-
-    if (isEnterPass || dashboard) {
+    if (isEnterPass) {
+      isFirst.current = false;
       return;
     }
+
+    if (dashboard) return;
 
     const lsPass = get<string>(idDashboard);
     const decrypPass = lsPass ? decryptionData(lsPass) : null;
@@ -57,9 +61,9 @@ const Dashboard: NextPage<Props> = ({ idDashboard }) => {
           const encrypt = encryptionData(password);
           set<string>(idDashboard, encrypt);
         }
+        if (data.links) dispacth(setListLink(data.links));
       })
       .catch((error) => {
-        console.log(error);
         if (isAxiosError(error) && error.response?.status) {
           const statusCode = error.response.status;
           if (statusCode === 404) return router.push("/welcome");
@@ -81,7 +85,7 @@ const Dashboard: NextPage<Props> = ({ idDashboard }) => {
         setIsLoading(false);
         isFirst.current = false;
       });
-  }, [dashboard, idDashboard, isEnterPass, password, router]);
+  }, [dashboard, dispacth, idDashboard, isEnterPass, password, router]);
 
   if (isEnterPass)
     return (
@@ -101,8 +105,12 @@ const Dashboard: NextPage<Props> = ({ idDashboard }) => {
   return (
     <main className={styles.dashboard}>
       <WelcomeDashboard dashboard={dashboard} />
-      <CollectionDashboard />
-      <LinksDashboard />
+      <CollectionDashboard isOwn={isOwn} />
+      {isOwn || (dashboard.links && dashboard.links?.length > 0) ? (
+        <LinksDashboard isOwn={isOwn} />
+      ) : (
+        ""
+      )}
     </main>
   );
 };

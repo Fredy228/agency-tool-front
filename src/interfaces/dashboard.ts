@@ -1,4 +1,5 @@
 import { ThemeDashboard } from "@/types/dashboard-types";
+import { LinkInterface } from "@/interfaces/link";
 
 export interface DashboardInterface {
   id: number;
@@ -10,4 +11,5 @@ export interface DashboardInterface {
   textTwo: string;
   textThree: string;
   theme: ThemeDashboard;
+  links?: LinkInterface[];
 }

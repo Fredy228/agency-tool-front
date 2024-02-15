@@ -14,7 +14,6 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "fujitsuserver.fun",
-        port: "",
       },
       {
         protocol: "https",
