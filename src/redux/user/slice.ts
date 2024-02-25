@@ -26,9 +26,12 @@ export const userSlice = createSlice({
     setUser: (_state, { payload }: { payload: UserInterface }) => {
       return { ...payload };
     },
+    updateUser: (state, { payload }: { payload: Partial<UserInterface> }) => {
+      return { ...state, ...payload };
+    },
   },
 });
 
-export const { removeUser, setUser } = userSlice.actions;
+export const { removeUser, setUser, updateUser } = userSlice.actions;
 
 export default userSlice.reducer;

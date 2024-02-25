@@ -36,3 +36,23 @@ export const refreshToken = async (): Promise<{
 export const logoutUser = async (): Promise<void> => {
   await $api.get("/api/auth/logout");
 };
+
+export const sendVerificationCodeAPI = async (): Promise<void> => {
+  await $api.get("/api/auth/verification");
+};
+
+export const checkVerificationCode = async (code: string): Promise<void> => {
+  await $api.post("/api/auth/verification", { code });
+};
+
+export const sendForgotCodeAPI = async (email: string): Promise<void> => {
+  await $api.post("/api/auth/forgot-pass", { email });
+};
+
+export const resetPasswordAPI = async (body: {
+  email: string;
+  password: string;
+  code: string;
+}): Promise<void> => {
+  await $api.patch("/api/auth/forgot-pass", body);
+};

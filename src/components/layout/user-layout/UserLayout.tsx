@@ -27,6 +27,8 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
   const isLoadingApp = useSelector(selectIsLoadingApp);
   const isAuthorize = useSelector(selectIsAuthorize);
 
+  console.log(user);
+
   const [isShowProfileMenu, setIsShowProfileMenu] = useState<boolean>(false);
   const [isShowNavMenu, setIsShowNavMenu] = useState<boolean>(false);
 

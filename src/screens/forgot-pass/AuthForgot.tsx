@@ -1,19 +1,23 @@
 "use client";
 
 import type { NextPage } from "next";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import styles from "./auth-forgot.module.scss";
-import ForgotForm from "@/components/ui/auth/forgot-form/ForgotForm";
+
 import LoaderPage from "@/components/reused/loader/loader-page";
 import { useSelector } from "react-redux";
 import { selectIsAuthorize, selectIsLoadingApp } from "@/redux/selector-param";
+import ForgotPassStepOne from "@/screens/forgot-pass/step-1/ForgotPassStepOne";
+import { useState } from "react";
+import ForgotPassStepTwo from "@/screens/forgot-pass/step-2/ForgotPassStepTwo";
 
-type Props = {};
-const AuthForgot: NextPage<Props> = () => {
+const AuthForgot: NextPage = () => {
   const isLoadingApp = useSelector(selectIsLoadingApp);
   const isAuthorize = useSelector(selectIsAuthorize);
+
+  const [step, setStep] = useState<number>(1);
+  const [email, setEmail] = useState<string | null>(null);
 
   if (isLoadingApp) return <LoaderPage />;
   if (!isLoadingApp && isAuthorize) redirect("/welcome");
@@ -21,16 +25,10 @@ const AuthForgot: NextPage<Props> = () => {
   return (
     <div className={styles.authForgot}>
       <h1 className={styles.authForgot_title}>Forgot password?</h1>
-      <p className={styles.authForgot_description}>
-        Enter the email address you used to sign in. We will email you a
-        password reset code.
-      </p>
-      <ForgotForm />
-      <div className={styles.authForgot_wrapperLink}>
-        <Link className={styles.authForgot_goBack} href={"/auth/login"}>
-          Go back to <span>Sign in</span>
-        </Link>
-      </div>
+      {step === 1 && (
+        <ForgotPassStepOne setStep={setStep} setEmail={setEmail} />
+      )}
+      {step === 2 && <ForgotPassStepTwo email={email} />}
     </div>
   );
 };

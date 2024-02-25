@@ -15,11 +15,13 @@ import { getAllDashboardsAPI } from "@/axios/dashboad";
 import ListDashboards from "@/components/ui/welcome/list-dashboard/ListDashboards";
 import { setListDashb } from "@/redux/dashboard/slice";
 import { selectListDashb } from "@/redux/dashboard/selectors";
+import { selectUser } from "@/redux/user/selectors";
 
 const Welcome: NextPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isOrg, setIsOrg] = useState<boolean>(false);
   const dashboards = useSelector(selectListDashb);
+  const user = useSelector(selectUser);
 
   const dispacth: Dispatch<any> = useDispatch();
 

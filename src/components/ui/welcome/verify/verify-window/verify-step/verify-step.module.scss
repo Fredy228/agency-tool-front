@@ -1,0 +1,25 @@
+@import "src/style-variables/font-variables";
+@import "src/style-variables/form-mixins";
+
+.verifyStep {
+  &_text {
+    text-align: center;
+    font-size: $text-size-md;
+    margin-bottom: 15px;
+  }
+
+  &_wrapBtn {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    width: 100%;
+  }
+
+  &_cancelBtn {
+    @include button-second;
+  }
+
+  &_applyBtn {
+    @include button-main;
+  }
+}

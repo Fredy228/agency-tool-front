@@ -1,0 +1,10 @@
+@import "src/style-variables/font-variables";
+
+.verifyWindow {
+  &_title {
+    font-size: $text-size-lg;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.55;
+  }
+}
