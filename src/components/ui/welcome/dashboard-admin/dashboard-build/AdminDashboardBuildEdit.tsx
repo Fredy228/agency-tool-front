@@ -13,9 +13,14 @@ import AdminDashboardPartner from "@/components/ui/welcome/dashboard-admin/logo-
 import AdminDashboardPassword from "@/components/ui/welcome/dashboard-admin/name/AdminDashboardPassword";
 import { dashboardCreateSchema } from "@/joi/dashbard-schema";
 import { getToastify, ToastifyEnum } from "@/services/toastify";
-import { updateDashboardAPI } from "@/axios/dashboad";
+import { deleteLogoDashbAPI, updateDashboardAPI } from "@/axios/dashboad";
 import LoaderOrig from "@/components/reused/loader/loader-button";
 import { DashboardInterface } from "@/interfaces/dashboard";
+import { deleteLogoOrgAPI } from "@/axios/organization";
+import { isAxiosError } from "axios";
+import { AnimatePresence } from "framer-motion";
+import ModalWindow from "@/components/reused/modal-window/ModalWindow";
+import WindowConfirm from "@/components/reused/window-confirm/WindowConfirm";
 
 type Props = {
   name: string;
@@ -30,11 +35,15 @@ const AdminDashBoardBuildEdit: FC<Props> = ({ name, setName, dashboard }) => {
   const [textOne, setTextOne] = useState<string>(dashboard.textOne);
   const [textTwo, setTextTwo] = useState<string>(dashboard.textTwo);
   const [textThree, setTextThree] = useState<string>(dashboard.textThree);
-  const [logo, setLogo] = useState<File | undefined>(undefined);
+  const [logo, setLogo] = useState<File | null>(null);
+  const [bufferImg, setBufferImg] = useState<Buffer | null>(
+    dashboard.logoPartnerUrl,
+  );
 
   const [editText, setEditText] = useState<string | null>(null);
   const [invalidInput, setInvalidInput] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isShowDel, setIsShowDel] = useState<number | null>(null);
 
   const submitForm = async () => {
     setIsLoading(true);
@@ -78,6 +87,28 @@ const AdminDashBoardBuildEdit: FC<Props> = ({ name, setName, dashboard }) => {
     }
   };
 
+  const handleDeleteLogo = () => {
+    setIsShowDel(1);
+  };
+
+  const logoDelete = async () => {
+    try {
+      setIsLoading(true);
+      await deleteLogoDashbAPI(dashboard.id);
+      setBufferImg(null);
+      setIsShowDel(null);
+      getToastify("Logo deleted", ToastifyEnum.SUCCESS);
+    } catch (e) {
+      if (isAxiosError(e) && e.response?.data?.message) {
+        getToastify(e.response?.data?.message, ToastifyEnum.ERROR);
+      } else {
+        getToastify("Unknown error", ToastifyEnum.ERROR);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className={styles.adminBuild}>
       <AdminDashboardName
@@ -106,7 +137,13 @@ const AdminDashBoardBuildEdit: FC<Props> = ({ name, setName, dashboard }) => {
         dashboard={dashboard}
       />
       <span className={styles.adminBuild_line}></span>
-      <AdminDashboardPartner logo={logo} setLogo={setLogo} />
+      <AdminDashboardPartner
+        bufferImg={bufferImg}
+        setBufferImg={setBufferImg}
+        logo={logo}
+        setLogo={setLogo}
+        handleDeleteLogo={handleDeleteLogo}
+      />
       <span className={styles.adminBuild_line}></span>
       <AdminDashboardPassword
         pass={password}
@@ -133,6 +170,18 @@ const AdminDashBoardBuildEdit: FC<Props> = ({ name, setName, dashboard }) => {
           {isLoading ? <LoaderOrig color={"#fff"} /> : "Update"}
         </button>
       </div>
+      {isShowDel === 1 && (
+        <AnimatePresence>
+          <ModalWindow setShowIdx={setIsShowDel}>
+            <WindowConfirm
+              isLoading={isLoading}
+              setShow={setIsShowDel}
+              question={"You sure you want to remove the logo"}
+              action={logoDelete}
+            />
+          </ModalWindow>
+        </AnimatePresence>
+      )}
     </div>
   );
 };

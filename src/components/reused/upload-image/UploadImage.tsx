@@ -8,19 +8,31 @@ import { IconDelete, IconUpload } from "@/components/reused/icons/icons";
 import { getToastify, ToastifyEnum } from "@/services/toastify";
 
 type Props = {
-  logo: File | undefined;
-  setLogo: Dispatch<SetStateAction<File | undefined>>;
+  logo: File | null;
+  setLogo: Dispatch<SetStateAction<File | null>>;
+  setBufferImg: Dispatch<SetStateAction<Buffer | null>>;
+  bufferImg: Buffer | null;
   name?: string;
   isBig?: boolean;
   isRequired?: boolean;
+  handleDeleteLogo: () => void;
 };
 const UploadImage: FC<Props> = ({
   logo,
   setLogo,
   name,
+  bufferImg,
+  setBufferImg,
   isBig,
   isRequired = true,
+  handleDeleteLogo,
 }) => {
+  let imageUrl = null;
+  if (bufferImg) {
+    const base64Image = Buffer.from(bufferImg).toString("base64");
+    imageUrl = `data:image/webp;base64,${base64Image}`;
+  }
+
   const handleSetLogo = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileCurr = event.target.files;
 
@@ -28,11 +40,19 @@ const UploadImage: FC<Props> = ({
 
     const fileSizeInMB = fileCurr[0].size / (1024 * 1024);
 
-    if (fileSizeInMB > 10) {
-      getToastify("Maximum file size 10 MB", ToastifyEnum.ERROR, 5000);
+    if (fileSizeInMB > 5) {
+      getToastify("Maximum file size 5 MB", ToastifyEnum.ERROR, 5000);
       return;
     }
     setLogo(fileCurr[0]);
+    setBufferImg(null);
+  };
+
+  const handleDelete = () => {
+    if (bufferImg) return handleDeleteLogo();
+
+    setLogo(null);
+    setBufferImg(null);
   };
 
   return (
@@ -47,7 +67,7 @@ const UploadImage: FC<Props> = ({
           name={"logo"}
           onChange={handleSetLogo}
         />
-        {!logo && (
+        {!logo && !bufferImg && (
           <div
             className={styles.uploadImage_wrapperUpload}
             style={{ height: isBig ? "184px" : "106px" }}
@@ -65,7 +85,7 @@ const UploadImage: FC<Props> = ({
           </div>
         )}
       </label>
-      {logo && (
+      {(logo || imageUrl) && (
         <div
           className={styles.uploadImage_wrapperLogo}
           style={{ height: isBig ? "184px" : "106px" }}
@@ -73,16 +93,21 @@ const UploadImage: FC<Props> = ({
           <div className={styles.uploadImage_currentLogo}>
             <Image
               className={styles.uploadImage_imgLogo}
-              src={URL.createObjectURL(logo)}
+              src={
+                (logo && URL.createObjectURL(logo)) ||
+                (imageUrl && imageUrl) ||
+                ""
+              }
               alt={"Current logo"}
               width={"300"}
               height={"100"}
+              unoptimized={true}
             />
           </div>
           <button
             type={"button"}
             className={styles.uploadImage_btnDelete}
-            onClick={() => setLogo(undefined)}
+            onClick={handleDelete}
           >
             <IconDelete />
           </button>

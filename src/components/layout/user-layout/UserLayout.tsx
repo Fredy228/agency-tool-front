@@ -15,19 +15,21 @@ import {
   IconWhatsNew,
 } from "@/components/reused/icons/icons";
 import Avatar from "@/components/layout/user-layout/user-avatar/Avatar";
-import logoImg from "./logo.png";
 import UserMenu from "@/components/layout/user-layout/user-menu/UserMenu";
 import { selectUser } from "@/redux/user/selectors";
 import LoaderPage from "@/components/reused/loader/loader-page";
 import PopapMenuWrap from "@/components/reused/popap-menu-wrap/PopapMenuWrap";
 import { selectIsAuthorize, selectIsLoadingApp } from "@/redux/selector-param";
+import { selectOrganization } from "@/redux/organization/selectors";
+import BufferImg from "@/components/reused/buffer-img/BufferImg";
+import { selectLogoPartner } from "@/redux/dashboard/selectors";
 
 const UserLayout: FC<PropsWithChildren> = ({ children }) => {
   const user = useSelector(selectUser);
+  const organization = useSelector(selectOrganization);
+  const logoPartner = useSelector(selectLogoPartner);
   const isLoadingApp = useSelector(selectIsLoadingApp);
   const isAuthorize = useSelector(selectIsAuthorize);
-
-  console.log(user);
 
   const [isShowProfileMenu, setIsShowProfileMenu] = useState<boolean>(false);
   const [isShowNavMenu, setIsShowNavMenu] = useState<boolean>(false);
@@ -40,13 +42,17 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
         <div className={styleContainer.container}>
           <div className={styles.header_inner}>
             <div className={styles.header_wrapperLogo}>
-              <Image
-                className={styles.header_logo}
-                src={logoImg}
-                alt={"Logo"}
-                width={"104"}
-                height={"40"}
+              <BufferImg
+                customClass={styles.header_logo}
+                buffer={organization?.logoUrl}
                 priority={true}
+                alt={"Logo owner"}
+              />
+              <BufferImg
+                customClass={styles.header_logo}
+                buffer={logoPartner}
+                priority={true}
+                alt={"Logo partner"}
               />
             </div>
 

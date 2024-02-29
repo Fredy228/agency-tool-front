@@ -20,6 +20,8 @@ import DashboardEnterPass from "@/components/ui/dashboard/enter-pass/DashboardEn
 import { decryptionData, encryptionData } from "@/services/encryption-data";
 
 import { setListLink } from "@/redux/link/slice";
+import { setOrganization } from "@/redux/organization/slice";
+import { setLogoPartner } from "@/redux/dashboard/slice";
 
 type Props = {
   idDashboard: string;
@@ -57,6 +59,8 @@ const Dashboard: NextPage<Props> = ({ idDashboard }) => {
     )
       .then((data) => {
         setDashboard(data);
+        dispacth(setOrganization(data?.orgId));
+        dispacth(setLogoPartner(data.logoPartnerUrl));
         if (password) {
           const encrypt = encryptionData(password);
           set<string>(idDashboard, encrypt);
@@ -86,6 +90,13 @@ const Dashboard: NextPage<Props> = ({ idDashboard }) => {
         isFirst.current = false;
       });
   }, [dashboard, dispacth, idDashboard, isEnterPass, password, router]);
+
+  useEffect(() => {
+    return () => {
+      dispacth(setOrganization({ logoUrl: null }));
+      dispacth(setLogoPartner(null));
+    };
+  }, [dispacth]);
 
   if (isEnterPass)
     return (

@@ -34,3 +34,7 @@ export const updateOrganizationAPI = async ({
 
   return data;
 };
+
+export const deleteLogoOrgAPI = async (): Promise<void> => {
+  await $api.delete("/api/organization/logo");
+};

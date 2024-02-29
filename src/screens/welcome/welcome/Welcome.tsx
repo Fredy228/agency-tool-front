@@ -69,7 +69,7 @@ const Welcome: NextPage = () => {
           <ListDashboards dashboards={dashboards} />
         </>
       ) : (
-        <WelcomeCreate isOrg={isOrg} />
+        <WelcomeCreate isOrg={isOrg} isVerify={Boolean(user.verified)} />
       )}
     </div>
   );

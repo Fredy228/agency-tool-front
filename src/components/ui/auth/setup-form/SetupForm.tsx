@@ -19,12 +19,16 @@ import { orgCreateSchema, orgUpdateSchema } from "@/joi/organization-schema";
 import { getToastify, ToastifyEnum } from "@/services/toastify";
 import {
   createOrganizationAPI,
+  deleteLogoOrgAPI,
   getOrganizationAPI,
   updateOrganizationAPI,
 } from "@/axios/organization";
 import LoaderPage from "@/components/reused/loader/loader-page";
 import LoaderOrig from "@/components/reused/loader/loader-button";
 import { OrganizationInterface } from "@/interfaces/organization";
+import WindowConfirm from "@/components/reused/window-confirm/WindowConfirm";
+import ModalWindow from "@/components/reused/modal-window/ModalWindow";
+import { AnimatePresence } from "framer-motion";
 
 type Props = {
   isEdit: boolean;
@@ -35,13 +39,37 @@ const SetupForm: FC<Props> = ({ isEdit }) => {
   const [resOrg, setResOrg] = useState<OrganizationInterface | null>(null);
 
   const [name, setName] = useState<string>("");
-  const [logo, setLogo] = useState<File | undefined>(undefined);
+  const [logo, setLogo] = useState<File | null>(null);
+  const [bufferImg, setBufferImg] = useState<Buffer | null>(null);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [invalidInput, setInvalidInput] = useState<Array<string>>([]);
   const [isGetting, setIsGetting] = useState<boolean>(true);
+  const [isShowDel, setIsShowDel] = useState<number | null>(null);
 
   const isFirst = useRef<boolean>(false);
+
+  const handleDeleteLogo = () => {
+    setIsShowDel(1);
+  };
+
+  const logoDelete = async () => {
+    try {
+      setIsLoading(true);
+      await deleteLogoOrgAPI();
+      setBufferImg(null);
+      setIsShowDel(null);
+      getToastify("Logo deleted", ToastifyEnum.SUCCESS);
+    } catch (e) {
+      if (isAxiosError(e) && e.response?.data?.message) {
+        getToastify(e.response?.data?.message, ToastifyEnum.ERROR);
+      } else {
+        getToastify("Unknown error", ToastifyEnum.ERROR);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (isFirst.current) return;
@@ -49,10 +77,12 @@ const SetupForm: FC<Props> = ({ isEdit }) => {
 
     const getOrg = async () => {
       const data = await getOrganizationAPI();
+      console.log(data);
       if (data && !isEdit) router.push("/welcome");
       if (data && isEdit) {
         setResOrg(data);
         setName(data.name);
+        setBufferImg(data.logoUrl);
         setIsGetting(false);
       }
     };
@@ -96,19 +126,27 @@ const SetupForm: FC<Props> = ({ isEdit }) => {
 
     let data;
 
-    if (isEdit && resOrg) {
-      const bodyReq = {
-        name: resOrg.name === name ? undefined : name,
-        logo,
-      };
+    try {
+      if (isEdit && resOrg) {
+        const bodyReq = {
+          name: resOrg.name === name ? undefined : name,
+          logo: logo ? logo : undefined,
+        };
 
-      const isChanged = Object.values(bodyReq).every((i) => !i);
+        const isChanged = Object.values(bodyReq).every((i) => i === undefined);
 
-      if (isChanged) return router.push("/welcome");
+        if (isChanged) return router.push("/welcome");
 
-      data = await updateOrganizationAPI(bodyReq);
-    } else {
-      data = await createOrganizationAPI({ name, logo });
+        data = await updateOrganizationAPI(bodyReq);
+      } else {
+        data = await createOrganizationAPI({ name, logo });
+      }
+    } catch (e) {
+      if (isAxiosError(e) && e.response?.data?.message) {
+        getToastify(e.response?.data?.message, ToastifyEnum.ERROR, 5000);
+      } else {
+        getToastify("Unknown error", ToastifyEnum.ERROR, 5000);
+      }
     }
 
     if (data) router.push("/welcome");
@@ -139,7 +177,10 @@ const SetupForm: FC<Props> = ({ isEdit }) => {
         logo={logo}
         setLogo={setLogo}
         name={"Logo"}
+        bufferImg={bufferImg}
+        setBufferImg={setBufferImg}
         isRequired={false}
+        handleDeleteLogo={handleDeleteLogo}
       />
       <div className={styles.setupForm_wrapperBtn}>
         <button
@@ -161,6 +202,18 @@ const SetupForm: FC<Props> = ({ isEdit }) => {
           {isEdit ? "Cancel" : "Skip"}
         </Link>
       </div>
+      {isShowDel === 1 && (
+        <AnimatePresence>
+          <ModalWindow setShowIdx={setIsShowDel}>
+            <WindowConfirm
+              isLoading={isLoading}
+              setShow={setIsShowDel}
+              question={"You sure you want to remove the logo"}
+              action={logoDelete}
+            />
+          </ModalWindow>
+        </AnimatePresence>
+      )}
     </form>
   );
 };

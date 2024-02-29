@@ -9,16 +9,32 @@ const textHint =
   "Here you can upload your partner's logo. When you share this dashboard with him, the company will see it.";
 
 type Props = {
-  logo: File | undefined;
-  setLogo: Dispatch<SetStateAction<File | undefined>>;
+  logo: File | null;
+  setLogo: Dispatch<SetStateAction<File | null>>;
+  setBufferImg: Dispatch<SetStateAction<Buffer | null>>;
+  bufferImg: Buffer | null;
+  handleDeleteLogo: () => void;
 };
-const AdminDashboardPartner: FC<Props> = ({ logo, setLogo }) => {
+const AdminDashboardPartner: FC<Props> = ({
+  logo,
+  setLogo,
+  setBufferImg,
+  bufferImg,
+  handleDeleteLogo,
+}) => {
   return (
     <section id={"logo-partner"} className={styles.adminPartner}>
       <h3 className={styleSection.adminSection_title}>Logo your partner</h3>
       <div className={styles.adminPartner_wrapper}>
         <div className={styles.adminPartner_wrapLogo}>
-          <UploadImage logo={logo} setLogo={setLogo} isBig={true} />
+          <UploadImage
+            bufferImg={bufferImg}
+            setBufferImg={setBufferImg}
+            logo={logo}
+            setLogo={setLogo}
+            isBig={true}
+            handleDeleteLogo={handleDeleteLogo}
+          />
         </div>
         <div className={styles.adminPartner_wrapHint}>
           <AdminDashboardHint text={textHint} />

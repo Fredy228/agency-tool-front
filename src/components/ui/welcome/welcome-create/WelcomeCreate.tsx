@@ -6,8 +6,9 @@ import formStyles from "@/components/styles/form-common.module.scss";
 
 type Props = {
   isOrg: boolean;
+  isVerify: boolean;
 };
-const WelcomeCreate: FC<Props> = ({ isOrg }) => {
+const WelcomeCreate: FC<Props> = ({ isOrg, isVerify }) => {
   return (
     <ul className={styles.welcomeCreate_list}>
       <li className={styles.welcomeCreate_item}>

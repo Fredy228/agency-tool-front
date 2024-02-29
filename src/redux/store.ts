@@ -4,6 +4,7 @@ import userReducer from "@/redux/user/slice";
 import paramReducer from "@/redux/slice-param";
 import dashboardsReducer from "@/redux/dashboard/slice";
 import linksReducer from "@/redux/link/slice";
+import organizationReducer from "@/redux/organization/slice";
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     dashboards: dashboardsReducer,
     links: linksReducer,
     param: paramReducer,
+    organization: organizationReducer,
   },
 });
 

@@ -29,7 +29,8 @@ const AdminDashBoardBuildNew: FC<Props> = ({ name, setName }) => {
   const [textOne, setTextOne] = useState<string>("");
   const [textTwo, setTextTwo] = useState<string>("");
   const [textThree, setTextThree] = useState<string>("");
-  const [logo, setLogo] = useState<File | undefined>(undefined);
+  const [logo, setLogo] = useState<File | null>(null);
+  const [bufferImg, setBufferImg] = useState<Buffer | null>(null);
 
   const [editText, setEditText] = useState<string | null>(null);
   const [invalidInput, setInvalidInput] = useState<string | null>(null);
@@ -100,7 +101,13 @@ const AdminDashBoardBuildNew: FC<Props> = ({ name, setName }) => {
         invalidInput={invalidInput}
       />
       <span className={styles.adminBuild_line}></span>
-      <AdminDashboardPartner logo={logo} setLogo={setLogo} />
+      <AdminDashboardPartner
+        bufferImg={bufferImg}
+        setBufferImg={setBufferImg}
+        logo={logo}
+        setLogo={setLogo}
+        handleDeleteLogo={() => null}
+      />
       <span className={styles.adminBuild_line}></span>
       <AdminDashboardPassword
         pass={password}

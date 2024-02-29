@@ -64,7 +64,6 @@ export const updateDashboardAPI = async (
       formData.append(key, value);
     }
   });
-
   // if (name) formData.append("name", name);
   // if (password) formData.append("password", password);
   // if (textOne) formData.append("textOne", textOne);
@@ -74,4 +73,8 @@ export const updateDashboardAPI = async (
   // if (logoPartner) formData.append("logoPartner", logoPartner);
 
   await $api.patch(`/api/dashboard/${id}`, formData);
+};
+
+export const deleteLogoDashbAPI = async (id: number): Promise<void> => {
+  await $api.delete(`/api/dashboard/logo/${id}`);
 };

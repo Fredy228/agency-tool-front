@@ -1,6 +1,6 @@
 export interface OrganizationInterface {
   id: number;
   name: string;
-  logoUrl: string | null;
+  logoUrl: Buffer | null;
   createAt: Date;
 }
