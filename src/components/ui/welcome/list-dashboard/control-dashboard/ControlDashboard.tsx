@@ -1,8 +1,9 @@
 "use client";
 
 import { Dispatch, type FC, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { isAxiosError } from "axios";
+import dynamic from "next/dynamic";
 
 import styles from "@/components/styles/ctrl-item.module.scss";
 
@@ -11,9 +12,14 @@ import {
   IconEdit,
   IconShare,
 } from "@/components/reused/icons/icons";
+const ModalWindow = dynamic(
+  () => import("@/components/reused/modal-window/ModalWindow"),
+  {
+    ssr: false,
+  },
+);
 import WindowConfirm from "@/components/reused/window-confirm/WindowConfirm";
 import { deleteDashboardAPI } from "@/axios/dashboad";
-import ModalWindow from "@/components/reused/modal-window/ModalWindow";
 import { deleteDasboards } from "@/redux/dashboard/slice";
 import { getToastify, ToastifyEnum } from "@/services/toastify";
 import CopyToClipboard from "@/components/reused/copy-to-clipboard/CopyToClipboard";

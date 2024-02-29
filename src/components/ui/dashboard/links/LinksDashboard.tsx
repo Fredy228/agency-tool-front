@@ -1,15 +1,21 @@
 "use client";
 
-import { Dispatch, type FC, SetStateAction, useState } from "react";
+import { type FC, useState } from "react";
 import { AnimatePresence } from "framer-motion";
+import dynamic from "next/dynamic";
 
 import styleSection from "@/components/styles/section-header.module.scss";
 import styleContainer from "@/components/styles/container.module.scss";
 import styles from "./link-dashboard.module.scss";
 
+const ModalWindow = dynamic(
+  () => import("@/components/reused/modal-window/ModalWindow"),
+  {
+    ssr: false,
+  },
+);
 import LinkList from "@/components/ui/dashboard/links/link-list/LinkList";
 import AddLink from "@/components/ui/dashboard/links/add-link/AddLink";
-import ModalWindow from "@/components/reused/modal-window/ModalWindow";
 import { useSelector } from "react-redux";
 import { selectListLink } from "@/redux/link/selectors";
 

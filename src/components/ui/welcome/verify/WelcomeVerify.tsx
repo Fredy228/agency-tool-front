@@ -2,11 +2,17 @@
 
 import { Dispatch, type FC, SetStateAction, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import dynamic from "next/dynamic";
 
 import styles from "./welcome-verify.module.scss";
 
+const ModalWindow = dynamic(
+  () => import("@/components/reused/modal-window/ModalWindow"),
+  {
+    ssr: false,
+  },
+);
 import { IconCross } from "@/components/reused/icons/icons";
-import ModalWindow from "@/components/reused/modal-window/ModalWindow";
 import VerifyWindow from "@/components/ui/welcome/verify/verify-window/VerifyWindow";
 
 type Props = {

@@ -61,6 +61,7 @@ const ModalWindow: FC<Props> = ({
     };
   }, [setShow, scrollPage, setShowIdx]);
 
+  console.log("modalRoot", modalRoot);
   if (!modalRoot) return;
 
   return createPortal(
