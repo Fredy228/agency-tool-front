@@ -1,6 +1,13 @@
 "use client";
 
-import { Dispatch, type FC, SetStateAction, useState } from "react";
+import React, {
+  Dispatch,
+  type FC,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Image from "next/image";
 import SwiperCore from "swiper";
@@ -20,6 +27,17 @@ import {
   IconPlus,
   IconTick,
 } from "@/components/reused/icons/icons";
+import { getToastify, ToastifyEnum } from "@/services/toastify";
+import { CustomScreenInterface } from "@/interfaces/organization";
+import {
+  deleteScreenCollectionOrgAPI,
+  deleteScreenDashbOrgAPI,
+  getScreensDashbOrgAPI,
+  uploadScreenDashbOrgAPI,
+} from "@/axios/organization";
+import { outputError } from "@/services/output-error";
+import ModalWindow from "@/components/reused/modal-window/ModalWindow";
+import WindowConfirm from "@/components/reused/window-confirm/WindowConfirm";
 
 SwiperCore.use([Navigation, FreeMode]);
 
@@ -28,7 +46,75 @@ type Props = {
   setScreenUrl: Dispatch<SetStateAction<string>>;
 };
 const AdminDashboardImage: FC<Props> = ({ screenUrl, setScreenUrl }) => {
-  const [screens, setScreens] = useState<string[]>([...listWelcomeScreen]);
+  const [screens, setScreens] = useState<CustomScreenInterface[]>([]);
+  const [uploadScreen, setUploadScreen] = useState<File | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isShowConfirm, setIsShowConfirm] = useState<number | null>(null);
+  const [currDeleteScreen, setCurrDeleteScreen] = useState<number | null>(null);
+  const isFirst = useRef<boolean>(false);
+
+  const handleSetScreen = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const fileCurr = event.target.files;
+
+    if (!fileCurr || !fileCurr[0]) return;
+
+    const fileSizeInMB = fileCurr[0].size / (1024 * 1024);
+
+    if (fileSizeInMB > 5) {
+      getToastify("Maximum file size 5 MB", ToastifyEnum.ERROR, 5000);
+      return;
+    }
+    setUploadScreen(fileCurr[0]);
+  };
+
+  const handleDeleteScreen = async () => {
+    if (!currDeleteScreen) return;
+    try {
+      setIsLoading(true);
+      await deleteScreenDashbOrgAPI(currDeleteScreen);
+      setScreens((prevState) =>
+        prevState.filter((i) => i.id !== currDeleteScreen),
+      );
+    } catch (e) {
+      outputError(e);
+    } finally {
+      setIsLoading(false);
+      setIsShowConfirm(null);
+    }
+  };
+
+  useEffect(() => {
+    if (isFirst.current) return;
+    isFirst.current = true;
+
+    setIsLoading(true);
+    getScreensDashbOrgAPI()
+      .then((data) => {
+        setScreens(data.reverse());
+      })
+      .catch((e) => {
+        outputError(e);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (!uploadScreen) return;
+
+    setIsLoading(true);
+    uploadScreenDashbOrgAPI(uploadScreen)
+      .then((data) => {
+        setScreens((prevState) => [data, ...prevState]);
+      })
+      .catch((e) => {
+        outputError(e);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [uploadScreen]);
 
   return (
     <section id={"screen"} className={styles.adminScreen}>
@@ -43,9 +129,45 @@ const AdminDashboardImage: FC<Props> = ({ screenUrl, setScreenUrl }) => {
             }}
             spaceBetween={20}
             freeMode={true}
-            style={{}}
           >
-            {screens.map((item, index) => (
+            {screens.map(({ id, buffer }) => {
+              const base64Image = Buffer.from(buffer).toString("base64");
+              const imageUrl = `data:image/webp;base64,${base64Image}`;
+              return (
+                <SwiperSlide
+                  key={id}
+                  style={{ width: "144px", position: "relative" }}
+                >
+                  <div
+                    className={styles.adminScreen_slide}
+                    onClick={() => setScreenUrl(String(id))}
+                  >
+                    <Image
+                      className={styles.adminScreen_img}
+                      src={imageUrl}
+                      alt={"Welcome Screen"}
+                      width={"144"}
+                      height={"188"}
+                      priority={true}
+                    />
+                    <div className={styles.adminScreen_check}>
+                      {String(id) === screenUrl && <IconTick />}
+                    </div>
+                  </div>
+                  <button
+                    className={styles.adminScreen_cross}
+                    type={"button"}
+                    onClick={() => {
+                      setCurrDeleteScreen(id);
+                      setIsShowConfirm(1);
+                    }}
+                  >
+                    <IconCross />
+                  </button>
+                </SwiperSlide>
+              );
+            })}
+            {listWelcomeScreen.map((item, index) => (
               <SwiperSlide key={item} style={{ width: "144px" }}>
                 <div
                   className={styles.adminScreen_slide}
@@ -62,14 +184,6 @@ const AdminDashboardImage: FC<Props> = ({ screenUrl, setScreenUrl }) => {
                   <div className={styles.adminScreen_check}>
                     {item === screenUrl && <IconTick />}
                   </div>
-                  {!listWelcomeScreen.includes(item) && (
-                    <button
-                      className={styles.adminScreen_cross}
-                      type={"button"}
-                    >
-                      <IconCross />
-                    </button>
-                  )}
                 </div>
               </SwiperSlide>
             ))}
@@ -91,11 +205,27 @@ const AdminDashboardImage: FC<Props> = ({ screenUrl, setScreenUrl }) => {
             </button>
           </div>
         </div>
-        <button className={styles.adminScreen_create} type={"button"}>
+        <label className={styles.adminScreen_create}>
+          <input
+            style={{ display: "none" }}
+            type={"file"}
+            accept="image/jpeg, image/png, image/jpg, image/svg+xml, image/webp, image/svg"
+            onChange={handleSetScreen}
+          />
           <IconPlus />
           Add image
-        </button>
+        </label>
       </div>
+      {isShowConfirm && (
+        <ModalWindow scrollPage={true} setShowIdx={setIsShowConfirm}>
+          <WindowConfirm
+            setShow={setIsShowConfirm}
+            question={"Are you sure you want to delete it?"}
+            isLoading={isLoading}
+            action={handleDeleteScreen}
+          />
+        </ModalWindow>
+      )}
     </section>
   );
 };

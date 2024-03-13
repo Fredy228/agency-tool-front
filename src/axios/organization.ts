@@ -1,6 +1,9 @@
 import $api from "@/axios/base";
 
-import { OrganizationInterface } from "@/interfaces/organization";
+import {
+  CustomScreenInterface,
+  OrganizationInterface,
+} from "@/interfaces/organization";
 import { CreateOrgType, UpdateOrgType } from "@/types/organization-types";
 
 export const createOrganizationAPI = async ({
@@ -37,4 +40,52 @@ export const updateOrganizationAPI = async ({
 
 export const deleteLogoOrgAPI = async (): Promise<void> => {
   await $api.delete("/api/organization/logo");
+};
+
+export const uploadScreenDashbOrgAPI = async (
+  image: File,
+): Promise<CustomScreenInterface> => {
+  const formData = new FormData();
+  formData.append("screen", image);
+
+  const { data } = await $api.post("/api/custom-screens/dashboard", formData);
+
+  return data;
+};
+
+export const getScreensDashbOrgAPI = async (): Promise<
+  CustomScreenInterface[]
+> => {
+  const { data } = await $api.get("/api/custom-screens/dashboard");
+
+  return data;
+};
+
+export const deleteScreenDashbOrgAPI = async (id: number): Promise<void> => {
+  await $api.delete(`/api/custom-screens/dashboard/${id}`);
+};
+
+export const uploadScreenCollectionOrgAPI = async (
+  image: File,
+): Promise<CustomScreenInterface> => {
+  const formData = new FormData();
+  formData.append("screen", image);
+
+  const { data } = await $api.post("/api/custom-screens/collection", formData);
+
+  return data;
+};
+
+export const getScreensCollectionOrgAPI = async (): Promise<
+  CustomScreenInterface[]
+> => {
+  const { data } = await $api.get("/api/custom-screens/collection");
+
+  return data;
+};
+
+export const deleteScreenCollectionOrgAPI = async (
+  id: number,
+): Promise<void> => {
+  await $api.delete(`/api/custom-screens/collection/${id}`);
 };

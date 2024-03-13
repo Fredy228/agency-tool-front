@@ -35,7 +35,7 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
       window.history.replaceState({}, "", url.toString());
     }
     const getUserCurrent = async () => {
-      console.log("Getting...");
+      console.time("getting_user");
       try {
         const user = await getUser();
         dispacth(setUser(user));
@@ -48,6 +48,7 @@ export const AuthProviders = ({ children }: { children: ReactNode }) => {
         }
       } finally {
         dispacth(setLoadingApp(false));
+        console.timeEnd("getting_user");
       }
     };
     getUserCurrent();

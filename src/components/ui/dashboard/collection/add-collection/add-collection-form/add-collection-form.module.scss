@@ -12,13 +12,24 @@
   @include swiper-btn-next;
 }
 
-.adminScreen {
-  width: 100%;
+.collectionForm {
+  &_form {
+    width: 100%;
+  }
+
+  &_wrapperBtn {
+    display: inline-flex;
+    gap: 16px;
+    justify-content: center;
+    width: 100%;
+  }
 
   &_wrapper {
+    width: 100%;
     display: flex;
     justify-content: flex-end;
     position: relative;
+    margin-bottom: 15px;
 
     @media screen and (max-width: 767px) {
       justify-content: center;
@@ -26,17 +37,11 @@
   }
 
   &_wrapperSlider {
-    padding-right: 20px;
     position: absolute;
 
     top: 0;
     left: 0;
-    width: calc(100% - 164px);
-
-    @media screen and (max-width: 767px) {
-      width: 100%;
-      padding-right: 0;
-    }
+    width: 100%;
   }
 
   &_boxBg {
@@ -61,5 +66,15 @@
 
   &_create {
     @include swiper-create;
+
+    @media screen and (max-width: 767px) {
+      height: 120px;
+    }
+
+    @media screen and (min-width: 768px) {
+      margin-top: 200px;
+      height: 120px;
+      width: 100%;
+    }
   }
 }

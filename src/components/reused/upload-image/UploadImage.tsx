@@ -62,8 +62,7 @@ const UploadImage: FC<Props> = ({
         <input
           className={styles.uploadImage_inputFile}
           type={"file"}
-          accept="image/*"
-          required={isRequired}
+          accept="image/jpeg, image/png, image/jpg, image/svg+xml, image/webp, image/svg"
           name={"logo"}
           onChange={handleSetLogo}
         />

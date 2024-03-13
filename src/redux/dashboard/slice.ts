@@ -2,7 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import { DashboardInterface } from "@/interfaces/dashboard";
 
 type DashReduxType = {
-  list: Array<Pick<DashboardInterface, "id" | "name" | "screenUrl">>;
+  list: Array<
+    Pick<DashboardInterface, "id" | "name" | "screenUrl" | "screenBuffer">
+  >;
   logoPartner: Buffer | null;
 };
 

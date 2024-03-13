@@ -1,0 +1,180 @@
+@import "src/style-variables/anim-variables";
+@import "src/style-variables/color-variables";
+@import "src/style-variables/font-variables";
+@import "src/style-variables/cards-mixins";
+@import "src/style-variables/button-mixins";
+
+@mixin swiper-btn-common {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 25;
+
+  button {
+    @include button-variant-1;
+    background-color: rgb(242, 242, 242);
+
+    &:hover,
+    &:focus {
+      background-color: rgb(220, 220, 220);
+    }
+  }
+
+  svg {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+@mixin swiper-btn-prev {
+  left: 10px;
+
+  svg {
+    rotate: 90deg;
+  }
+}
+
+@mixin swiper-btn-next {
+  right: 10px;
+
+  svg {
+    rotate: -90deg;
+  }
+}
+
+@mixin swiper-slide {
+  width: 144px;
+  height: 188px;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+
+  cursor: pointer;
+
+  border: 1px solid transparent;
+
+  transition: border-color $anim-duration $anim-func;
+
+  &:hover {
+    border-color: $color-primary;
+  }
+}
+
+@mixin swiper-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@mixin swiper-check {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  border: 1px solid #19191980;
+  background-color: $color-light;
+  color: #19191980;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  > svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+@mixin swiper-cross {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+
+  width: 24px;
+  height: 24px;
+
+  border-radius: 50%;
+  background-color: rgba(242, 242, 242, 0.7);
+  backdrop-filter: blur(2px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: background-color $anim-duration $anim-func;
+
+  &:hover {
+    background-color: rgba(242, 242, 242, 1);
+  }
+
+  > svg {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+@mixin swiper-create {
+  width: 144px;
+  height: 188px;
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  color: $color-primary;
+  font-size: $text-size-md;
+  font-weight: 500;
+  line-height: 1.5;
+
+  border-radius: 8px;
+  background: linear-gradient(
+    131deg,
+    #fff 0%,
+    rgba(217, 217, 217, 0) 100%,
+    rgba(217, 217, 217, 0.2) 100%
+  );
+
+  box-shadow: 22.97px 22.97px 33.98px 0 rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(25px);
+  cursor: pointer;
+
+  > svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  &::before {
+    @include cardRotate;
+  }
+
+  &:hover {
+    &::before {
+      rotate: -5deg;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    margin-top: 200px;
+    height: 80px;
+    width: 100%;
+  }
+}
+
+@mixin swiper-box-bg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 60px;
+  background: linear-gradient(270deg, #f2f2f2 30%, rgba(242, 242, 242, 0) 100%);
+  z-index: 20;
+
+  @media screen and (max-width: 767px) {
+    display: none;
+  }
+}

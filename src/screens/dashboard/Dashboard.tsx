@@ -52,7 +52,7 @@ const Dashboard: NextPage<Props> = ({ idDashboard }) => {
     const lsPass = get<string>(idDashboard);
     const decrypPass = lsPass ? decryptionData(lsPass) : null;
 
-    console.log("getting dash");
+    console.time("getting_dash");
     getDashboardByIdAPI(
       idDashboard,
       password && !lsPass ? password : decrypPass ? decrypPass : undefined,
@@ -88,6 +88,7 @@ const Dashboard: NextPage<Props> = ({ idDashboard }) => {
         setPassword("");
         setIsLoading(false);
         isFirst.current = false;
+        console.timeEnd("getting_dash");
       });
   }, [dashboard, dispacth, idDashboard, isEnterPass, password, router]);
 

@@ -1,6 +1,7 @@
 import { ThemeDashboard } from "@/types/dashboard-types";
 import { LinkInterface } from "@/interfaces/link";
 import { OrganizationInterface } from "@/interfaces/organization";
+import { ScreenDashbInterface } from "@/interfaces/screen";
 
 export interface DashboardInterface {
   id: number;
@@ -14,4 +15,5 @@ export interface DashboardInterface {
   theme: ThemeDashboard;
   links?: LinkInterface[];
   orgId?: OrganizationInterface;
+  screenBuffer?: ScreenDashbInterface;
 }

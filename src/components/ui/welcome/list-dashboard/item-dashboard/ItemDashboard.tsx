@@ -9,9 +9,10 @@ import { setImagePath } from "@/services/setImagePath";
 import ControlDashboard from "@/components/ui/welcome/list-dashboard/control-dashboard/ControlDashboard";
 import { IconCross } from "@/components/reused/icons/icons";
 import PopapMenuWrap from "@/components/reused/popap-menu-wrap/PopapMenuWrap";
+import BufferImg from "@/components/reused/buffer-img/BufferImg";
 
 type Props = {
-  item: Pick<DashboardInterface, "id" | "name" | "screenUrl">;
+  item: Pick<DashboardInterface, "id" | "name" | "screenUrl" | "screenBuffer">;
   isShowCtrl: number | null;
   setIsShowCtrl: Dispatch<SetStateAction<number | null>>;
   toDashboard: (id: number) => void;
@@ -50,14 +51,24 @@ const ItemDashboard: FC<Props> = ({
         className={styles.itemDashb_wrapImage}
         onClick={() => toDashboard(item.id)}
       >
-        <Image
-          className={styles.itemDashb_image}
-          src={setImagePath(item.screenUrl)}
-          alt={"Welcome Screen"}
-          width={"427"}
-          height={"244"}
-          priority={index <= 5}
-        />
+        {Number(item.screenUrl) && item.screenBuffer ? (
+          <BufferImg
+            buffer={item?.screenBuffer?.screen?.buffer}
+            customClass={styles.itemDashb_image}
+            width={427}
+            height={244}
+            alt={"Welcome Screen"}
+          />
+        ) : (
+          <Image
+            className={styles.itemDashb_image}
+            src={setImagePath(item.screenUrl)}
+            alt={"Welcome Screen"}
+            width={"427"}
+            height={"244"}
+            priority={index <= 5}
+          />
+        )}
       </div>
       <AnimatePresence>
         {isCurrItem && (

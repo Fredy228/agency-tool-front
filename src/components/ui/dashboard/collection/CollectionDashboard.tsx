@@ -1,15 +1,22 @@
-import { FC } from "react";
+"use client";
+
+import { type FC, useState } from "react";
 
 import styles from "./collection-dashboard.module.scss";
 import styleContainer from "@/components/styles/container.module.scss";
 import styleSection from "@/components/styles/section-header.module.scss";
 
 import CollectionList from "@/components/ui/dashboard/collection/collection-list/CollectionLIst";
+import ModalWindow from "@/components/reused/modal-window/ModalWindow";
+import AddCollection from "@/components/ui/dashboard/collection/add-collection/AddCollection";
+import { AnimatePresence } from "framer-motion";
 
 type Props = {
   isOwn: boolean | undefined;
 };
 const CollectionDashboard: FC<Props> = ({ isOwn }) => {
+  const [isShowModal, setIsShowModal] = useState<boolean>(false);
+
   return (
     <section className={styles.collection}>
       <div className={styleContainer.container}>
@@ -25,6 +32,7 @@ const CollectionDashboard: FC<Props> = ({ isOwn }) => {
               <button
                 className={styleSection.sectionHeader_btn}
                 type={"button"}
+                onClick={() => setIsShowModal(true)}
               >
                 Add project
               </button>
@@ -33,6 +41,18 @@ const CollectionDashboard: FC<Props> = ({ isOwn }) => {
           <CollectionList />
         </div>
       </div>
+
+      {isShowModal && (
+        <AnimatePresence>
+          <ModalWindow
+            setShow={setIsShowModal}
+            scrollPage={true}
+            backdropFilter={"blur(5px)"}
+          >
+            <AddCollection setShow={setIsShowModal} />
+          </ModalWindow>
+        </AnimatePresence>
+      )}
     </section>
   );
 };

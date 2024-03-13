@@ -7,6 +7,8 @@ import styleContainer from "@/components/styles/container.module.scss";
 
 import { IconArrowRightLong } from "@/components/reused/icons/icons";
 import { DashboardInterface } from "@/interfaces/dashboard";
+import BufferImg from "@/components/reused/buffer-img/BufferImg";
+import { setImagePath } from "@/services/setImagePath";
 
 type Props = {
   dashboard: DashboardInterface;
@@ -18,15 +20,25 @@ const WelcomeDashboard: FC<Props> = ({ dashboard }) => {
         <div className={styles.welcome_inner}>
           <div className={styles.welcome_wrapperImg}>
             <div className={styles.welcome_imgBox}>
-              <Image
-                className={styles.welcome_img}
-                src={`${process.env.NEXTAUTH_URL}/${dashboard.screenUrl}`}
-                alt={"Welcome image"}
-                priority
-                quality={100}
-                width={"519"}
-                height={"690"}
-              />
+              {Number(dashboard.screenUrl) && dashboard.screenBuffer ? (
+                <BufferImg
+                  buffer={dashboard?.screenBuffer?.screen?.buffer}
+                  customClass={styles.welcome_img}
+                  width={519}
+                  height={690}
+                  alt={"Welcome Screen"}
+                />
+              ) : (
+                <Image
+                  className={styles.welcome_img}
+                  src={setImagePath(dashboard.screenUrl)}
+                  alt={"Welcome image"}
+                  priority
+                  quality={100}
+                  width={"519"}
+                  height={"690"}
+                />
+              )}
             </div>
           </div>
           <div className={styles.welcome_wrapperHello}>
