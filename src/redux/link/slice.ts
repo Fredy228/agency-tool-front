@@ -59,7 +59,7 @@ export const linksSlice = createSlice({
     deleteLink: (state, { payload }: { payload: number }) => {
       state.list = state.list.filter((item) => item.id !== payload);
     },
-    actionLink: (state, { payload }: { payload: LinkInterface }) => {
+    actionLink: (state, { payload }: { payload: LinkInterface | null }) => {
       state.current = payload;
     },
   },

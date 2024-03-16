@@ -1,6 +1,6 @@
 "use client";
 
-import { type FC, useState } from "react";
+import { Dispatch, type FC, useEffect, useState } from "react";
 
 import styles from "./collection-dashboard.module.scss";
 import styleContainer from "@/components/styles/container.module.scss";
@@ -10,12 +10,23 @@ import CollectionList from "@/components/ui/dashboard/collection/collection-list
 import ModalWindow from "@/components/reused/modal-window/ModalWindow";
 import AddCollection from "@/components/ui/dashboard/collection/add-collection/AddCollection";
 import { AnimatePresence } from "framer-motion";
+import { useDispatch } from "react-redux";
+import { actionCollection } from "@/redux/collection/slice";
 
 type Props = {
   isOwn: boolean | undefined;
 };
 const CollectionDashboard: FC<Props> = ({ isOwn }) => {
   const [isShowModal, setIsShowModal] = useState<boolean>(false);
+  const [isShowControl, setIsShowControl] = useState<number | null>(null);
+
+  const dispacth: Dispatch<any> = useDispatch();
+
+  useEffect(() => {
+    if (isShowModal) return;
+
+    dispacth(actionCollection(null));
+  }, [dispacth, isShowModal]);
 
   return (
     <section className={styles.collection}>
@@ -38,7 +49,11 @@ const CollectionDashboard: FC<Props> = ({ isOwn }) => {
               </button>
             )}
           </div>
-          <CollectionList />
+          <CollectionList
+            setIsShowAdd={setIsShowModal}
+            setIsShowIdx={setIsShowControl}
+            isShowIdx={isShowControl}
+          />
         </div>
       </div>
 
@@ -49,7 +64,10 @@ const CollectionDashboard: FC<Props> = ({ isOwn }) => {
             scrollPage={true}
             backdropFilter={"blur(5px)"}
           >
-            <AddCollection setShow={setIsShowModal} />
+            <AddCollection
+              setShow={setIsShowModal}
+              setIsShowControl={setIsShowControl}
+            />
           </ModalWindow>
         </AnimatePresence>
       )}

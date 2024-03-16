@@ -8,7 +8,6 @@ import {
   useState,
   type FormEvent,
 } from "react";
-import { isAxiosError } from "axios";
 import { useDispatch, useSelector } from "react-redux";
 
 import formStyles from "@/components/styles/form-common.module.scss";
@@ -23,9 +22,10 @@ import { linkCreateSchema, linkUpdateSchema } from "@/joi/link-schema";
 import LoaderOrig from "@/components/reused/loader/loader-button";
 import { createLinkAPI, updateLinkAPI } from "@/axios/link";
 import { useParams } from "next/navigation";
-import { addLink, updateLink } from "@/redux/link/slice";
+import { actionLink, addLink, updateLink } from "@/redux/link/slice";
 import { selectActionLink } from "@/redux/link/selectors";
 import { CreateLinkType, UpdateLinkType } from "@/types/link-types";
+import { outputError } from "@/services/output-error";
 
 type Props = {
   setIsShowAddLink: Dispatch<SetStateAction<boolean>>;
@@ -53,7 +53,7 @@ const AddLinkForm: FC<Props> = ({ setIsShowAddLink, setIsShowIdx }) => {
     setName(currLink.name);
     setUrl(currLink.url);
     setDescription(currLink.description);
-  }, [currLink]);
+  }, [currLink, dispacth]);
 
   const onFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -119,12 +119,9 @@ const AddLinkForm: FC<Props> = ({ setIsShowAddLink, setIsShowIdx }) => {
       }
       setIsShowAddLink(false);
       setIsShowIdx(null);
+      dispacth(actionLink(null));
     } catch (e) {
-      if (isAxiosError(e) && e.response?.data.message) {
-        getToastify(e.response.data.message, ToastifyEnum.ERROR, 5000);
-      } else {
-        getToastify("Unknown error", ToastifyEnum.ERROR, 3000);
-      }
+      outputError(e);
     } finally {
       setIsLoading(false);
     }

@@ -2,29 +2,23 @@
 
 import { Dispatch, type FC, SetStateAction, useState } from "react";
 import { useDispatch } from "react-redux";
-import { isAxiosError } from "axios";
 
 import styles from "@/components/styles/ctrl-item.module.scss";
 
-import {
-  IconDelete,
-  IconEdit,
-  IconShare,
-} from "@/components/reused/icons/icons";
+import { IconDelete, IconEdit } from "@/components/reused/icons/icons";
 import WindowConfirm from "@/components/reused/window-confirm/WindowConfirm";
 import ModalWindow from "@/components/reused/modal-window/ModalWindow";
 import { getToastify, ToastifyEnum } from "@/services/toastify";
-import CopyToClipboard from "@/components/reused/copy-to-clipboard/CopyToClipboard";
-import { LinkInterface } from "@/interfaces/link";
-import { deleteLinkAPI } from "@/axios/link";
-import { actionLink, deleteLink } from "@/redux/link/slice";
 import { outputError } from "@/services/output-error";
+import { CollectionInterface } from "@/interfaces/collection";
+import { actionCollection, deleteCollection } from "@/redux/collection/slice";
+import { deleteCollectionAPI } from "@/axios/collection";
 
 type Props = {
-  link: LinkInterface;
-  setIsShowAddLink: Dispatch<SetStateAction<boolean>>;
+  collection: CollectionInterface;
+  setIsShowAdd: Dispatch<SetStateAction<boolean>>;
 };
-const ControlLink: FC<Props> = ({ link, setIsShowAddLink }) => {
+const ControlCollection: FC<Props> = ({ collection, setIsShowAdd }) => {
   const [isShowConfirm, setIsShowConfirm] = useState<number | null>(null);
   const [question, setQuestion] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -35,24 +29,19 @@ const ControlLink: FC<Props> = ({ link, setIsShowAddLink }) => {
   const handleDelete = () => {
     setCurrentModal("delete");
     setQuestion("Are you sure you want to delete?");
-    setIsShowConfirm(link.id);
-  };
-
-  const handleShare = () => {
-    setCurrentModal("share");
-    setIsShowConfirm(link.id);
+    setIsShowConfirm(collection.id);
   };
 
   const handleEdit = () => {
-    dispacth(actionLink(link));
-    setIsShowAddLink(true);
+    dispacth(actionCollection(collection));
+    setIsShowAdd(true);
   };
 
   const actionDelete = async () => {
     try {
       setIsLoading(true);
-      await deleteLinkAPI(link.id);
-      dispacth(deleteLink(link.id));
+      await deleteCollectionAPI(collection.id);
+      dispacth(deleteCollection(collection.id));
       getToastify("Deleted successful", ToastifyEnum.SUCCESS, 3000);
     } catch (e) {
       outputError(e);
@@ -65,15 +54,6 @@ const ControlLink: FC<Props> = ({ link, setIsShowAddLink }) => {
     <>
       <div className={styles.ctrlItem}>
         <ul className={styles.ctrlItem_list}>
-          <li className={styles.ctrlItem_item}>
-            <button
-              className={styles.ctrlItem_btn}
-              type={"button"}
-              onClick={handleShare}
-            >
-              <IconShare /> Share
-            </button>
-          </li>
           <li className={styles.ctrlItem_item}>
             <button
               className={styles.ctrlItem_btn}
@@ -94,10 +74,10 @@ const ControlLink: FC<Props> = ({ link, setIsShowAddLink }) => {
           </li>
         </ul>
       </div>
-      {isShowConfirm === link.id && currentModal === "delete" && (
+      {isShowConfirm === collection.id && currentModal === "delete" && (
         <ModalWindow scrollPage={true} setShowIdx={setIsShowConfirm}>
           <WindowConfirm
-            key={link.id}
+            key={collection.id}
             setShow={setIsShowConfirm}
             question={question}
             isLoading={isLoading}
@@ -105,14 +85,8 @@ const ControlLink: FC<Props> = ({ link, setIsShowAddLink }) => {
           />
         </ModalWindow>
       )}
-
-      {isShowConfirm === link.id && currentModal === "share" && (
-        <ModalWindow scrollPage={true} setShowIdx={setIsShowConfirm}>
-          <CopyToClipboard link={link.url} />
-        </ModalWindow>
-      )}
     </>
   );
 };
 
-export default ControlLink;
+export default ControlCollection;

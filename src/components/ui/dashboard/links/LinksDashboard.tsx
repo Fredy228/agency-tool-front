@@ -1,6 +1,6 @@
 "use client";
 
-import { type FC, useState } from "react";
+import { Dispatch, type FC, useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
 
@@ -16,8 +16,9 @@ const ModalWindow = dynamic(
 );
 import LinkList from "@/components/ui/dashboard/links/link-list/LinkList";
 import AddLink from "@/components/ui/dashboard/links/add-link/AddLink";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectListLink } from "@/redux/link/selectors";
+import { actionCollection } from "@/redux/collection/slice";
 
 type Props = {
   isOwn: boolean | undefined;
@@ -27,6 +28,14 @@ const LinksDashboard: FC<Props> = ({ isOwn }) => {
   const [isShowIdx, setIsShowIdx] = useState<number | null>(null);
 
   const links = useSelector(selectListLink);
+
+  const dispacth: Dispatch<any> = useDispatch();
+
+  useEffect(() => {
+    if (isShowAddLink) return;
+
+    dispacth(actionCollection(null));
+  }, [dispacth, isShowAddLink]);
 
   return (
     <section className={styles.links}>

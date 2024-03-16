@@ -5,10 +5,10 @@ export interface CustomScreensInterface {
   id: number;
   buffer: Buffer;
   orgId?: OrganizationInterface;
-  screensDashb?: ScreenDashbInterface[];
+  screensDashb?: ScreenInterface[];
 }
 
-export interface ScreenDashbInterface {
+export interface ScreenInterface {
   id: number;
   screen?: CustomScreensInterface;
   dashboard?: DashboardInterface;

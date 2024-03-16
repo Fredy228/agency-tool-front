@@ -12,6 +12,7 @@ import React, {
 import { Swiper, SwiperSlide } from "swiper/react";
 import Image from "next/image";
 import SwiperCore from "swiper";
+import { useDispatch, useSelector } from "react-redux";
 import { FreeMode, Navigation } from "swiper/modules";
 
 import "swiper/scss";
@@ -22,7 +23,7 @@ import styles from "./add-collection-form.module.scss";
 import formStyles from "@/components/styles/form-common.module.scss";
 
 import LoaderOrig from "@/components/reused/loader/loader-button";
-import { listWelcomeScreen } from "@/components/ui/welcome/dashboard-admin/wecome-image/list";
+import { listCollectionScreen } from "@/components/ui/welcome/dashboard-admin/wecome-image/list";
 import {
   IconArrowDown,
   IconCross,
@@ -43,14 +44,21 @@ import { CustomScreenInterface } from "@/interfaces/organization";
 import { outputError } from "@/services/output-error";
 import WindowConfirm from "@/components/reused/window-confirm/WindowConfirm";
 import ModalWindow from "@/components/reused/modal-window/ModalWindow";
+import {
+  selectActionCollection,
+  selectIdDashb,
+} from "@/redux/collection/selectors";
+import { setImagePath } from "@/services/setImagePath";
+import { createCollectionAPI, updateCollectionAPI } from "@/axios/collection";
+import { addCollection, updateCollection } from "@/redux/collection/slice";
 
 SwiperCore.use([Navigation, FreeMode]);
 
 type Props = {
-  isEdit: boolean;
   setShow: Dispatch<SetStateAction<boolean>>;
+  setIsShowControl: Dispatch<SetStateAction<number | null>>;
 };
-const AddCollectionForm: FC<Props> = ({ isEdit, setShow }) => {
+const AddCollectionForm: FC<Props> = ({ setShow, setIsShowControl }) => {
   const [name, setName] = useState<string>("");
   const [currentScreen, setCurrentScreen] = useState<string>("");
   const [screens, setScreens] = useState<CustomScreenInterface[]>([]);
@@ -62,6 +70,10 @@ const AddCollectionForm: FC<Props> = ({ isEdit, setShow }) => {
   const [invalidInput, setInvalidInput] = useState<string | null>(null);
   const [isShowConfirm, setIsShowConfirm] = useState<number | null>(null);
   const isFirst = useRef<boolean>(false);
+
+  const currCollection = useSelector(selectActionCollection);
+  const idDashboard = useSelector(selectIdDashb);
+  const dispacth: Dispatch<any> = useDispatch();
 
   const handleSetScreen = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileCurr = event.target.files;
@@ -98,28 +110,78 @@ const AddCollectionForm: FC<Props> = ({ isEdit, setShow }) => {
     setIsLoading(true);
     setInvalidInput("");
 
-    let joiError;
+    const dataBody = currCollection
+      ? {
+          name: name?.trim() === currCollection?.name ? undefined : name.trim(),
+        }
+      : {
+          name: name.trim(),
+        };
 
-    if (isEdit) {
-      const { error } = collectionUpdateSchema.validate({ name });
-      joiError = error;
-    } else {
-      const { error } = collectionCreateSchema.validate({ name });
-      joiError = error;
+    if (!dataBody.name && currentScreen === currCollection?.image) {
+      return;
     }
 
-    if (joiError) {
-      const nameField = joiError.message.split("|")[0];
+    const { error } = currCollection
+      ? collectionUpdateSchema.validate(dataBody)
+      : collectionCreateSchema.validate(dataBody);
+
+    if (error) {
+      const nameField = error.message.split("|")[0];
       setInvalidInput(nameField);
 
       setIsLoading(false);
-      return getToastify(
-        joiError.message.split("|")[1],
-        ToastifyEnum.ERROR,
-        5000,
-      );
+      return getToastify(error.message.split("|")[1], ToastifyEnum.ERROR, 5000);
+    }
+
+    try {
+      console.log(currCollection);
+      if (currCollection) {
+        const resUpdate = await updateCollectionAPI({
+          ...dataBody,
+          idCollection: currCollection.id,
+          imageUrl:
+            currCollection.image === currentScreen ? undefined : currentScreen,
+        });
+
+        dispacth(
+          updateCollection({
+            image: currentScreen,
+            id: currCollection.id,
+            name,
+            imageBuffer: {
+              id: 0,
+              screen: resUpdate,
+            },
+          }),
+        );
+        getToastify("Collection updated", ToastifyEnum.SUCCESS, 3000);
+      } else {
+        const newCollection = await createCollectionAPI({
+          name,
+          imageUrl: currentScreen,
+          idDashb: idDashboard,
+        });
+
+        dispacth(addCollection(newCollection));
+        getToastify("Collection created", ToastifyEnum.SUCCESS, 3000);
+      }
+
+      setShow(false);
+      setIsShowControl(null);
+    } catch (e) {
+      outputError(e);
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!currCollection) return;
+
+    setName(currCollection.name);
+    setCurrentScreen(currCollection.image);
+  }, [currCollection, dispacth]);
 
   useEffect(() => {
     if (isFirst.current) return;
@@ -221,7 +283,7 @@ const AddCollectionForm: FC<Props> = ({ isEdit, setShow }) => {
                   </SwiperSlide>
                 );
               })}
-              {listWelcomeScreen.map((item, index) => (
+              {listCollectionScreen.map((item, index) => (
                 <SwiperSlide key={item} style={{ width: "144px" }}>
                   <div
                     className={styles.collectionForm_slide}
@@ -229,7 +291,7 @@ const AddCollectionForm: FC<Props> = ({ isEdit, setShow }) => {
                   >
                     <Image
                       className={styles.collectionForm_img}
-                      src={`${process.env.NEXTAUTH_URL}/${item}`}
+                      src={setImagePath(item)}
                       alt={"Welcome Screen"}
                       width={"144"}
                       height={"188"}
@@ -284,11 +346,7 @@ const AddCollectionForm: FC<Props> = ({ isEdit, setShow }) => {
             type={"submit"}
             disabled={isLoading}
           >
-            {isLoading ? (
-              <LoaderOrig color={"#fff"} />
-            ) : (
-              <>{isEdit ? "Edit" : "Confirm"}</>
-            )}
+            {isLoading ? <LoaderOrig color={"#fff"} /> : "Confirm"}
           </button>
         </div>
       </form>

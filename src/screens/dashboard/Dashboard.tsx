@@ -22,6 +22,7 @@ import { decryptionData, encryptionData } from "@/services/encryption-data";
 import { setListLink } from "@/redux/link/slice";
 import { setOrganization } from "@/redux/organization/slice";
 import { setLogoPartner } from "@/redux/dashboard/slice";
+import { setListCollection } from "@/redux/collection/slice";
 
 type Props = {
   idDashboard: string;
@@ -65,6 +66,13 @@ const Dashboard: NextPage<Props> = ({ idDashboard }) => {
           const encrypt = encryptionData(password);
           set<string>(idDashboard, encrypt);
         }
+        if (data.collections)
+          dispacth(
+            setListCollection({
+              list: data.collections,
+              idDashb: data.id,
+            }),
+          );
         if (data.links) dispacth(setListLink(data.links));
       })
       .catch((error) => {
@@ -117,7 +125,11 @@ const Dashboard: NextPage<Props> = ({ idDashboard }) => {
   return (
     <main className={styles.dashboard}>
       <WelcomeDashboard dashboard={dashboard} />
-      <CollectionDashboard isOwn={isOwn} />
+      {isOwn || (dashboard.collections && dashboard.collections?.length > 0) ? (
+        <CollectionDashboard isOwn={isOwn} />
+      ) : (
+        ""
+      )}
       {isOwn || (dashboard.links && dashboard.links?.length > 0) ? (
         <LinksDashboard isOwn={isOwn} />
       ) : (

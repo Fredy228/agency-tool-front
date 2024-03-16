@@ -1,11 +1,11 @@
 @import "src/style-variables/color-variables";
 @import "src/style-variables/font-variables";
+@import "src/components/styles/icon-three-dots.module";
 
 .collectionList {
   display: flex;
   flex-wrap: wrap;
 
-  justify-content: center;
   margin: 0 -20px;
 
   @media screen and (max-width: 1279px) {
@@ -26,6 +26,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    position: relative;
 
     @include color-bg-item;
 
@@ -53,5 +54,17 @@
   }
 
   &_img {
+  }
+
+  &_button {
+    @include wrapper-icon-dots;
+
+    position: absolute;
+    right: 15px;
+    top: 15px;
+  }
+
+  &_buttonIco {
+    @include three-dots;
   }
 }
